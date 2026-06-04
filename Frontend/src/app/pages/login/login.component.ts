@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { I18nService, Lang } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -17,16 +19,23 @@ export class LoginComponent {
   errorMessage = '';
   isLoading = false;
 
-  constructor(private api: ApiService, private router: Router) {
+  languages: { code: Lang; label: string; flag: string }[] = [];
+
+  constructor(private api: ApiService, private router: Router, public i18n: I18nService) {
+    this.languages = this.i18n.getLanguages();
     // Redirect if already logged in
     if (localStorage.getItem('parc_auto_token')) {
       this.router.navigate(['/dashboard']);
     }
   }
 
+  switchLang(lang: Lang): void {
+    this.i18n.setLang(lang);
+  }
+
   onSubmit(): void {
     if (!this.username || !this.password) {
-      this.errorMessage = 'Veuillez saisir votre nom d\'utilisateur et votre mot de passe.';
+      this.errorMessage = this.i18n.t('login.errorRequired');
       return;
     }
 
@@ -42,9 +51,9 @@ export class LoginComponent {
       error: (err) => {
         this.isLoading = false;
         if (err.status === 401) {
-          this.errorMessage = 'Nom d\'utilisateur ou mot de passe incorrect.';
+          this.errorMessage = this.i18n.t('login.errorInvalid');
         } else {
-          this.errorMessage = 'Une erreur est survenue lors de la connexion. Veuillez réessayer.';
+          this.errorMessage = this.i18n.t('login.errorServer');
         }
         console.error('Login error', err);
       }

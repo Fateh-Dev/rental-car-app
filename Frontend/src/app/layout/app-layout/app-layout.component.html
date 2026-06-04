@@ -11,7 +11,7 @@
     <div class="sidebar-header">
       <div class="sidebar-brand">
         <i class="pi pi-car"></i>
-        <span>Parc Auto</span>
+        <span>{{ 'sidebar.brand' | t }}</span>
       </div>
       <button (click)="toggleSidebar()" class="sidebar-close-btn md-hidden">
         <i class="pi pi-times"></i>
@@ -27,7 +27,7 @@
         class="nav-item"
       >
         <i [class]="item.icon"></i>
-        <span>{{ item.label }}</span>
+        <span>{{ item.labelKey | t }}</span>
       </a>
     </nav>
 
@@ -36,7 +36,7 @@
         <div class="user-avatar">{{ adminName.charAt(0).toUpperCase() }}</div>
         <span class="user-name">{{ adminName }}</span>
       </div>
-      <button (click)="logout()" class="btn-icon sidebar-logout" title="Se déconnecter">
+      <button (click)="logout()" class="btn-icon sidebar-logout" [title]="'common.logout' | t">
         <i class="pi pi-sign-out"></i>
       </button>
     </div>
@@ -50,10 +50,31 @@
         <button (click)="toggleSidebar()" class="btn-icon topbar-menu-btn">
           <i class="pi pi-bars"></i>
         </button>
-        <h1 class="topbar-title">Système de Gestion de Flotte</h1>
+        <h1 class="topbar-title">{{ 'topbar.title' | t }}</h1>
       </div>
 
       <div class="topbar-right">
+        <!-- Language Switcher -->
+        <div class="lang-wrapper">
+          <button (click)="toggleLangDropdown()" class="btn-icon lang-btn" [title]="'topbar.language' | t">
+            <span class="lang-flag">{{ i18n.currentLang() === 'fr' ? '🇫🇷' : i18n.currentLang() === 'en' ? '🇬🇧' : '🇸🇦' }}</span>
+            <span class="lang-code">{{ i18n.currentLang() | uppercase }}</span>
+          </button>
+
+          <div *ngIf="showLangDropdown" class="lang-dropdown card">
+            <button 
+              *ngFor="let lang of languages"
+              (click)="switchLang(lang.code)"
+              class="lang-option"
+              [class.active]="i18n.currentLang() === lang.code"
+            >
+              <span class="lang-option-flag">{{ lang.flag }}</span>
+              <span class="lang-option-label">{{ lang.label }}</span>
+              <i *ngIf="i18n.currentLang() === lang.code" class="pi pi-check lang-option-check"></i>
+            </button>
+          </div>
+        </div>
+
         <!-- Alerts Bell -->
         <div class="alerts-wrapper">
           <button (click)="toggleAlertsDropdown()" class="btn-icon alerts-btn">
@@ -67,12 +88,12 @@
 
           <div *ngIf="showAlertsDropdown" class="alerts-dropdown card">
             <div class="alerts-dropdown-header">
-              <span class="alerts-dropdown-title">Alertes actives</span>
-              <a routerLink="/alerts" (click)="showAlertsDropdown = false" class="alerts-view-all">Voir tout</a>
+              <span class="alerts-dropdown-title">{{ 'topbar.activeAlerts' | t }}</span>
+              <a routerLink="/alerts" (click)="showAlertsDropdown = false" class="alerts-view-all">{{ 'common.viewAll' | t }}</a>
             </div>
             <div class="alerts-dropdown-body">
               <div *ngIf="recentAlerts.length === 0" class="alerts-empty">
-                Aucune alerte active.
+                {{ 'topbar.noActiveAlerts' | t }}
               </div>
               <a 
                 *ngFor="let alert of recentAlerts"
@@ -100,7 +121,7 @@
         <div class="topbar-user">
           <div class="topbar-user-info">
             <span class="topbar-user-name">{{ adminName }}</span>
-            <span class="topbar-user-role">Admin</span>
+            <span class="topbar-user-role">{{ 'common.admin' | t }}</span>
           </div>
           <a routerLink="/settings" class="user-avatar topbar-avatar">
             {{ adminName.charAt(0).toUpperCase() }}

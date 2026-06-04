@@ -2,12 +2,12 @@
   <!-- Page Header -->
   <div class="page-header">
     <div>
-      <h2 class="page-title">Gestion des Contrats de Location</h2>
-      <p class="page-desc">Créez des contrats, suivez les départs, enregistrez les retours de véhicules et gérez la facturation de vos clients.</p>
+      <h2 class="page-title">{{ 'contracts.pageTitle' | t }}</h2>
+      <p class="page-desc">{{ 'contracts.pageDesc' | t }}</p>
     </div>
     <button (click)="openAddDialog()" class="btn-primary">
       <i class="pi pi-plus"></i>
-      <span>Nouveau Contrat</span>
+      <span>{{ 'contracts.newContract' | t }}</span>
     </button>
   </div>
 
@@ -19,7 +19,7 @@
         type="text" 
         [(ngModel)]="searchQuery" 
         (ngModelChange)="onFilterChange()"
-        placeholder="Rechercher par N° contrat, client, plaque..."
+        [placeholder]="'contracts.searchPlaceholder' | t"
         class="form-input"
       />
     </div>
@@ -30,11 +30,11 @@
       (change)="onFilterChange()"
       class="form-input filter-select"
     >
-      <option value="">Tous les Statuts</option>
-      <option value="Draft">Brouillon</option>
-      <option value="Active">En Cours</option>
-      <option value="Completed">Terminé</option>
-      <option value="Cancelled">Annulé</option>
+      <option value="">{{ 'contracts.allStatuses' | t }}</option>
+      <option value="Draft">{{ 'contracts.statusDraft' | t }}</option>
+      <option value="Active">{{ 'contracts.statusActive' | t }}</option>
+      <option value="Completed">{{ 'contracts.statusCompleted' | t }}</option>
+      <option value="Cancelled">{{ 'contracts.statusCancelled' | t }}</option>
     </select>
 
     <!-- Payment Filter -->
@@ -43,10 +43,10 @@
       (change)="onFilterChange()"
       class="form-input filter-select"
     >
-      <option value="">Toutes les Factures</option>
-      <option value="Unpaid">Non Payé</option>
-      <option value="PartiallyPaid">Partiel</option>
-      <option value="Paid">Payé</option>
+      <option value="">{{ 'contracts.allInvoices' | t }}</option>
+      <option value="Unpaid">{{ 'contracts.unpaid' | t }}</option>
+      <option value="PartiallyPaid">{{ 'contracts.partial' | t }}</option>
+      <option value="Paid">{{ 'contracts.paid' | t }}</option>
     </select>
   </div>
 
@@ -56,13 +56,13 @@
       <table class="modern-table">
         <thead>
           <tr>
-            <th>Contrat</th>
-            <th>Client</th>
-            <th>Véhicule</th>
-            <th>Période</th>
-            <th class="col-right">Montant</th>
-            <th>Statuts</th>
-            <th class="col-center">Actions</th>
+            <th>{{ 'contracts.contract' | t }}</th>
+            <th>{{ 'common.client' | t }}</th>
+            <th>{{ 'common.vehicle' | t }}</th>
+            <th>{{ 'contracts.period' | t }}</th>
+            <th class="col-right">{{ 'common.amount' | t }}</th>
+            <th>{{ 'contracts.statuses' | t }}</th>
+            <th class="col-center">{{ 'common.actions' | t }}</th>
           </tr>
         </thead>
         <tbody>
@@ -89,9 +89,7 @@
                   [class.badge-danger]="contract.contractStatus === 'Cancelled'"
                   class="badge"
                 >
-                  {{ contract.contractStatus === 'Draft' ? 'Brouillon' :
-                     contract.contractStatus === 'Active' ? 'Actif' :
-                     contract.contractStatus === 'Completed' ? 'Terminé' : 'Annulé' }}
+                  {{ 'statuses.' + contract.contractStatus.toLowerCase() | t }}
                 </span>
                 <span
                   [class.badge-danger]="contract.paymentStatus === 'Unpaid'"
@@ -99,8 +97,7 @@
                   [class.badge-success]="contract.paymentStatus === 'Paid'"
                   class="badge"
                 >
-                  {{ contract.paymentStatus === 'Unpaid' ? 'Non payé' :
-                     contract.paymentStatus === 'PartiallyPaid' ? 'Partiel' : 'Payé' }}
+                  {{ 'statuses.' + (contract.paymentStatus === 'Unpaid' ? 'unpaid' : contract.paymentStatus === 'PartiallyPaid' ? 'partiallyPaid' : 'paid') | t }}
                 </span>
               </div>
             </td>
@@ -109,13 +106,13 @@
                 <button
                   *ngIf="contract.contractStatus === 'Active'"
                   (click)="openReturnDialog(contract)"
-                  title="Retour véhicule"
+                  [title]="'contracts.returnVehicle' | t"
                   class="btn-primary btn-sm-success"
                 >
-                  <i class="pi pi-key"></i> Retour
+                  <i class="pi pi-key"></i> {{ 'contracts.returnBtn' | t }}
                 </button>
-                <button (click)="openInvoice(contract)" title="Imprimer" class="btn-icon"><i class="pi pi-print"></i></button>
-                <button *ngIf="contract.contractStatus === 'Draft'" (click)="openEditDialog(contract)" title="Modifier" class="btn-icon"><i class="pi pi-pencil"></i></button>
+                <button (click)="openInvoice(contract)" [title]="'common.print' | t" class="btn-icon"><i class="pi pi-print"></i></button>
+                <button *ngIf="contract.contractStatus === 'Draft'" (click)="openEditDialog(contract)" [title]="'common.edit' | t" class="btn-icon"><i class="pi pi-pencil"></i></button>
               </div>
             </td>
           </tr>
@@ -125,12 +122,12 @@
 
     <div *ngIf="contracts.length === 0" class="table-empty">
       <i class="pi pi-file"></i>
-      <span class="table-empty-title">Aucun contrat trouvé</span>
-      <p class="table-empty-desc">Créez un nouveau contrat ou ajustez les filtres.</p>
+      <span class="table-empty-title">{{ 'contracts.noContractFound' | t }}</span>
+      <p class="table-empty-desc">{{ 'contracts.noContractDesc' | t }}</p>
     </div>
 
     <div *ngIf="contracts.length > 0" class="table-footer">
-      <span class="table-footer-info"><strong>{{ totalCount }}</strong> contrat(s)</span>
+      <span class="table-footer-info"><strong>{{ totalCount }}</strong> {{ 'contracts.totalContracts' | t }}</span>
       <div *ngIf="totalCount > pageSize" class="pagination">
         <button [disabled]="page === 1" (click)="onPageChange(page - 1)" class="page-btn"><i class="pi pi-chevron-left"></i></button>
         <button *ngFor="let p of pages" (click)="onPageChange(p)" [class.active]="p === page" class="page-btn">{{ p }}</button>
@@ -144,7 +141,9 @@
     [(visible)]="showCrudDialog" 
     [style]="{width: '600px'}" 
     [modal]="true" 
-    [header]="isEditMode ? 'Modifier le contrat de location' : 'Édition d\'un nouveau contrat de location'"
+    [header]="isEditMode ? ('contracts.editContract' | t) : ('contracts.newContractDialog' | t)"
+    [draggable]="false"
+    [resizable]="false"
   >
     <!-- License Expiry Alert -->
     <div *ngIf="licenseWarning" class="alert-warning">
@@ -155,7 +154,7 @@
     <form (ngSubmit)="onSubmitContract()" class="form-grid">
       <!-- Client Selector -->
       <div>
-        <label class="form-label">Sélectionner un Client</label>
+        <label class="form-label">{{ 'contracts.selectClient' | t }}</label>
         <select 
           [(ngModel)]="contractForm.clientId" 
           name="clientId" 
@@ -164,14 +163,14 @@
           [disabled]="isEditMode"
           class="form-input"
         >
-          <option [ngValue]="null">Choisir un client...</option>
+          <option [ngValue]="null">{{ 'contracts.chooseClient' | t }}</option>
           <option *ngFor="let c of activeClients" [value]="c.id">{{ c.fullName }} ({{ c.nationalId }})</option>
         </select>
       </div>
 
       <!-- Vehicle Selector -->
       <div>
-        <label class="form-label">Sélectionner un Véhicule</label>
+        <label class="form-label">{{ 'contracts.selectVehicle' | t }}</label>
         <select 
           [(ngModel)]="contractForm.vehicleId" 
           name="vehicleId" 
@@ -180,49 +179,49 @@
           [disabled]="isEditMode"
           class="form-input"
         >
-          <option [ngValue]="null">Choisir un véhicule...</option>
+          <option [ngValue]="null">{{ 'contracts.chooseVehicle' | t }}</option>
           <option *ngFor="let v of availableVehicles" [value]="v.id">{{ v.brand }} {{ v.model }} - Plaque: {{ v.matricule }}</option>
         </select>
       </div>
 
       <div>
-        <label class="form-label">Type de Contrat</label>
+        <label class="form-label">{{ 'contracts.contractType' | t }}</label>
         <select [(ngModel)]="contractForm.contractType" name="contractType" required class="form-input">
           <option *ngFor="let ct of contractTypes" [value]="ct">{{ ct }}</option>
         </select>
       </div>
 
       <div>
-        <label class="form-label">Tarif Journalier (€)</label>
+        <label class="form-label">{{ 'contracts.dailyRate' | t }}</label>
         <input type="number" [(ngModel)]="contractForm.dailyRate" name="dailyRate" (change)="calculateTotals()" required class="form-input"/>
       </div>
 
       <div>
-        <label class="form-label">Date & Heure de Départ</label>
+        <label class="form-label">{{ 'contracts.startDateTime' | t }}</label>
         <p-datepicker [(ngModel)]="contractForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
       </div>
 
       <div>
-        <label class="form-label">Date & Heure de Retour Prévue</label>
+        <label class="form-label">{{ 'contracts.expectedReturn' | t }}</label>
         <p-datepicker [(ngModel)]="contractForm.expectedReturnDate" name="expectedReturnDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
       </div>
 
       <!-- Summary Grid -->
       <div class="summary-grid">
         <div class="summary-item">
-          <span class="summary-label">Jours Calculés</span>
-          <span class="summary-value">{{ contractForm.rentalDays }} j</span>
+          <span class="summary-label">{{ 'contracts.calculatedDays' | t }}</span>
+          <span class="summary-value">{{ contractForm.rentalDays }} {{ 'common.days' | t }}</span>
         </div>
         <div class="summary-item">
-          <span class="summary-label">Montant Location</span>
+          <span class="summary-label">{{ 'contracts.rentalAmount' | t }}</span>
           <span class="summary-value">{{ contractForm.totalAmount | currency:'EUR':'symbol':'1.0-2' }}</span>
         </div>
         <div class="summary-item">
-          <span class="summary-label">Frais Extras</span>
+          <span class="summary-label">{{ 'contracts.extraFees' | t }}</span>
           <input type="number" [(ngModel)]="contractForm.extrasCharges" name="extrasCharges" (change)="calculateTotals()" class="form-input" style="padding: 4px 6px; font-size: 11px;"/>
         </div>
         <div class="summary-item">
-          <span class="summary-label">Remise / Réduc (€)</span>
+          <span class="summary-label">{{ 'contracts.discount' | t }}</span>
           <input type="number" [(ngModel)]="contractForm.discountAmount" name="discountAmount" (change)="calculateTotals()" class="form-input" style="padding: 4px 6px; font-size: 11px;"/>
         </div>
       </div>
@@ -230,19 +229,19 @@
       <!-- Totals Row -->
       <div class="totals-row">
         <div class="amount-due-block">
-          <span class="amount-due-label">Total Net Dû</span>
+          <span class="amount-due-label">{{ 'contracts.totalNetDue' | t }}</span>
           <span class="amount-due-value">{{ contractForm.finalAmountDue | currency:'EUR':'symbol':'1.0-2' }}</span>
         </div>
         
         <div class="payment-details">
           <!-- Deposit -->
           <div class="payment-control">
-            <label class="form-label">Caution (€)</label>
+            <label class="form-label">{{ 'contracts.deposit' | t }}</label>
             <input type="number" [(ngModel)]="contractForm.depositAmount" name="depositAmount" class="form-input"/>
           </div>
           <!-- Payment Method -->
           <div class="payment-control">
-            <label class="form-label">Règlement</label>
+            <label class="form-label">{{ 'contracts.paymentMethod' | t }}</label>
             <select [(ngModel)]="contractForm.paymentMethod" name="paymentMethod" class="form-input">
               <option *ngFor="let m of paymentMethods" [value]="m">{{ m }}</option>
             </select>
@@ -252,29 +251,29 @@
 
       <!-- Status Selection -->
       <div>
-        <label class="form-label">Régler l'état initial</label>
+        <label class="form-label">{{ 'contracts.initialStatus' | t }}</label>
         <select [(ngModel)]="contractForm.contractStatus" name="contractStatus" class="form-input">
-          <option value="Draft">Brouillon (Réservation simple)</option>
-          <option value="Active">Activer maintenant (Départ du véhicule)</option>
+          <option value="Draft">{{ 'contracts.draftReservation' | t }}</option>
+          <option value="Active">{{ 'contracts.activateNow' | t }}</option>
         </select>
       </div>
       <div>
-        <label class="form-label">Statut initial de facturation</label>
+        <label class="form-label">{{ 'contracts.initialBilling' | t }}</label>
         <select [(ngModel)]="contractForm.paymentStatus" name="paymentStatus" class="form-input">
-          <option value="Unpaid">Non Payé (En attente)</option>
-          <option value="PartiallyPaid">Acompte versé (Partiel)</option>
-          <option value="Paid">Payé (Règlement intégral)</option>
+          <option value="Unpaid">{{ 'contracts.unpaidPending' | t }}</option>
+          <option value="PartiallyPaid">{{ 'contracts.depositPaid' | t }}</option>
+          <option value="Paid">{{ 'contracts.fullyPaid' | t }}</option>
         </select>
       </div>
 
       <div class="form-full">
-        <label class="form-label">Notes administratives</label>
+        <label class="form-label">{{ 'contracts.adminNotes' | t }}</label>
         <input type="text" [(ngModel)]="contractForm.notes" name="notes" class="form-input" placeholder="Notes additionnelles..."/>
       </div>
 
       <div class="form-full form-actions">
-        <button type="button" (click)="showCrudDialog = false" class="btn-secondary">Annuler</button>
-        <button type="submit" class="btn-primary">Enregistrer le Contrat</button>
+        <button type="button" (click)="showCrudDialog = false" class="btn-secondary">{{ 'common.cancel' | t }}</button>
+        <button type="submit" class="btn-primary">{{ 'contracts.saveContract' | t }}</button>
       </div>
     </form>
   </p-dialog>
@@ -284,51 +283,53 @@
     [(visible)]="showReturnDialog" 
     [style]="{width: '450px'}" 
     [modal]="true" 
-    [header]="selectedContractForReturn ? 'Clôturer le contrat: ' + selectedContractForReturn.contractNumber : ''"
+    [header]="selectedContractForReturn ? ('contracts.closeContract' | t) + ': ' + selectedContractForReturn.contractNumber : ''"
+    [draggable]="false"
+    [resizable]="false"
   >
     <form (ngSubmit)="submitReturn()" class="form-grid">
       <div class="form-full return-info-banner">
         <div class="return-info-row">
-          <span>Odomètre au départ :</span>
+          <span>{{ 'contracts.departureOdometer' | t }}</span>
           <span>{{ selectedContractForReturn?.kmDeparture }} km</span>
         </div>
         <div class="return-info-row">
-          <span>Retour prévu le :</span>
+          <span>{{ 'contracts.expectedReturnDate' | t }}</span>
           <span>{{ selectedContractForReturn?.expectedReturnDate | date:'yyyy-MM-dd HH:mm' }}</span>
         </div>
       </div>
 
       <div>
-        <label class="form-label">Index retour (Km)</label>
+        <label class="form-label">{{ 'contracts.returnIndex' | t }}</label>
         <input type="number" [(ngModel)]="returnForm.kmReturn" name="kmReturn" required class="form-input"/>
       </div>
       <div>
-        <label class="form-label">Date effective de retour</label>
+        <label class="form-label">{{ 'contracts.actualReturnDate' | t }}</label>
         <p-datepicker [(ngModel)]="returnForm.returnDate" name="returnDate" dateFormat="yy-mm-dd" [showTime]="true" styleClass="w-full"></p-datepicker>
       </div>
 
       <div>
-        <label class="form-label">Pénalité Essence (€)</label>
+        <label class="form-label">{{ 'contracts.fuelPenalty' | t }}</label>
         <input type="number" [(ngModel)]="returnForm.fuelPenalty" name="fuelPenalty" class="form-input" placeholder="0"/>
       </div>
       <div>
-        <label class="form-label">Frais Dommages (€)</label>
+        <label class="form-label">{{ 'contracts.damageFees' | t }}</label>
         <input type="number" [(ngModel)]="returnForm.damageFees" name="damageFees" class="form-input" placeholder="0"/>
       </div>
 
       <div class="form-full maintenance-check-box">
         <input type="checkbox" [(ngModel)]="returnForm.setInMaintenance" name="setInMaintenance" id="setInMaintenance" style="cursor: pointer; width: 16px; height: 16px;"/>
-        <label for="setInMaintenance" class="form-label" style="margin: 0; text-transform: none; font-weight: 600; cursor: pointer; color: var(--color-text);">Envoyer le véhicule en maintenance (dégâts signalés)</label>
+        <label for="setInMaintenance" class="form-label" style="margin: 0; text-transform: none; font-weight: 600; cursor: pointer; color: var(--color-text);">{{ 'contracts.sendToMaintenance' | t }}</label>
       </div>
 
       <div class="form-full">
-        <label class="form-label">Notes de retour / Constats</label>
-        <textarea [(ngModel)]="returnForm.returnNotes" name="returnNotes" rows="2" class="form-input" placeholder="Propreté, niveau d'essence, rayures..."></textarea>
+        <label class="form-label">{{ 'contracts.returnNotes' | t }}</label>
+        <textarea [(ngModel)]="returnForm.returnNotes" name="returnNotes" rows="2" class="form-input" [placeholder]="'contracts.returnNotesPlaceholder' | t"></textarea>
       </div>
 
       <div class="form-full form-actions">
-        <button type="button" (click)="showReturnDialog = false" class="btn-secondary">Annuler</button>
-        <button type="submit" class="btn-primary" style="background: var(--color-success);">Valider le retour</button>
+        <button type="button" (click)="showReturnDialog = false" class="btn-secondary">{{ 'common.cancel' | t }}</button>
+        <button type="submit" class="btn-primary" style="background: var(--color-success);">{{ 'contracts.validateReturn' | t }}</button>
       </div>
     </form>
   </p-dialog>
@@ -338,19 +339,21 @@
     [(visible)]="showPrintDialog" 
     [style]="{width: '550px'}" 
     [modal]="true" 
-    header="Aperçu avant Impression"
+    [header]="'contracts.printPreview' | t"
+    [draggable]="false"
+    [resizable]="false"
   >
     <div id="invoice-print-area" *ngIf="printContract" class="invoice-print">
       <!-- Header -->
       <div class="invoice-header">
         <div>
           <div class="invoice-brand">
-            <i class="pi pi-car text-accent"></i> PARC AUTO RENTAL
+            <i class="pi pi-car text-accent"></i> {{ 'contracts.invoiceBrand' | t }}
           </div>
-          <p style="font-size: 10px; color: var(--color-text-secondary); margin: 4px 0 0;">Service de Location Automobile Premium</p>
+          <p style="font-size: 10px; color: var(--color-text-secondary); margin: 4px 0 0;">{{ 'contracts.invoiceSubtitle' | t }}</p>
         </div>
         <div class="invoice-meta">
-          <h4 class="invoice-meta-title">CONTRAT & FACTURE</h4>
+          <h4 class="invoice-meta-title">{{ 'contracts.contractInvoice' | t }}</h4>
           <span class="invoice-meta-number">N° {{ printContract.contractNumber }}</span>
           <p style="font-size: 10px; color: var(--color-text-secondary); margin: 2px 0 0;">Date: {{ printContract.startDate | date:'yyyy-MM-dd' }}</p>
         </div>
@@ -359,17 +362,17 @@
       <!-- Address Grid -->
       <div class="invoice-addresses">
         <div>
-          <div class="address-block-title">Locataire / Client :</div>
+          <div class="address-block-title">{{ 'contracts.tenant' | t }}</div>
           <div class="address-block-name">{{ printContract.client?.fullName }}</div>
-          <div style="color: var(--color-text-secondary); margin-top: 4px;">Permis: Cat. {{ printContract.client?.licenseCategory }} - N° {{ printContract.client?.licenseNumber }}</div>
+          <div style="color: var(--color-text-secondary); margin-top: 4px;">{{ 'clients.licenseLabel' | t }}: {{ 'clients.category' | t }} {{ printContract.client?.licenseCategory }} - N° {{ printContract.client?.licenseNumber }}</div>
           <div style="color: var(--color-text-secondary); margin-top: 2px;">Tél: {{ printContract.client?.phone }}</div>
         </div>
         <div>
-          <div class="address-block-title">Véhicule :</div>
+          <div class="address-block-title">{{ 'contracts.vehicleLabel' | t }}</div>
           <div class="address-block-name">{{ printContract.vehicle?.brand }} {{ printContract.vehicle?.model }}</div>
-          <div style="color: var(--color-text-secondary); margin-top: 4px;">Immatriculation: {{ printContract.vehicle?.matricule }}</div>
-          <div style="color: var(--color-text-secondary); margin-top: 2px;">Compteur départ: {{ printContract.kmDeparture }} km</div>
-          <div *ngIf="printContract.kmReturn" style="color: var(--color-text-secondary); margin-top: 2px;">Compteur retour: {{ printContract.kmReturn }} km</div>
+          <div style="color: var(--color-text-secondary); margin-top: 4px;">{{ 'contracts.registrationLabel' | t }}: {{ printContract.vehicle?.matricule }}</div>
+          <div style="color: var(--color-text-secondary); margin-top: 2px;">{{ 'contracts.departureCounter' | t }}: {{ printContract.kmDeparture }} km</div>
+          <div *ngIf="printContract.kmReturn" style="color: var(--color-text-secondary); margin-top: 2px;">{{ 'contracts.returnCounter' | t }}: {{ printContract.kmReturn }} km</div>
         </div>
       </div>
 
@@ -377,29 +380,29 @@
       <table class="invoice-table">
         <thead>
           <tr>
-            <th>Description</th>
-            <th style="text-align: right;">Tarif journalier</th>
-            <th style="text-align: right;">Jours</th>
-            <th style="text-align: right;">Total HT</th>
+            <th>{{ 'common.description' | t }}</th>
+            <th style="text-align: right;">{{ 'contracts.dailyRateLabel' | t }}</th>
+            <th style="text-align: right;">{{ 'contracts.daysLabel' | t }}</th>
+            <th style="text-align: right;">{{ 'contracts.totalHT' | t }}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="font-weight: 600;">Location de véhicule ({{ printContract.vehicle?.brand }} {{ printContract.vehicle?.model }})</td>
+            <td style="font-weight: 600;">{{ 'contracts.vehicleRental' | t }} ({{ printContract.vehicle?.brand }} {{ printContract.vehicle?.model }})</td>
             <td style="text-align: right;">{{ printContract.dailyRate | currency:'EUR':'symbol':'1.0-2' }}</td>
-            <td style="text-align: right;">{{ printContract.rentalDays }} j</td>
+            <td style="text-align: right;">{{ printContract.rentalDays }} {{ 'common.days' | t }}</td>
             <td style="text-align: right; font-weight: 600;">{{ printContract.totalAmount | currency:'EUR':'symbol':'1.0-2' }}</td>
           </tr>
           <!-- Extras -->
           <tr *ngIf="printContract.extrasCharges > 0">
-            <td style="color: var(--color-text-secondary);">Services Extras / Accessoires</td>
+            <td style="color: var(--color-text-secondary);">{{ 'contracts.extrasAccessories' | t }}</td>
             <td style="text-align: right;">-</td>
             <td style="text-align: right;">-</td>
             <td style="text-align: right; font-weight: 600;">{{ printContract.extrasCharges | currency:'EUR':'symbol':'1.0-2' }}</td>
           </tr>
           <!-- Penalties -->
           <tr *ngIf="printContract.lateReturnFee > 0 || printContract.damageFees > 0 || printContract.fuelPenalty > 0">
-            <td style="color: var(--color-danger); font-weight: 600;">Pénalités / Retours (Retards, Dégâts, Carburant)</td>
+            <td style="color: var(--color-danger); font-weight: 600;">{{ 'contracts.penalties' | t }}</td>
             <td style="text-align: right;">-</td>
             <td style="text-align: right;">-</td>
             <td style="text-align: right; font-weight: 600; color: var(--color-danger);">
@@ -412,21 +415,21 @@
       <!-- Totals & Signatures -->
       <div class="invoice-totals-row">
         <div>
-          <div class="address-block-title">Règlement :</div>
-          <div style="font-weight: 600; color: var(--color-text-secondary); margin-top: 4px;">Mode: {{ printContract.paymentMethod }}</div>
-          <div style="font-weight: 600; color: var(--color-text-secondary); margin-top: 2px;">Statut: {{ printContract.paymentStatus }}</div>
+          <div class="address-block-title">{{ 'contracts.paymentLabel' | t }}</div>
+          <div style="font-weight: 600; color: var(--color-text-secondary); margin-top: 4px;">{{ 'contracts.mode' | t }}: {{ printContract.paymentMethod }}</div>
+          <div style="font-weight: 600; color: var(--color-text-secondary); margin-top: 2px;">{{ 'contracts.statusLabel' | t }}: {{ 'statuses.' + (printContract.paymentStatus === 'Unpaid' ? 'unpaid' : printContract.paymentStatus === 'PartiallyPaid' ? 'partiallyPaid' : 'paid') | t }}</div>
         </div>
         <div class="totals-details">
           <div class="totals-line">
-            <span style="color: var(--color-text-secondary);">Sous-total :</span>
+            <span style="color: var(--color-text-secondary);">{{ 'contracts.subtotal' | t }}</span>
             <span style="font-weight: 600;">{{ printContract.totalAmount + printContract.extrasCharges | currency:'EUR':'symbol':'1.0-2' }}</span>
           </div>
           <div *ngIf="printContract.discountAmount > 0" class="totals-line" style="color: var(--color-success); font-weight: 600;">
-            <span>Réduction :</span>
+            <span>{{ 'contracts.reduction' | t }}</span>
             <span>-{{ printContract.discountAmount | currency:'EUR':'symbol':'1.0-2' }}</span>
           </div>
           <div class="totals-line totals-line-grand">
-            <span>MONTANT NET DÛ :</span>
+            <span>{{ 'contracts.netAmountDue' | t }}</span>
             <span>{{ printContract.finalAmountDue | currency:'EUR':'symbol':'1.0-2' }}</span>
           </div>
         </div>
@@ -435,11 +438,11 @@
       <!-- Signatures Footer -->
       <div class="invoice-signatures">
         <div class="signature-box">
-          <span style="font-weight: 700; text-transform: uppercase;">Signature Locataire</span>
+          <span style="font-weight: 700; text-transform: uppercase;">{{ 'contracts.tenantSignature' | t }}</span>
           <div class="signature-line"></div>
         </div>
         <div class="signature-box">
-          <span style="font-weight: 700; text-transform: uppercase;">Signature Agence</span>
+          <span style="font-weight: 700; text-transform: uppercase;">{{ 'contracts.agencySignature' | t }}</span>
           <div class="signature-line"></div>
         </div>
       </div>
@@ -447,10 +450,10 @@
 
     <!-- Print control panel -->
     <div class="flex justify-end gap-2 mt-6 no-print" style="border-top: 1px solid var(--color-border-light); padding-top: 16px;">
-      <button (click)="showPrintDialog = false" class="btn-secondary">Fermer</button>
+      <button (click)="showPrintDialog = false" class="btn-secondary">{{ 'common.close' | t }}</button>
       <button (click)="printInvoice()" class="btn-primary">
         <i class="pi pi-print"></i>
-        <span>Imprimer</span>
+        <span>{{ 'common.print' | t }}</span>
       </button>
     </div>
   </p-dialog>

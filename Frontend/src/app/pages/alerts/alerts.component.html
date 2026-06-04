@@ -2,11 +2,11 @@
   <!-- Page Header -->
   <div class="page-header page-header-dark">
     <div>
-      <h2 class="page-title">Centre d'Alertes</h2>
-      <p class="page-desc">Assurances, contrôles techniques, consommables et permis de conduire.</p>
+      <h2 class="page-title">{{ 'alerts.pageTitle' | t }}</h2>
+      <p class="page-desc">{{ 'alerts.pageDesc' | t }}</p>
     </div>
     <button (click)="loadAlerts()" class="btn-primary">
-      <i class="pi pi-refresh"></i> Actualiser
+      <i class="pi pi-refresh"></i> {{ 'common.refresh' | t }}
     </button>
   </div>
 
@@ -16,7 +16,7 @@
          [class.active]="selectedSeverity === 'ALL'"
          class="card kpi-card"
     >
-      <span class="kpi-label">Total Alertes</span>
+      <span class="kpi-label">{{ 'alerts.totalAlerts' | t }}</span>
       <div class="kpi-number-row">
         <span class="kpi-number">{{ alerts.length }}</span>
       </div>
@@ -26,7 +26,7 @@
          [class.active]="selectedSeverity === 'CRITICAL'"
          class="card kpi-card critical"
     >
-      <span class="kpi-label kpi-label-danger">Critique</span>
+      <span class="kpi-label kpi-label-danger">{{ 'alerts.critical' | t }}</span>
       <div class="kpi-number-row">
         <span class="kpi-number kpi-number-danger">{{ criticalCount }}</span>
         <span *ngIf="criticalCount > 0" class="kpi-pulse kpi-pulse-danger"></span>
@@ -37,7 +37,7 @@
          [class.active]="selectedSeverity === 'WARNING'"
          class="card kpi-card warning"
     >
-      <span class="kpi-label kpi-label-warning">Avertissement</span>
+      <span class="kpi-label kpi-label-warning">{{ 'alerts.warning' | t }}</span>
       <div class="kpi-number-row">
         <span class="kpi-number kpi-number-warning">{{ warningCount }}</span>
       </div>
@@ -47,7 +47,7 @@
          [class.active]="selectedSeverity === 'INFO'"
          class="card kpi-card info"
     >
-      <span class="kpi-label kpi-label-info">Information</span>
+      <span class="kpi-label kpi-label-info">{{ 'alerts.info' | t }}</span>
       <div class="kpi-number-row">
         <span class="kpi-number kpi-number-info">{{ infoCount }}</span>
       </div>
@@ -61,28 +61,28 @@
       <div class="filter-search">
         <i class="pi pi-search filter-search-icon"></i>
         <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" 
-               placeholder="Rechercher cible, message..." 
+               [placeholder]="'alerts.searchPlaceholder' | t" 
                class="form-input" />
       </div>
 
       <!-- Type Dropdown Filter -->
       <div class="filter-select-group">
-        <span class="filter-module-label">Module</span>
+        <span class="filter-module-label">{{ 'alerts.module' | t }}</span>
         <select [(ngModel)]="selectedType" (ngModelChange)="applyFilters()" class="form-input filter-select">
-          <option value="ALL">Tous les modules</option>
-          <option value="INSURANCE">Assurance</option>
-          <option value="INSPECTION">Contrôle Technique</option>
-          <option value="MAINTENANCE">Maintenance Planifiée</option>
-          <option value="ODOMETERINACTIVITY">Inactivité Odomètre</option>
-          <option value="DRIVERLICENSE">Permis Client</option>
-          <option value="CONSUMABLE">Consommables</option>
+          <option value="ALL">{{ 'alerts.allModules' | t }}</option>
+          <option value="INSURANCE">{{ 'alerts.moduleInsurance' | t }}</option>
+          <option value="INSPECTION">{{ 'alerts.moduleInspection' | t }}</option>
+          <option value="MAINTENANCE">{{ 'alerts.moduleMaintenance' | t }}</option>
+          <option value="ODOMETERINACTIVITY">{{ 'alerts.moduleOdometer' | t }}</option>
+          <option value="DRIVERLICENSE">{{ 'alerts.moduleLicense' | t }}</option>
+          <option value="CONSUMABLE">{{ 'alerts.moduleConsumable' | t }}</option>
         </select>
       </div>
     </div>
 
     <!-- Count indicator -->
     <div class="filter-count">
-      <strong>{{ filteredAlerts.length }}</strong> alerte(s) affichée(s)
+      <strong>{{ filteredAlerts.length }}</strong> {{ 'alerts.alertsShown' | t }}
     </div>
   </div>
 
@@ -92,12 +92,12 @@
       <table class="modern-table">
         <thead>
           <tr>
-            <th class="col-center">Gravité</th>
-            <th>Type</th>
-            <th>Concerne</th>
-            <th>Description</th>
-            <th>Échéance</th>
-            <th>Date</th>
+            <th class="col-center">{{ 'alerts.severity' | t }}</th>
+            <th>{{ 'alerts.typeLabel' | t }}</th>
+            <th>{{ 'alerts.concerns' | t }}</th>
+            <th>{{ 'common.description' | t }}</th>
+            <th>{{ 'alerts.deadline' | t }}</th>
+            <th>{{ 'common.date' | t }}</th>
           </tr>
         </thead>
         <tbody>
@@ -109,7 +109,7 @@
                 [class.badge-warning]="alert.severity === 'Warning'"
                 [class.badge-info]="alert.severity === 'Info'"
               >
-                {{ alert.severity === 'Critical' ? 'Critique' : alert.severity === 'Warning' ? 'Attention' : 'Info' }}
+                {{ alert.severity === 'Critical' ? ('alerts.severityCritical' | t) : alert.severity === 'Warning' ? ('alerts.severityWarning' | t) : ('alerts.severityInfo' | t) }}
               </span>
             </td>
             <td>
@@ -128,11 +128,11 @@
                   [class.pi-user]="alert.type === 'DriverLicense'"
                 ></i>
                 <span>
-                  {{ alert.type === 'OdometerInactivity' ? 'Inactivité Km' :
-                     alert.type === 'DriverLicense' ? 'Permis' :
-                     alert.type === 'TechnicalInspection' ? 'Contrôle' :
-                     alert.type === 'Insurance' ? 'Assurance' :
-                     alert.type === 'Consumable' ? 'Consommable' : alert.type }}
+                  {{ alert.type === 'OdometerInactivity' ? ('alerts.typeInactivityKm' | t) :
+                     alert.type === 'DriverLicense' ? ('alerts.typeLicense' | t) :
+                     alert.type === 'TechnicalInspection' ? ('alerts.typeInspection' | t) :
+                     alert.type === 'Insurance' ? ('alerts.typeInsurance' | t) :
+                     alert.type === 'Consumable' ? ('alerts.typeConsumable' | t) : alert.type }}
                 </span>
               </div>
             </td>
@@ -145,8 +145,8 @@
               </a>
               <span *ngIf="!alert.vehicleId && !alert.clientId" class="cell-primary">{{ alert.target }}</span>
             </td>
-            <td><span class="cell-muted">{{ alert.message }}</span></td>
-            <td><span class="cell-primary">{{ alert.daysOrKmLeftText }}</span></td>
+            <td><span class="cell-muted">{{ i18n.translateAlertMessage(alert.message) }}</span></td>
+            <td><span class="cell-primary">{{ i18n.translateAlertTime(alert.daysOrKmLeftText) }}</span></td>
             <td><span class="cell-muted">{{ alert.dateConcerned | date:'dd/MM/yyyy' }}</span></td>
           </tr>
         </tbody>
@@ -155,14 +155,14 @@
 
     <div *ngIf="filteredAlerts.length === 0" class="table-empty table-empty-success">
       <i class="pi pi-check-circle"></i>
-      <span class="table-empty-title">Aucune alerte à signaler</span>
-      <p class="table-empty-desc">Toutes les échéances et contrôles sont à jour.</p>
+      <span class="table-empty-title">{{ 'alerts.noAlerts' | t }}</span>
+      <p class="table-empty-desc">{{ 'alerts.noAlertsDesc' | t }}</p>
     </div>
 
     <div *ngIf="filteredAlerts.length > 0" class="table-footer">
       <span class="table-footer-info">
-        <strong>{{ filteredAlerts.length }}</strong> alerte(s)
-        <span *ngIf="filteredAlerts.length > pageSize"> — page {{ page }} / {{ totalPages }}</span>
+        <strong>{{ filteredAlerts.length }}</strong> {{ 'alerts.alertsCount' | t }}
+        <span *ngIf="filteredAlerts.length > pageSize"> — {{ 'common.page' | t }} {{ page }} / {{ totalPages }}</span>
       </span>
       <div *ngIf="filteredAlerts.length > pageSize" class="pagination">
         <button [disabled]="page === 1" (click)="onPageChange(page - 1)" class="page-btn"><i class="pi pi-chevron-left"></i></button>

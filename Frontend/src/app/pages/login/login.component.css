@@ -4,6 +4,57 @@
   align-items: center;
   justify-content: center;
   background: #f8f9fb;
+  position: relative;
+}
+
+.login-lang-bar {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  display: flex;
+  gap: 4px;
+  z-index: 10;
+}
+
+.login-lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.login-lang-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.login-lang-btn.active {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+:host-context([dir="rtl"]) .login-lang-bar {
+  right: auto;
+  left: 20px;
+}
+
+:host-context([dir="rtl"]) .input-icon {
+  left: auto;
+  right: 12px;
+}
+
+:host-context([dir="rtl"]) .form-input.has-icon {
+  padding-left: 12px;
+  padding-right: 36px;
 }
 
 .login-container {

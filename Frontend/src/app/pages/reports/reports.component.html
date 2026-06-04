@@ -2,12 +2,12 @@
   <!-- Page Header -->
   <div class="page-header">
     <div>
-      <h2 class="page-header-title" style="color: white;">Rapports & Analyses Opérationnelles</h2>
-      <p class="page-header-desc">Évaluez la rentabilité, le taux d'utilisation de la flotte, le coût total de possession (TCO) et suivez les impayés.</p>
+      <h2 class="page-header-title" style="color: white;">{{ 'reports.pageTitle' | t }}</h2>
+      <p class="page-header-desc">{{ 'reports.pageDesc' | t }}</p>
     </div>
     <div class="header-actions">
       <button (click)="exportProfitabilityCsv()" class="btn-primary">
-        <i class="pi pi-download"></i> Exporter Rentabilité (CSV)
+        <i class="pi pi-download"></i> {{ 'reports.exportProfitability' | t }}
       </button>
     </div>
   </div>
@@ -17,11 +17,11 @@
     <!-- Total Revenue Card -->
     <div class="card kpi-card">
       <div class="kpi-left">
-        <span class="kpi-label">Chiffre d'Affaires Brut</span>
+        <span class="kpi-label">{{ 'reports.grossRevenue' | t }}</span>
         <h2 class="kpi-number">{{ revenue.totalRevenue | number:'1.2-2' }} €</h2>
         <div class="kpi-sub-row">
-          <span style="color: var(--color-success); font-weight: 600;"><i class="pi pi-check" style="font-size: 9px;"></i> Payé: {{ revenue.paidRevenue | number:'1.0-0' }} €</span>
-          <span style="color: var(--color-danger); font-weight: 600;"><i class="pi pi-exclamation-circle" style="font-size: 9px;"></i> Dû: {{ revenue.unpaidRevenue | number:'1.0-0' }} €</span>
+          <span style="color: var(--color-success); font-weight: 600;"><i class="pi pi-check" style="font-size: 9px;"></i> {{ 'reports.paidLabel' | t }}: {{ revenue.paidRevenue | number:'1.0-0' }} €</span>
+          <span style="color: var(--color-danger); font-weight: 600;"><i class="pi pi-exclamation-circle" style="font-size: 9px;"></i> {{ 'reports.dueLabel' | t }}: {{ revenue.unpaidRevenue | number:'1.0-0' }} €</span>
         </div>
       </div>
       <div class="kpi-icon-box indigo">
@@ -32,9 +32,9 @@
     <!-- Average Fleet Utilization Rate Card -->
     <div class="card kpi-card">
       <div class="kpi-left">
-        <span class="kpi-label">Taux d'Utilisation Moyen</span>
+        <span class="kpi-label">{{ 'reports.avgUtilization' | t }}</span>
         <h2 class="kpi-number">{{ averageUtilization | number:'1.0-2' }}%</h2>
-        <span class="kpi-subtext">Temps loué / Durée totale.</span>
+        <span class="kpi-subtext">{{ 'reports.utilizationDesc' | t }}</span>
       </div>
       <div class="kpi-icon-box emerald">
         <i class="pi pi-chart-bar text-xl"></i>
@@ -44,11 +44,11 @@
     <!-- Fleet Status Quick Stats -->
     <div class="card kpi-card">
       <div class="kpi-left">
-        <span class="kpi-label">Taille de la Flotte</span>
-        <h2 class="kpi-number">{{ fleetStatus.total }} Véhicules</h2>
+        <span class="kpi-label">{{ 'reports.fleetSize' | t }}</span>
+        <h2 class="kpi-number">{{ fleetStatus.total }} {{ 'reports.vehiclesLabel' | t }}</h2>
         <div class="kpi-sub-row" style="margin-top: 6px;">
-          <span class="badge badge-accent" style="font-size: 9px;">{{ fleetStatus.rented }} Loués</span>
-          <span class="badge badge-warning" style="font-size: 9px;">{{ fleetStatus.inMaintenance }} Garage</span>
+          <span class="badge badge-accent" style="font-size: 9px;">{{ fleetStatus.rented }} {{ 'reports.rented' | t }}</span>
+          <span class="badge badge-warning" style="font-size: 9px;">{{ fleetStatus.inMaintenance }} {{ 'reports.garage' | t }}</span>
         </div>
       </div>
       <div class="kpi-icon-box amber">
@@ -62,7 +62,7 @@
     <!-- Fleet Availability Chart -->
     <div class="card chart-card">
       <div class="chart-header">
-        <h3 class="chart-title"><i class="pi pi-chart-pie text-accent"></i> État de Disponibilité Flotte</h3>
+        <h3 class="chart-title"><i class="pi pi-chart-pie text-accent"></i> {{ 'reports.fleetAvailability' | t }}</h3>
       </div>
       <div class="chart-container">
         <p-chart *ngIf="fleetStatusChart" type="doughnut" [data]="fleetStatusChart" [options]="fleetStatusOptions" class="w-full max-w-[220px]"></p-chart>
@@ -72,12 +72,12 @@
     <!-- Revenue Paid vs Unpaid Chart -->
     <div class="card chart-card">
       <div class="chart-header">
-        <h3 class="chart-title"><i class="pi pi-dollar text-accent"></i> Taux de Recouvrement Financier</h3>
+        <h3 class="chart-title"><i class="pi pi-dollar text-accent"></i> {{ 'reports.financialRecovery' | t }}</h3>
         <!-- Date Filters -->
         <div style="display: flex; gap: 4px; align-items: center;">
-          <p-datepicker [(ngModel)]="startDate" placeholder="Début" (ngModelChange)="loadRevenue()" dateFormat="dd/mm/y" appendTo="body" style="width: 100px; font-size: 11px;"></p-datepicker>
-          <span style="font-size: 11px; color: var(--color-text-muted);">à</span>
-          <p-datepicker [(ngModel)]="endDate" placeholder="Fin" (ngModelChange)="loadRevenue()" dateFormat="dd/mm/y" appendTo="body" style="width: 100px; font-size: 11px;"></p-datepicker>
+          <p-datepicker [(ngModel)]="startDate" [placeholder]="'reports.startDate' | t" (ngModelChange)="loadRevenue()" dateFormat="dd/mm/y" appendTo="body" style="width: 100px; font-size: 11px;"></p-datepicker>
+          <span style="font-size: 11px; color: var(--color-text-muted);">{{ 'common.to' | t | lowercase }}</span>
+          <p-datepicker [(ngModel)]="endDate" [placeholder]="'reports.endDate' | t" (ngModelChange)="loadRevenue()" dateFormat="dd/mm/y" appendTo="body" style="width: 100px; font-size: 11px;"></p-datepicker>
         </div>
       </div>
       <div class="chart-container">
@@ -90,7 +90,7 @@
   <div class="card" style="overflow: hidden;">
     <div class="table-header-inner">
       <h3 class="table-title-inner">
-        <i class="pi pi-calculator text-accent"></i> Analyse de Rentabilité par Véhicule (TCO)
+        <i class="pi pi-calculator text-accent"></i> {{ 'reports.profitabilityAnalysis' | t }}
       </h3>
     </div>
 
@@ -98,15 +98,15 @@
       <p-table [value]="profitabilityReport" [rows]="10" [paginator]="true" responsiveLayout="scroll">
         <ng-template pTemplate="header">
           <tr>
-            <th>Véhicule</th>
-            <th>Matricule</th>
-            <th style="text-align: center;">Taux Utilisation</th>
-            <th>Revenus</th>
-            <th>Maintenance</th>
-            <th>Carburant (Fuel)</th>
-            <th>Assurance</th>
-            <th>TCO (Coût Total)</th>
-            <th>Bénéfice Net</th>
+            <th>{{ 'common.vehicle' | t }}</th>
+            <th>{{ 'vehicles.matricule' | t }}</th>
+            <th style="text-align: center;">{{ 'reports.utilizationRate' | t }}</th>
+            <th>{{ 'reports.revenueLabel' | t }}</th>
+            <th>{{ 'reports.maintenanceLabel' | t }}</th>
+            <th>{{ 'reports.fuelLabel' | t }}</th>
+            <th>{{ 'reports.insuranceLabel' | t }}</th>
+            <th>{{ 'reports.tco' | t }}</th>
+            <th>{{ 'reports.netProfit' | t }}</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
@@ -126,7 +126,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="9" style="text-align: center; padding: 20px; color: var(--color-text-muted);">Aucune donnée de rentabilité disponible.</td>
+            <td colspan="9" style="text-align: center; padding: 20px; color: var(--color-text-muted);">{{ 'reports.noProfitabilityData' | t }}</td>
           </tr>
         </ng-template>
       </p-table>
@@ -140,7 +140,7 @@
     <div class="split-left card" style="overflow: hidden;">
       <div class="table-header-inner">
         <h3 class="table-title-inner">
-          <i class="pi pi-users text-accent"></i> Top Clients (Par Volume & Revenu)
+          <i class="pi pi-users text-accent"></i> {{ 'reports.topClients' | t }}
         </h3>
       </div>
       
@@ -148,9 +148,9 @@
         <p-table [value]="topClients" [rows]="5" responsiveLayout="scroll" styleClass="p-datatable-sm">
           <ng-template pTemplate="header">
             <tr>
-              <th>Nom du Client</th>
-              <th style="text-align: center; width: 80px;">Locations</th>
-              <th style="text-align: right; width: 120px;">Total Loué</th>
+              <th>{{ 'reports.clientName' | t }}</th>
+              <th style="text-align: center; width: 80px;">{{ 'reports.rentals' | t }}</th>
+              <th style="text-align: right; width: 120px;">{{ 'reports.totalRented' | t }}</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-client>
@@ -162,7 +162,7 @@
           </ng-template>
           <ng-template pTemplate="emptymessage">
             <tr>
-              <td colspan="3" style="text-align: center; padding: 20px; color: var(--color-text-muted);">Aucun client disponible.</td>
+              <td colspan="3" style="text-align: center; padding: 20px; color: var(--color-text-muted);">{{ 'reports.noClients' | t }}</td>
             </tr>
           </ng-template>
         </p-table>
@@ -173,7 +173,7 @@
     <div class="split-right card" style="overflow: hidden;">
       <div class="table-header-inner">
         <h3 class="table-title-inner">
-          <i class="pi pi-clock text-accent"></i> Factures & Contrats en Retard de Paiement
+          <i class="pi pi-clock text-accent"></i> {{ 'reports.latePayments' | t }}
         </h3>
       </div>
       
@@ -181,11 +181,11 @@
         <p-table [value]="unpaidContracts" [rows]="5" [paginator]="true" responsiveLayout="scroll" styleClass="p-datatable-sm">
           <ng-template pTemplate="header">
             <tr>
-              <th>N° Contrat</th>
-              <th>Client</th>
-              <th>Véhicule</th>
-              <th style="text-align: right; width: 120px;">Montant Dû</th>
-              <th style="text-align: center; width: 120px;">Statut Pay.</th>
+              <th>{{ 'reports.contractNo' | t }}</th>
+              <th>{{ 'common.client' | t }}</th>
+              <th>{{ 'common.vehicle' | t }}</th>
+              <th style="text-align: right; width: 120px;">{{ 'reports.amountDue' | t }}</th>
+              <th style="text-align: center; width: 120px;">{{ 'reports.paymentStatus' | t }}</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-c>
@@ -199,7 +199,7 @@
                       [class.badge-danger]="c.paymentStatus === 'Unpaid'"
                       [class.badge-warning]="c.paymentStatus === 'PartiallyPaid'"
                 >
-                  {{ c.paymentStatus === 'Unpaid' ? 'Non Payé' : 'Partiel' }}
+                  {{ 'statuses.' + (c.paymentStatus === 'Unpaid' ? 'unpaid' : 'partiallyPaid') | t }}
                 </span>
               </td>
             </tr>
@@ -207,7 +207,7 @@
           <ng-template pTemplate="emptymessage">
             <tr>
               <td colspan="5" style="text-align: center; padding: 20px; color: var(--color-text-muted);">
-                <i class="pi pi-check text-success" style="margin-right: 4px;"></i> Félicitations, aucun impayé enregistré !
+                <i class="pi pi-check text-success" style="margin-right: 4px;"></i> {{ 'reports.noUnpaid' | t }}
               </td>
             </tr>
           </ng-template>

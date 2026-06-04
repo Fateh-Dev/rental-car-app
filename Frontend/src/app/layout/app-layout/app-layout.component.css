@@ -338,6 +338,107 @@
   display: none;
 }
 
+/* ── Language Switcher ── */
+.lang-wrapper {
+  position: relative;
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px !important;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.lang-flag {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.lang-code {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.5px;
+}
+
+.lang-dropdown {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  width: 180px;
+  z-index: 30;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 4px;
+  border-radius: var(--radius-lg);
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+  transition: background 0.12s;
+}
+
+.lang-option:hover {
+  background: var(--color-bg);
+}
+
+.lang-option.active {
+  background: var(--color-accent-muted, rgba(79, 70, 229, 0.08));
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.lang-option-flag {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.lang-option-label {
+  flex: 1;
+  text-align: start;
+}
+
+.lang-option-check {
+  font-size: 11px;
+  color: var(--color-accent);
+}
+
+/* ── RTL Overrides ── */
+:host-context([dir="rtl"]) .topbar-user-info {
+  text-align: left;
+}
+
+:host-context([dir="rtl"]) .alerts-dropdown {
+  right: auto;
+  left: 0;
+}
+
+:host-context([dir="rtl"]) .lang-dropdown {
+  right: auto;
+  left: 0;
+}
+
+:host-context([dir="rtl"]) .alerts-dot {
+  right: auto;
+  left: 5px;
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .sidebar-backdrop.is-visible {
@@ -370,5 +471,14 @@
   }
   .topbar-user-info {
     display: none;
+  }
+
+  :host-context([dir="rtl"]) .sidebar {
+    left: auto;
+    right: 0;
+    transform: translateX(100%);
+  }
+  :host-context([dir="rtl"]) .sidebar.sidebar-open {
+    transform: translateX(0);
   }
 }

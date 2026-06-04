@@ -1,4 +1,17 @@
 <div class="login-page">
+  <!-- Language Selector (top-right corner) -->
+  <div class="login-lang-bar">
+    <button 
+      *ngFor="let lang of languages" 
+      (click)="switchLang(lang.code)"
+      class="login-lang-btn"
+      [class.active]="i18n.currentLang() === lang.code"
+    >
+      <span>{{ lang.flag }}</span>
+      <span>{{ lang.code | uppercase }}</span>
+    </button>
+  </div>
+
   <div class="login-container">
     <div class="login-card card">
       <!-- Header -->
@@ -6,8 +19,8 @@
         <div class="login-logo">
           <i class="pi pi-car"></i>
         </div>
-        <h1 class="login-title">Parc Auto</h1>
-        <p class="login-subtitle">Gestion de flotte de location</p>
+        <h1 class="login-title">{{ 'login.title' | t }}</h1>
+        <p class="login-subtitle">{{ 'login.subtitle' | t }}</p>
       </div>
 
       <!-- Error -->
@@ -19,7 +32,7 @@
       <!-- Form -->
       <form (ngSubmit)="onSubmit()" class="login-form">
         <div class="form-group">
-          <label class="form-label">Nom d'utilisateur</label>
+          <label class="form-label">{{ 'login.username' | t }}</label>
           <div class="input-wrapper">
             <i class="pi pi-user input-icon"></i>
             <input 
@@ -34,7 +47,7 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">Mot de passe</label>
+          <label class="form-label">{{ 'login.password' | t }}</label>
           <div class="input-wrapper">
             <i class="pi pi-lock input-icon"></i>
             <input 
@@ -54,12 +67,12 @@
           class="btn-primary login-btn"
         >
           <span *ngIf="isLoading" class="spinner"></span>
-          {{ isLoading ? 'Connexion...' : 'Se connecter' }}
+          {{ isLoading ? ('login.loggingIn' | t) : ('login.loginBtn' | t) }}
         </button>
       </form>
 
       <div class="login-footer">
-        Par défaut: <code>admin</code> / <code>AdminPassword123!</code>
+        {{ 'login.defaultCredentials' | t }} <code>admin</code> / <code>AdminPassword123!</code>
       </div>
     </div>
   </div>

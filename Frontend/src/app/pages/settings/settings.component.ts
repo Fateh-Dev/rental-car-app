@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
+import { I18nService } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })
@@ -37,7 +39,7 @@ export class SettingsComponent implements OnInit {
   message = '';
   messageType = 'success';
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, public i18n: I18nService) {}
 
   ngOnInit(): void {
     this.loadSettings();
@@ -83,9 +85,9 @@ export class SettingsComponent implements OnInit {
       next: (res) => {
         this.settings = res;
         this.parseReferenceData();
-        this.showFeedback('Paramètres sauvegardés avec succès !', 'success');
+        this.showFeedback(this.getFeedbackMsg('saveSuccess'), 'success');
       },
-      error: (err) => this.showFeedback(err.error?.message || 'Erreur lors de la sauvegarde des paramètres', 'error')
+      error: (err) => this.showFeedback(err.error?.message || this.getFeedbackMsg('saveError'), 'error')
     });
   }
 
@@ -93,15 +95,15 @@ export class SettingsComponent implements OnInit {
     this.api.updateProfile({ fullName: this.profile.fullName }).subscribe({
       next: (res) => {
         this.profile = res.user;
-        this.showFeedback('Profil mis à jour avec succès !', 'success');
+        this.showFeedback(this.getFeedbackMsg('profileSuccess'), 'success');
       },
-      error: (err) => this.showFeedback(err.error?.message || 'Erreur lors de la mise à jour du profil', 'error')
+      error: (err) => this.showFeedback(err.error?.message || this.getFeedbackMsg('profileError'), 'error')
     });
   }
 
   updatePassword(): void {
     if (this.passwordForm.newPassword !== this.passwordForm.confirmPassword) {
-      this.showFeedback('Les nouveaux mots de passe ne correspondent pas.', 'error');
+      this.showFeedback(this.getFeedbackMsg('passwordMatchError'), 'error');
       return;
     }
 
@@ -112,10 +114,10 @@ export class SettingsComponent implements OnInit {
 
     this.api.changePassword(payload).subscribe({
       next: () => {
-        this.showFeedback('Mot de passe mis à jour avec succès !', 'success');
+        this.showFeedback(this.getFeedbackMsg('passwordSuccess'), 'success');
         this.passwordForm = { currentPassword: '', newPassword: '', confirmPassword: '' };
       },
-      error: (err) => this.showFeedback(err.error?.message || 'Erreur lors de la mise à jour du mot de passe', 'error')
+      error: (err) => this.showFeedback(err.error?.message || this.getFeedbackMsg('passwordError'), 'error')
     });
   }
 
@@ -172,5 +174,47 @@ export class SettingsComponent implements OnInit {
     setTimeout(() => {
       this.message = '';
     }, 4000);
+  }
+
+  getFeedbackMsg(key: string): string {
+    const lang = this.i18n.currentLang();
+    const msgs: Record<string, Record<string, string>> = {
+      saveSuccess: {
+        fr: 'Paramètres sauvegardés avec succès !',
+        en: 'Settings saved successfully!',
+        ar: 'تم حفظ الإعدادات بنجاح!'
+      },
+      saveError: {
+        fr: 'Erreur lors de la sauvegarde des paramètres',
+        en: 'Error saving settings',
+        ar: 'خطأ أثناء حفظ الإعدادات'
+      },
+      profileSuccess: {
+        fr: 'Profil mis à jour avec succès !',
+        en: 'Profile updated successfully!',
+        ar: 'تم تحديث الملف الشخصي بنجاح!'
+      },
+      profileError: {
+        fr: 'Erreur lors de la mise à jour du profil',
+        en: 'Error updating profile',
+        ar: 'خطأ أثناء تحديث الملف الشخصي'
+      },
+      passwordMatchError: {
+        fr: 'Les nouveaux mots de passe ne correspondent pas.',
+        en: 'New passwords do not match.',
+        ar: 'كلمات المرور الجديدة غير متطابقة.'
+      },
+      passwordSuccess: {
+        fr: 'Mot de passe mis à jour avec succès !',
+        en: 'Password updated successfully!',
+        ar: 'تم تحديث كلمة المرور بنجاح!'
+      },
+      passwordError: {
+        fr: 'Erreur lors de la mise à jour du mot de passe',
+        en: 'Error updating password',
+        ar: 'خطأ أثناء تحديث كلمة المرور'
+      }
+    };
+    return msgs[key]?.[lang] || msgs[key]?.['fr'] || key;
   }
 }

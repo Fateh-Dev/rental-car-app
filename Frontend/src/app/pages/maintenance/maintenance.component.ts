@@ -4,11 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { DialogModule } from 'primeng/dialog';
 import { DatePickerModule } from 'primeng/datepicker';
+import { I18nService } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-maintenance',
   standalone: true,
-  imports: [CommonModule, FormsModule, DialogModule, DatePickerModule],
+  imports: [CommonModule, FormsModule, DialogModule, DatePickerModule, TranslatePipe],
   templateUrl: './maintenance.component.html',
   styleUrls: ['./maintenance.component.css']
 })
@@ -34,7 +36,7 @@ export class MaintenanceComponent implements OnInit {
   showCalendarDialog = false;
   calendarEvents: any[] = [];
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, public i18n: I18nService) {}
 
   ngOnInit(): void {
     this.loadMaintenances();
@@ -92,7 +94,7 @@ export class MaintenanceComponent implements OnInit {
   }
 
   deleteMaint(id: number): void {
-    if (confirm('Supprimer cette fiche de maintenance ?')) {
+    if (confirm(this.i18n.t('common.deleteConfirm'))) {
       this.api.deleteMaintenance(id).subscribe(() => {
         this.loadMaintenances();
       });
@@ -112,7 +114,7 @@ export class MaintenanceComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadMaintenances();
         },
-        error: (err) => alert(err.error?.message || 'Erreur lors de la mise à jour')
+        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorUpdate'))
       });
     } else {
       this.api.createMaintenance(payload).subscribe({
@@ -120,7 +122,7 @@ export class MaintenanceComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadMaintenances();
         },
-        error: (err) => alert(err.error?.message || 'Erreur lors de l\'enregistrement')
+        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorCreate'))
       });
     }
   }
@@ -141,11 +143,11 @@ export class MaintenanceComponent implements OnInit {
 
   openCalendar(): void {
     this.api.getMaintenanceCalendar().subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.calendarEvents = res;
         this.showCalendarDialog = true;
       },
-      error: (err) => console.error('Failed to load calendar events', err)
+      error: (err: any) => console.error('Failed to load calendar events', err)
     });
   }
 }

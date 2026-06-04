@@ -6,11 +6,13 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
+import { I18nService } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-vehicles',
   standalone: true,
-  imports: [CommonModule, FormsModule, TableModule, DialogModule, SelectModule, DatePickerModule],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, SelectModule, DatePickerModule, TranslatePipe],
   templateUrl: './vehicles.component.html',
   styleUrls: ['./vehicles.component.css']
 })
@@ -72,7 +74,7 @@ export class VehiclesComponent implements OnInit {
   showAddKmDialog = false;
   kmForm: any = this.getEmptyKmForm();
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, public i18n: I18nService) {}
 
   ngOnInit(): void {
     this.loadSettings();
@@ -213,12 +215,12 @@ export class VehiclesComponent implements OnInit {
   }
 
   deleteVehicle(id: number): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce véhicule de la flotte active ?')) {
+    if (confirm(this.i18n.t('vehicles.deleteConfirm'))) {
       this.api.deleteVehicle(id).subscribe({
         next: () => {
           this.loadVehicles();
         },
-        error: (err) => alert(err.error?.message || 'Erreur lors de la suppression du véhicule')
+        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorDelete'))
       });
     }
   }
@@ -235,7 +237,7 @@ export class VehiclesComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadVehicles();
         },
-        error: (err) => alert(err.error?.message || 'Erreur lors de la mise à jour')
+        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorUpdate'))
       });
     } else {
       this.api.createVehicle(payload).subscribe({
@@ -243,7 +245,7 @@ export class VehiclesComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadVehicles();
         },
-        error: (err) => alert(err.error?.message || 'Erreur lors de l\'enregistrement')
+        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorCreate'))
       });
     }
   }

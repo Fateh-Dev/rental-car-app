@@ -4,11 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { DialogModule } from 'primeng/dialog';
 import { DatePickerModule } from 'primeng/datepicker';
+import { I18nService } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-clients',
   standalone: true,
-  imports: [CommonModule, FormsModule, DialogModule, DatePickerModule],
+  imports: [CommonModule, FormsModule, DialogModule, DatePickerModule, TranslatePipe],
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.css']
 })
@@ -34,7 +36,7 @@ export class ClientsComponent implements OnInit {
   selectedClient: any = null;
   rentalHistory: any[] = [];
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, public i18n: I18nService) {}
 
   ngOnInit(): void {
     this.loadClients();
@@ -114,12 +116,12 @@ export class ClientsComponent implements OnInit {
   }
 
   deleteClient(id: number): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce client de la base de données ?')) {
+    if (confirm(this.i18n.t('common.deleteConfirm'))) {
       this.api.deleteClient(id).subscribe({
         next: () => {
           this.loadClients();
         },
-        error: (err) => alert(err.error?.message || 'Erreur lors de la suppression')
+        error: (err) => alert(err.error?.message || this.i18n.t('common.errorOccurred'))
       });
     }
   }
@@ -138,7 +140,7 @@ export class ClientsComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadClients();
         },
-        error: (err) => alert(err.error?.message || 'Erreur lors de la mise à jour')
+        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorUpdate'))
       });
     } else {
       this.api.createClient(payload).subscribe({
@@ -146,7 +148,7 @@ export class ClientsComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadClients();
         },
-        error: (err) => alert(err.error?.message || 'Erreur lors de l\'enregistrement')
+        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorCreate'))
       });
     }
   }

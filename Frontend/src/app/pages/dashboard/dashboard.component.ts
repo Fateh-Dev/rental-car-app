@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { I18nService } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 import { ChartModule } from 'primeng/chart';
 import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, ChartModule, TableModule],
+  imports: [CommonModule, RouterLink, ChartModule, TableModule, TranslatePipe],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -38,7 +40,15 @@ export class DashboardComponent implements OnInit {
   chartData: any;
   chartOptions: any;
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, public i18n: I18nService) {
+    effect(() => {
+      // Re-initialize chart when language changes
+      this.i18n.currentLang();
+      if (this.stats && this.stats.total > 0) {
+        this.initChart(this.stats);
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loadFleetStatus();
@@ -69,7 +79,7 @@ export class DashboardComponent implements OnInit {
   loadUnpaidContracts(): void {
     this.api.getUnpaidContracts().subscribe({
       next: (res) => {
-        this.unpaidContracts = res.slice(0, 5); // show top 5 unpaid contracts
+        this.unpaidContracts = res.slice(0, 5);
       },
       error: (err) => console.error('Failed to load unpaid contracts', err)
     });
@@ -86,11 +96,16 @@ export class DashboardComponent implements OnInit {
   }
 
   initChart(stats: any): void {
-    const documentStyle = getComputedStyle(document.documentElement);
     const textColor = '#334155';
 
     this.chartData = {
-      labels: ['Disponible', 'Loué', 'En Maintenance', 'Réservé', 'Immobilisé'],
+      labels: [
+        this.i18n.t('statuses.available'),
+        this.i18n.t('statuses.rented'),
+        this.i18n.t('statuses.inMaintenance'),
+        this.i18n.t('statuses.reserved'),
+        this.i18n.t('statuses.immobilized')
+      ],
       datasets: [
         {
           data: [stats.available, stats.rented, stats.inMaintenance, stats.reserved, stats.immobilized],

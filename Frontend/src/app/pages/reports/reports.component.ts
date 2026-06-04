@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
 import { DatePickerModule } from 'primeng/datepicker';
+import { I18nService } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [CommonModule, FormsModule, TableModule, ChartModule, DatePickerModule],
+  imports: [CommonModule, FormsModule, TableModule, ChartModule, DatePickerModule, TranslatePipe],
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })
@@ -36,7 +38,17 @@ export class ReportsComponent implements OnInit {
   startDate: Date | null = null;
   endDate: Date | null = null;
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, public i18n: I18nService) {
+    effect(() => {
+      this.i18n.currentLang();
+      if (this.fleetStatus && this.fleetStatus.available > 0) {
+        this.buildFleetStatusChart();
+      }
+      if (this.revenue && this.revenue.totalRevenue > 0) {
+        this.buildRevenueChart();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loadFleetStatus();
@@ -111,9 +123,14 @@ export class ReportsComponent implements OnInit {
   }
 
   buildFleetStatusChart(): void {
-    const documentStyle = getComputedStyle(document.documentElement);
     this.fleetStatusChart = {
-      labels: ['Disponible', 'Loué', 'En Maintenance', 'Réservé', 'Immobilisé'],
+      labels: [
+        this.i18n.t('statuses.available'),
+        this.i18n.t('statuses.rented'),
+        this.i18n.t('statuses.inMaintenance'),
+        this.i18n.t('statuses.reserved'),
+        this.i18n.t('statuses.immobilized')
+      ],
       datasets: [
         {
           data: [
@@ -145,7 +162,7 @@ export class ReportsComponent implements OnInit {
 
   buildRevenueChart(): void {
     this.revenueChart = {
-      labels: ['Revenus Encaissés', 'Factures Impayées'],
+      labels: [this.i18n.t('reports.paidLabel'), this.i18n.t('reports.dueLabel')],
       datasets: [
         {
           data: [this.revenue.paidRevenue, this.revenue.unpaidRevenue],

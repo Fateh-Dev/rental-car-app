@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
@@ -6,11 +6,13 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ChartModule } from 'primeng/chart';
+import { I18nService } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-fuel',
   standalone: true,
-  imports: [CommonModule, FormsModule, TableModule, DialogModule, DatePickerModule, ChartModule],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, DatePickerModule, ChartModule, TranslatePipe],
   templateUrl: './fuel.component.html',
   styleUrls: ['./fuel.component.css']
 })
@@ -35,7 +37,14 @@ export class FuelComponent implements OnInit {
   showAddFuelDialog = false;
   fuelForm = this.getEmptyFuelForm();
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, public i18n: I18nService) {
+    effect(() => {
+      this.i18n.currentLang();
+      if (this.fuelLogs && this.fuelLogs.length >= 2) {
+        this.buildChart();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loadVehicles();
@@ -137,7 +146,7 @@ export class FuelComponent implements OnInit {
           this.loadVehicleKmHistory(payload.vehicleId);
         }
       },
-      error: (err) => alert(err.error?.message || 'Erreur lors de la saisie')
+      error: (err) => alert(err.error?.message || this.i18n.t('common.errorOccurred'))
     });
   }
 
@@ -164,19 +173,19 @@ export class FuelComponent implements OnInit {
         this.loadVehicleLogs(payload.vehicleId);
         this.loadVehicleKmHistory(payload.vehicleId);
       },
-      error: (err) => alert(err.error?.message || 'Erreur lors de la saisie du carburant')
+      error: (err) => alert(err.error?.message || this.i18n.t('common.errorOccurred'))
     });
   }
 
   deleteFuelLog(id: number): void {
-    if (confirm('Supprimer cet enregistrement de carburant ?')) {
+    if (confirm(this.i18n.t('common.deleteConfirm'))) {
       this.api.deleteFuelLog(id).subscribe({
         next: () => {
           if (this.selectedVehicle) {
             this.loadVehicleLogs(this.selectedVehicle.id);
           }
         },
-        error: (err) => alert(err.error?.message || 'Erreur lors de la suppression')
+        error: (err) => alert(err.error?.message || this.i18n.t('common.errorOccurred'))
       });
     }
   }
@@ -218,16 +227,14 @@ export class FuelComponent implements OnInit {
       return;
     }
 
-    const labels = sorted.map(l => new Date(l.log.date).toLocaleDateString('fr-FR'));
+    const labels = sorted.map(l => new Date(l.log.date).toLocaleDateString(this.i18n.currentLang() === 'ar' ? 'ar-SA' : this.i18n.currentLang() === 'fr' ? 'fr-FR' : 'en-US'));
     const data = sorted.map(l => l.consumptionL100);
-
-    const documentStyle = getComputedStyle(document.documentElement);
 
     this.chartData = {
       labels: labels,
       datasets: [
         {
-          label: 'Consommation (L/100km)',
+          label: this.i18n.t('fuel.consumptionTrend'),
           data: data,
           fill: true,
           borderColor: '#4f46e5', // indigo-600
@@ -256,4 +263,3 @@ export class FuelComponent implements OnInit {
     };
   }
 }
-

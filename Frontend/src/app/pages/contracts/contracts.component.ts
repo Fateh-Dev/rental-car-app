@@ -5,11 +5,13 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { DialogModule } from 'primeng/dialog';
 import { DatePickerModule } from 'primeng/datepicker';
+import { I18nService } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-contracts',
   standalone: true,
-  imports: [CommonModule, FormsModule, DialogModule, DatePickerModule],
+  imports: [CommonModule, FormsModule, DialogModule, DatePickerModule, TranslatePipe],
   templateUrl: './contracts.component.html',
   styleUrls: ['./contracts.component.css']
 })
@@ -53,7 +55,7 @@ export class ContractsComponent implements OnInit {
   showPrintDialog = false;
   printContract: any = null;
 
-  constructor(private api: ApiService, private route: ActivatedRoute) {}
+  constructor(private api: ApiService, private route: ActivatedRoute, public i18n: I18nService) {}
 
   ngOnInit(): void {
     // Read route query parameters for search if any
@@ -172,7 +174,7 @@ export class ContractsComponent implements OnInit {
     if (client) {
       const expiry = new Date(client.licenseExpiryDate);
       if (expiry < new Date()) {
-        this.licenseWarning = `Attention: Le permis de ce client a expiré le ${client.licenseExpiryDate.substring(0,10)}!`;
+        this.licenseWarning = `${this.i18n.t('contracts.licenseWarning')} ${client.licenseExpiryDate.substring(0,10)}!`;
       } else {
         this.licenseWarning = '';
       }
@@ -217,7 +219,7 @@ export class ContractsComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadContracts();
         },
-        error: (err) => alert(err.error?.message || 'Erreur lors de la mise à jour')
+        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorUpdate'))
       });
     } else {
       this.api.createContract(payload).subscribe({
@@ -225,7 +227,7 @@ export class ContractsComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadContracts();
         },
-        error: (err) => alert(err.error?.message || 'Erreur lors de l\'enregistrement')
+        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorCreate'))
       });
     }
   }
@@ -249,7 +251,7 @@ export class ContractsComponent implements OnInit {
         this.showReturnDialog = false;
         this.loadContracts();
       },
-      error: (err) => alert(err.error?.message || 'Erreur lors du retour du véhicule')
+      error: (err) => alert(err.error?.message || this.i18n.t('contracts.errorReturn'))
     });
   }
 

@@ -2,12 +2,14 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, NavigationStart, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { I18nService, Lang } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 import { filter, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-app-layout',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterOutlet],
+  imports: [CommonModule, RouterLink, RouterOutlet, TranslatePipe],
   templateUrl: './app-layout.component.html',
   styleUrls: ['./app-layout.component.css']
 })
@@ -17,24 +19,29 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   criticalAlertsCount = 0;
   recentAlerts: any[] = [];
   showAlertsDropdown = false;
+  showLangDropdown = false;
   sidebarOpen = typeof window !== 'undefined' ? window.innerWidth > 768 : true;
   private routerSub?: Subscription;
 
   menuItems = [
-    { label: 'Dashboard', icon: 'pi pi-chart-bar', route: '/dashboard' },
-    { label: 'Véhicules', icon: 'pi pi-car', route: '/vehicles' },
-    { label: 'Clients', icon: 'pi pi-users', route: '/clients' },
-    { label: 'Contrats', icon: 'pi pi-file', route: '/contracts' },
-    { label: 'Kilométrage', icon: 'pi pi-map-marker', route: '/fuel' }, // grouped or split, let's link to fuel which has fuel logs, or km history
-    { label: 'Maintenance', icon: 'pi pi-cog', route: '/maintenance' },
-    { label: 'Consommables', icon: 'pi pi-wrench', route: '/consumables' },
-    { label: 'Assurance & Contrôle', icon: 'pi pi-shield', route: '/insurance-inspections' },
-    { label: 'Alertes', icon: 'pi pi-bell', route: '/alerts' },
-    { label: 'Rapports & Analytics', icon: 'pi pi-print', route: '/reports' },
-    { label: 'Configuration', icon: 'pi pi-sliders-h', route: '/settings' }
+    { labelKey: 'sidebar.dashboard', icon: 'pi pi-chart-bar', route: '/dashboard' },
+    { labelKey: 'sidebar.vehicles', icon: 'pi pi-car', route: '/vehicles' },
+    { labelKey: 'sidebar.clients', icon: 'pi pi-users', route: '/clients' },
+    { labelKey: 'sidebar.contracts', icon: 'pi pi-file', route: '/contracts' },
+    { labelKey: 'sidebar.kilometrage', icon: 'pi pi-map-marker', route: '/fuel' },
+    { labelKey: 'sidebar.maintenance', icon: 'pi pi-cog', route: '/maintenance' },
+    { labelKey: 'sidebar.consumables', icon: 'pi pi-wrench', route: '/consumables' },
+    { labelKey: 'sidebar.insuranceControl', icon: 'pi pi-shield', route: '/insurance-inspections' },
+    { labelKey: 'sidebar.alerts', icon: 'pi pi-bell', route: '/alerts' },
+    { labelKey: 'sidebar.reportsAnalytics', icon: 'pi pi-print', route: '/reports' },
+    { labelKey: 'sidebar.settings', icon: 'pi pi-sliders-h', route: '/settings' }
   ];
 
-  constructor(private api: ApiService, private router: Router) {}
+  languages: { code: Lang; label: string; flag: string }[] = [];
+
+  constructor(private api: ApiService, private router: Router, public i18n: I18nService) {
+    this.languages = this.i18n.getLanguages();
+  }
 
   ngOnInit(): void {
     const userJson = localStorage.getItem('parc_auto_user');
@@ -66,6 +73,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     if (!target.closest('.alerts-wrapper')) {
       this.showAlertsDropdown = false;
     }
+    if (!target.closest('.lang-wrapper')) {
+      this.showLangDropdown = false;
+    }
   }
 
   trackByRoute(_index: number, item: { route: string }): string {
@@ -75,6 +85,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   navigateTo(route: string, event: Event): void {
     event.preventDefault();
     this.showAlertsDropdown = false;
+    this.showLangDropdown = false;
     const currentPath = this.router.url.split('?')[0];
     if (currentPath === route) {
       if (window.innerWidth <= 768) {
@@ -87,6 +98,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
 
   private cleanupBlockingOverlays(): void {
     this.showAlertsDropdown = false;
+    this.showLangDropdown = false;
     document.body.classList.remove('p-overflow-hidden');
     document.querySelectorAll('.p-dialog-mask, .p-overlay-mask, .p-component-overlay').forEach((el) => {
       el.remove();
@@ -106,6 +118,17 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
 
   toggleAlertsDropdown(): void {
     this.showAlertsDropdown = !this.showAlertsDropdown;
+    this.showLangDropdown = false;
+  }
+
+  toggleLangDropdown(): void {
+    this.showLangDropdown = !this.showLangDropdown;
+    this.showAlertsDropdown = false;
+  }
+
+  switchLang(lang: Lang): void {
+    this.i18n.setLang(lang);
+    this.showLangDropdown = false;
   }
 
   toggleSidebar(): void {

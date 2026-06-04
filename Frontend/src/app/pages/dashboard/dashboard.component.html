@@ -2,8 +2,8 @@
   <!-- Page Header -->
   <div class="page-header">
     <div>
-      <h2 class="page-title">Tableau de bord</h2>
-      <p class="page-desc">Vue d'ensemble de la flotte et des opérations.</p>
+      <h2 class="page-title">{{ 'dashboard.pageTitle' | t }}</h2>
+      <p class="page-desc">{{ 'dashboard.pageDesc' | t }}</p>
     </div>
     <span class="badge badge-neutral">{{ today | date:'dd/MM/yyyy' }}</span>
   </div>
@@ -12,36 +12,36 @@
   <div class="kpi-grid">
     <div class="card kpi-card">
       <div class="kpi-content">
-        <span class="kpi-label">Flotte</span>
+        <span class="kpi-label">{{ 'dashboard.fleet' | t }}</span>
         <span class="kpi-value">{{ stats.total }}</span>
-        <span class="kpi-sub">véhicules enregistrés</span>
+        <span class="kpi-sub">{{ 'dashboard.registeredVehicles' | t }}</span>
       </div>
       <div class="kpi-icon kpi-icon-accent"><i class="pi pi-car"></i></div>
     </div>
 
     <div class="card kpi-card">
       <div class="kpi-content">
-        <span class="kpi-label">Locations actives</span>
+        <span class="kpi-label">{{ 'dashboard.activeRentals' | t }}</span>
         <span class="kpi-value">{{ stats.rented }}</span>
-        <span class="kpi-sub text-success">{{ stats.available }} disponibles</span>
+        <span class="kpi-sub text-success">{{ stats.available }} {{ 'dashboard.available' | t }}</span>
       </div>
       <div class="kpi-icon kpi-icon-success"><i class="pi pi-key"></i></div>
     </div>
 
     <div class="card kpi-card">
       <div class="kpi-content">
-        <span class="kpi-label">Chiffre d'affaires</span>
+        <span class="kpi-label">{{ 'dashboard.revenue' | t }}</span>
         <span class="kpi-value">{{ revenue.totalRevenue | currency:'EUR':'symbol':'1.0-0' }}</span>
-        <span class="kpi-sub">{{ revenue.paidRevenue | currency:'EUR':'symbol':'1.0-0' }} payé</span>
+        <span class="kpi-sub">{{ revenue.paidRevenue | currency:'EUR':'symbol':'1.0-0' }} {{ 'dashboard.paid' | t }}</span>
       </div>
       <div class="kpi-icon kpi-icon-info"><i class="pi pi-money-bill"></i></div>
     </div>
 
     <div class="card kpi-card">
       <div class="kpi-content">
-        <span class="kpi-label">Alertes</span>
+        <span class="kpi-label">{{ 'dashboard.alerts' | t }}</span>
         <span class="kpi-value">{{ alerts.length }}</span>
-        <span class="kpi-sub text-danger">{{ criticalAlertsCount }} critiques</span>
+        <span class="kpi-sub text-danger">{{ criticalAlertsCount }} {{ 'dashboard.critical' | t }}</span>
       </div>
       <div class="kpi-icon kpi-icon-danger"><i class="pi pi-exclamation-triangle"></i></div>
     </div>
@@ -53,8 +53,8 @@
     <div class="card dashboard-card">
       <div class="card-header">
         <div>
-          <h4 class="card-title">Disponibilité du parc</h4>
-          <p class="card-desc">Répartition actuelle</p>
+          <h4 class="card-title">{{ 'dashboard.fleetAvailability' | t }}</h4>
+          <p class="card-desc">{{ 'dashboard.currentDistribution' | t }}</p>
         </div>
       </div>
       <div class="chart-wrapper">
@@ -66,14 +66,14 @@
     <div class="card dashboard-card dashboard-card-wide">
       <div class="card-header">
         <div>
-          <h4 class="card-title">Alertes prioritaires</h4>
-          <p class="card-desc">Maintenance, assurance, inspections</p>
+          <h4 class="card-title">{{ 'dashboard.priorityAlerts' | t }}</h4>
+          <p class="card-desc">{{ 'dashboard.priorityAlertsDesc' | t }}</p>
         </div>
-        <a routerLink="/alerts" class="text-accent" style="font-size:12px;font-weight:600;text-decoration:none;">Voir tout</a>
+        <a routerLink="/alerts" class="text-accent" style="font-size:12px;font-weight:600;text-decoration:none;">{{ 'common.viewAll' | t }}</a>
       </div>
       <div class="alerts-list">
         <div *ngIf="alerts.length === 0" class="empty-state-sm">
-          Aucune alerte en cours.
+          {{ 'dashboard.noActiveAlert' | t }}
         </div>
         <div *ngFor="let alert of alerts" class="alert-row">
           <div class="alert-row-left">
@@ -86,14 +86,14 @@
             </span>
             <div>
               <span class="alert-row-target">{{ alert.target }}</span>
-              <span class="alert-row-msg">{{ alert.message }}</span>
+              <span class="alert-row-msg">{{ i18n.translateAlertMessage(alert.message) }}</span>
             </div>
           </div>
           <span class="badge"
             [class.badge-danger]="alert.severity === 'Critical'"
             [class.badge-warning]="alert.severity === 'Warning'"
             [class.badge-info]="alert.severity === 'Info'"
-          >{{ alert.daysOrKmLeftText }}</span>
+          >{{ i18n.translateAlertTime(alert.daysOrKmLeftText) }}</span>
         </div>
       </div>
     </div>
@@ -103,22 +103,22 @@
   <div class="card">
     <div class="card-header">
       <div>
-        <h4 class="card-title">Impayés</h4>
-        <p class="card-desc">Contrats en attente de paiement</p>
+        <h4 class="card-title">{{ 'dashboard.unpaid' | t }}</h4>
+        <p class="card-desc">{{ 'dashboard.unpaidDesc' | t }}</p>
       </div>
-      <a routerLink="/reports" class="text-accent" style="font-size:12px;font-weight:600;text-decoration:none;">Rapports</a>
+      <a routerLink="/reports" class="text-accent" style="font-size:12px;font-weight:600;text-decoration:none;">{{ 'common.reports' | t }}</a>
     </div>
     <div class="table-wrapper">
       <p-table [value]="unpaidContracts" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
           <tr>
-            <th>N° Contrat</th>
-            <th>Client</th>
-            <th>Véhicule</th>
-            <th>Départ</th>
-            <th>Montant</th>
-            <th>Statut</th>
-            <th>Action</th>
+            <th>{{ 'dashboard.contractNo' | t }}</th>
+            <th>{{ 'common.client' | t }}</th>
+            <th>{{ 'common.vehicle' | t }}</th>
+            <th>{{ 'dashboard.departure' | t }}</th>
+            <th>{{ 'common.amount' | t }}</th>
+            <th>{{ 'common.status' | t }}</th>
+            <th>{{ 'common.actions' | t }}</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-contract>
@@ -133,7 +133,7 @@
                 [class.badge-danger]="contract.paymentStatus === 'Unpaid'"
                 [class.badge-warning]="contract.paymentStatus === 'PartiallyPaid'"
               >
-                {{ contract.paymentStatus === 'Unpaid' ? 'Non Payé' : 'Partiel' }}
+                {{ contract.paymentStatus === 'Unpaid' ? ('dashboard.paymentUnpaid' | t) : ('dashboard.paymentPartial' | t) }}
               </span>
             </td>
             <td>
@@ -142,13 +142,13 @@
                 [queryParams]="{search: contract.contractNumber}"
                 class="text-accent"
                 style="font-size:12px;font-weight:600;text-decoration:none;"
-              >Gérer</a>
+              >{{ 'common.manage' | t }}</a>
             </td>
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="7" class="empty-state-sm">Aucun contrat impayé.</td>
+            <td colspan="7" class="empty-state-sm">{{ 'dashboard.noUnpaidContracts' | t }}</td>
           </tr>
         </ng-template>
       </p-table>

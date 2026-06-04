@@ -2,15 +2,15 @@
   <!-- Top Header Dashboard Controls -->
   <div class="page-header">
     <div>
-      <h2 class="page-header-title">Suivi Kilométrage & Carburant</h2>
-      <p class="page-header-desc">Gérez les relevés d'odomètres, les consommations de carburant et détectez les anomalies.</p>
+      <h2 class="page-header-title">{{ 'fuel.pageTitle' | t }}</h2>
+      <p class="page-header-desc">{{ 'fuel.pageDesc' | t }}</p>
     </div>
     <div class="header-actions">
       <button (click)="exportAllKmCsv()" class="btn-secondary" style="border-color: #475569; color: #fff; background: transparent;">
-        <i class="pi pi-download"></i> Exporter Odomètres
+        <i class="pi pi-download"></i> {{ 'fuel.exportOdometers' | t }}
       </button>
       <button (click)="exportAllFuelCsv()" class="btn-primary">
-        <i class="pi pi-download"></i> Exporter Carburant
+        <i class="pi pi-download"></i> {{ 'fuel.exportFuel' | t }}
       </button>
     </div>
   </div>
@@ -27,9 +27,9 @@
             <i class="pi pi-exclamation-triangle" style="font-size: 14px;"></i>
           </div>
           <div>
-            <h3 class="inactivity-title">Inactivité Kilométrique Détectée</h3>
+            <h3 class="inactivity-title">{{ 'fuel.inactivityDetected' | t }}</h3>
             <p class="inactivity-desc">
-              Véhicules sans activité (contrat ou relevé) depuis plus de <strong>{{ inactivityThresholdDays }} jours</strong>.
+              {{ 'fuel.inactivityDesc' | t }} <strong>{{ inactivityThresholdDays }} {{ 'fuel.daysOfInactivity' | t }}</strong>.
             </p>
           </div>
         </div>
@@ -37,7 +37,7 @@
           <div *ngFor="let v of inactiveVehicles" class="inactivity-item">
             <span style="font-weight: 600;">{{ v.brand }} {{ v.model }} <span style="color: var(--color-text-muted); font-size: 11px;">({{ v.matricule }})</span></span>
             <span class="badge badge-warning" style="text-transform: none;">
-              {{ v.daysInactive }} jours d'inactivité
+              {{ v.daysInactive }} {{ 'fuel.daysOfInactivity' | t }}
             </span>
           </div>
         </div>
@@ -47,10 +47,10 @@
       <div class="card" style="overflow: hidden;">
         <div class="vehicle-list-card-header">
           <h3 class="vehicle-list-title">
-            <i class="pi pi-car text-accent"></i> Parc Automobile (Odomètres)
+            <i class="pi pi-car text-accent"></i> {{ 'fuel.fleetOdometers' | t }}
           </h3>
           <span class="vehicle-list-count">
-            {{ vehiclesList.length }} Véhicules
+            {{ vehiclesList.length }} {{ 'fuel.vehiclesCount' | t }}
           </span>
         </div>
         
@@ -59,10 +59,10 @@
                (click)="selectVehicle(vehicle)"
                [class.active]="selectedVehicle?.id === vehicle.id"
                class="vehicle-item"
-          >
+           >
             <div class="vehicle-info">
               <h4 class="vehicle-name">{{ vehicle.brand }} {{ vehicle.model }}</h4>
-              <span class="vehicle-plate">Matricule: <span style="font-family: monospace; font-weight: 600; color: var(--color-text);">{{ vehicle.matricule }}</span></span>
+              <span class="vehicle-plate">{{ 'fuel.plateLabel' | t }}: <span style="font-family: monospace; font-weight: 600; color: var(--color-text);">{{ vehicle.matricule }}</span></span>
               <div class="vehicle-badges">
                 <span class="badge"
                       [class.badge-success]="vehicle.status === 'Available'"
@@ -70,7 +70,7 @@
                       [class.badge-warning]="vehicle.status === 'InMaintenance'"
                       style="font-size: 9px;"
                 >
-                  {{ vehicle.status === 'Available' ? 'Libre' : vehicle.status === 'Rented' ? 'Loué' : 'Garage' }}
+                  {{ vehicle.status === 'Available' ? ('fuel.statusFree' | t) : vehicle.status === 'Rented' ? ('fuel.statusRented' | t) : ('fuel.statusGarage' | t) }}
                 </span>
                 <span class="badge badge-neutral" style="font-size: 9px;">
                   {{ vehicle.fuelType }}
@@ -84,7 +84,7 @@
                 <span style="color: var(--color-text-muted); font-size: 11px; margin-left: 2px;">km</span>
               </div>
               <button (click)="openAddKm(vehicle, $event)" class="btn-primary" style="padding: 4px 8px; font-size: 11px; background: var(--color-bg); color: var(--color-text-secondary); border: 1px solid var(--color-border);">
-                <i class="pi pi-plus" style="font-size: 9px;"></i> Relevé
+                <i class="pi pi-plus" style="font-size: 9px;"></i> {{ 'fuel.reading' | t }}
               </button>
             </div>
           </div>
@@ -98,9 +98,9 @@
       <!-- Unselected State -->
       <div *ngIf="!selectedVehicle" class="card unselected-placeholder" style="border-style: dashed;">
         <i class="pi pi-chart-line unselected-icon"></i>
-        <h3 style="font-weight: 700; font-size: 15px; color: var(--color-text); margin: 0;">Aucun Véhicule Sélectionné</h3>
+        <h3 style="font-weight: 700; font-size: 15px; color: var(--color-text); margin: 0;">{{ 'fuel.noVehicleSelected' | t }}</h3>
         <p style="font-size: 13px; color: var(--color-text-muted); max-w: 320px; margin: 4px 0 0;">
-          Sélectionnez un véhicule dans la liste de gauche pour consulter son historique kilométrique complet, ses pleins de carburant et sa consommation.
+          {{ 'fuel.selectVehiclePrompt' | t }}
         </p>
       </div>
 
@@ -115,18 +115,18 @@
               <span class="meta-plate">{{ selectedVehicle.matricule }}</span>
             </div>
             <p class="meta-desc">
-              Odomètre actuel: <strong style="color: var(--color-text);">{{ selectedVehicle.currentKm | number }} km</strong> | Transmission: {{ selectedVehicle.transmission === 'Manual' ? 'Manuelle' : 'Automatique' }}
+              {{ 'fuel.currentOdometer' | t }}: <strong style="color: var(--color-text);">{{ selectedVehicle.currentKm | number }} km</strong> | {{ 'vehicles.transmission' | t }}: {{ selectedVehicle.transmission === 'Manual' ? ('fuel.transmissionManual' | t) : ('fuel.transmissionAutomatic' | t) }}
             </p>
           </div>
           <div class="meta-actions">
             <button (click)="openAddFuel()" class="btn-primary">
-              <i class="pi pi-plus"></i> Enregistrer Plein
+              <i class="pi pi-plus"></i> {{ 'fuel.registerFillup' | t }}
             </button>
             <button (click)="exportVehicleFuelCsv()" class="btn-secondary">
-              <i class="pi pi-download"></i> CSV Carburant
+              <i class="pi pi-download"></i> {{ 'fuel.csvFuel' | t }}
             </button>
             <button (click)="exportVehicleKmCsv()" class="btn-secondary">
-              <i class="pi pi-download"></i> CSV Km
+              <i class="pi pi-download"></i> {{ 'fuel.csvKm' | t }}
             </button>
           </div>
         </div>
@@ -134,15 +134,15 @@
         <!-- Fuel Consumption Trend Chart -->
         <div class="card" style="padding: 16px;">
           <h3 class="card-title-inner" style="margin-bottom: 16px;">
-            <i class="pi pi-chart-line text-accent"></i> Évolution de la Consommation (L/100km)
+            <i class="pi pi-chart-line text-accent"></i> {{ 'fuel.consumptionTrend' | t }}
           </h3>
           <div *ngIf="chartData" style="height: 240px; position: relative;">
             <p-chart type="line" [data]="chartData" [options]="chartOptions" height="240px"></p-chart>
           </div>
           <div *ngIf="!chartData" style="height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--color-text-muted); text-align: center;">
             <i class="pi pi-info-circle" style="font-size: 20px; margin-bottom: 4px;"></i>
-            <span style="font-size: 13px; font-weight: 600;">Données insuffisantes pour le graphique de tendance.</span>
-            <span style="font-size: 11px; margin-top: 2px;">(Nécessite au moins 2 pleins de carburant)</span>
+            <span style="font-size: 13px; font-weight: 600;">{{ 'fuel.insufficientData' | t }}</span>
+            <span style="font-size: 11px; margin-top: 2px;">{{ 'fuel.needTwoFillups' | t }}</span>
           </div>
         </div>
 
@@ -150,7 +150,7 @@
         <div class="card" style="overflow: hidden;">
           <div class="card-header-inner">
             <h3 class="card-title-inner">
-              <i class="pi pi-filter text-accent"></i> Historique des Pleins de Carburant
+              <i class="pi pi-filter text-accent"></i> {{ 'fuel.fuelHistory' | t }}
             </h3>
           </div>
           
@@ -158,13 +158,13 @@
             <p-table [value]="fuelLogs" [rows]="5" [paginator]="true" responsiveLayout="scroll" styleClass="p-datatable-sm">
               <ng-template pTemplate="header">
                 <tr>
-                  <th>Date</th>
-                  <th>Odomètre</th>
-                  <th>Litres</th>
-                  <th>Prix/L</th>
-                  <th>Total</th>
-                  <th>Moyenne</th>
-                  <th>Station</th>
+                  <th>{{ 'common.date' | t }}</th>
+                  <th>{{ 'fuel.odometer' | t }}</th>
+                  <th>{{ 'fuel.liters' | t }}</th>
+                  <th>{{ 'fuel.pricePerL' | t }}</th>
+                  <th>{{ 'fuel.totalCost' | t }}</th>
+                  <th>{{ 'fuel.average' | t }}</th>
+                  <th>{{ 'vehicles.station' | t }}</th>
                   <th style="width: 50px;"></th>
                 </tr>
               </ng-template>
@@ -182,8 +182,8 @@
                       </span>
                       <span *ngIf="entry.kmDrivenSinceLastFill <= 0" style="color: var(--color-text-muted);">--</span>
                       <!-- Anomaly Flag Badge -->
-                      <span *ngIf="entry.log.isAnomaly" class="badge badge-danger" style="font-size: 9px;" title="Moyenne très élevée ou anormale">
-                        Anomalie
+                      <span *ngIf="entry.log.isAnomaly" class="badge badge-danger" style="font-size: 9px;" [title]="'fuel.anomalyLabel' | t">
+                        {{ 'fuel.anomalyLabel' | t }}
                       </span>
                     </div>
                   </td>
@@ -192,7 +192,7 @@
                     <div style="font-size: 10px; color: var(--color-text-muted);">{{ entry.log.fuelType }}</div>
                   </td>
                   <td style="text-align: center;">
-                    <button (click)="deleteFuelLog(entry.log.id)" class="btn-icon danger" style="width: 24px; height: 24px;">
+                    <button (click)="deleteFuelLog(entry.log.id)" [title]="'common.delete' | t" class="btn-icon danger" style="width: 24px; height: 24px;">
                       <i class="pi pi-trash" style="font-size: 10px;"></i>
                     </button>
                   </td>
@@ -200,7 +200,7 @@
               </ng-template>
               <ng-template pTemplate="emptymessage">
                 <tr>
-                  <td colspan="8" style="text-align: center; padding: 20px; color: var(--color-text-muted);">Aucun plein enregistré pour ce véhicule.</td>
+                  <td colspan="8" style="text-align: center; padding: 20px; color: var(--color-text-muted);">{{ 'fuel.noFuelLog' | t }}</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -211,7 +211,7 @@
         <div class="card" style="overflow: hidden;">
           <div class="card-header-inner">
             <h3 class="card-title-inner">
-              <i class="pi pi-history text-accent"></i> Historique Odométrique (Suivi Kilométrage)
+              <i class="pi pi-history text-accent"></i> {{ 'fuel.kmTimeline' | t }}
             </h3>
           </div>
           
@@ -219,10 +219,10 @@
             <p-table [value]="kmHistory" [rows]="5" [paginator]="true" responsiveLayout="scroll" styleClass="p-datatable-sm">
               <ng-template pTemplate="header">
                 <tr>
-                  <th>Date / Heure</th>
-                  <th>Valeur Odomètre</th>
-                  <th>Source</th>
-                  <th>Remarques / Événement</th>
+                  <th>{{ 'fuel.dateTime' | t }}</th>
+                  <th>{{ 'fuel.odometerValue' | t }}</th>
+                  <th>{{ 'fuel.source' | t }}</th>
+                  <th>{{ 'fuel.remarksEvent' | t }}</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-entry>
@@ -235,7 +235,7 @@
                           [class.badge-warning]="entry.source === 'Fuel'"
                           [class.badge-success]="entry.source === 'Contract'"
                     >
-                      {{ entry.source === 'Manual' ? 'Manuel' : entry.source === 'Fuel' ? 'Carburant' : 'Contrat' }}
+                      {{ entry.source === 'Manual' ? ('fuel.sourceManual' | t) : entry.source === 'Fuel' ? ('fuel.sourceFuel' | t) : ('fuel.sourceContract' | t) }}
                     </span>
                   </td>
                   <td style="font-size: 12px; color: var(--color-text-secondary);">{{ entry.notes }}</td>
@@ -243,7 +243,7 @@
               </ng-template>
               <ng-template pTemplate="emptymessage">
                 <tr>
-                  <td colspan="4" style="text-align: center; padding: 20px; color: var(--color-text-muted);">Aucun historique de kilométrage.</td>
+                  <td colspan="4" style="text-align: center; padding: 20px; color: var(--color-text-muted);">{{ 'fuel.noKmHistory' | t }}</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -257,76 +257,76 @@
 </div>
 
 <!-- Dialog: Add Manual Kilometer Entry -->
-<p-dialog header="Relevé Odomètre Manuel" [(visible)]="showAddKmDialog" [modal]="true" [style]="{width: '400px'}">
+<p-dialog [header]="'fuel.manualOdometerReading' | t" [(visible)]="showAddKmDialog" [modal]="true" [style]="{width: '400px'}" [draggable]="false" [resizable]="false">
   <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
     <div>
-      <label class="form-label">Date du relevé</label>
+      <label class="form-label">{{ 'fuel.readingDate' | t }}</label>
       <p-datepicker [(ngModel)]="kmForm.date" dateFormat="dd/mm/yy" [showTime]="true" appendTo="body" class="w-full"></p-datepicker>
     </div>
     
     <div>
-      <label class="form-label">Index Odomètre (Compteur en Km)</label>
+      <label class="form-label">{{ 'fuel.odometerIndex' | t }}</label>
       <input type="number" [(ngModel)]="kmForm.kmValue" class="form-input" required />
     </div>
 
     <div>
-      <label class="form-label">Notes / Raison du relevé</label>
-      <textarea [(ngModel)]="kmForm.notes" rows="2" class="form-input" placeholder="Relevé mensuel, maintenance, etc."></textarea>
+      <label class="form-label">{{ 'fuel.readingNotes' | t }}</label>
+      <textarea [(ngModel)]="kmForm.notes" rows="2" class="form-input" [placeholder]="'fuel.readingPlaceholder' | t"></textarea>
     </div>
   </div>
 
   <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; border-top: 1px solid var(--color-border-light); padding-top: 12px;">
-    <button (click)="showAddKmDialog = false" class="btn-secondary">Annuler</button>
-    <button (click)="submitKm()" class="btn-primary">Enregistrer</button>
+    <button (click)="showAddKmDialog = false" class="btn-secondary">{{ 'common.cancel' | t }}</button>
+    <button (click)="submitKm()" class="btn-primary">{{ 'common.save' | t }}</button>
   </div>
 </p-dialog>
 
 <!-- Dialog: Add Fuel Fill-up Log -->
-<p-dialog header="Enregistrer un Plein de Carburant" [(visible)]="showAddFuelDialog" [modal]="true" [style]="{width: '450px'}">
+<p-dialog [header]="'fuel.registerFuelFillup' | t" [(visible)]="showAddFuelDialog" [modal]="true" [style]="{width: '450px'}" [draggable]="false" [resizable]="false">
   <div class="form-grid" style="margin-top: 8px;">
     <div>
-      <label class="form-label">Date</label>
+      <label class="form-label">{{ 'common.date' | t }}</label>
       <p-datepicker [(ngModel)]="fuelForm.date" dateFormat="dd/mm/yy" [showTime]="true" appendTo="body" class="w-full"></p-datepicker>
     </div>
     <div>
-      <label class="form-label">Index Km (Odomètre)</label>
+      <label class="form-label">{{ 'fuel.kmIndex' | t }}</label>
       <input type="number" [(ngModel)]="fuelForm.kmValue" class="form-input" required />
     </div>
 
     <div>
-      <label class="form-label">Volume (Litres)</label>
+      <label class="form-label">{{ 'fuel.volumeLiters' | t }}</label>
       <input type="number" step="0.01" [(ngModel)]="fuelForm.liters" class="form-input" required />
     </div>
     <div>
-      <label class="form-label">Prix par Litre (€/L)</label>
+      <label class="form-label">{{ 'fuel.pricePerLiter' | t }}</label>
       <input type="number" step="0.001" [(ngModel)]="fuelForm.costPerLiter" class="form-input" required />
     </div>
 
     <div class="form-full">
-      <label class="form-label">Nom de la Station Service</label>
+      <label class="form-label">{{ 'fuel.stationName' | t }}</label>
       <input type="text" [(ngModel)]="fuelForm.stationName" placeholder="Ex: Shell, TotalEnergies, Q8..." class="form-input" required />
     </div>
 
     <div class="form-full">
-      <label class="form-label">Type de Carburant</label>
+      <label class="form-label">{{ 'fuel.fuelType' | t }}</label>
       <select [(ngModel)]="fuelForm.fuelType" class="form-input">
-        <option value="Gasoline">Essence (Sans Plomb)</option>
-        <option value="Diesel">Gazole / Diesel</option>
-        <option value="Electric">Électricité</option>
-        <option value="Hybrid">Hybride</option>
-        <option value="LPG">GPL</option>
+        <option value="Gasoline">{{ 'fuel.gasoline' | t }}</option>
+        <option value="Diesel">{{ 'fuel.diesel' | t }}</option>
+        <option value="Electric">{{ 'fuel.electric' | t }}</option>
+        <option value="Hybrid">{{ 'fuel.hybrid' | t }}</option>
+        <option value="LPG">{{ 'fuel.lpg' | t }}</option>
       </select>
     </div>
 
     <!-- Calculated Info Hint -->
     <div class="calc-hint-box">
-      <span>Coût Total Estimé:</span>
+      <span>{{ 'fuel.estimatedTotal' | t }}</span>
       <strong style="font-size: 13px;">{{ (fuelForm.liters * fuelForm.costPerLiter) | number:'1.2-2' }} €</strong>
     </div>
   </div>
 
   <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; border-top: 1px solid var(--color-border-light); padding-top: 12px;">
-    <button (click)="showAddFuelDialog = false" class="btn-secondary">Annuler</button>
-    <button (click)="submitFuel()" class="btn-primary">Enregistrer</button>
+    <button (click)="showAddFuelDialog = false" class="btn-secondary">{{ 'common.cancel' | t }}</button>
+    <button (click)="submitFuel()" class="btn-primary">{{ 'common.save' | t }}</button>
   </div>
 </p-dialog>

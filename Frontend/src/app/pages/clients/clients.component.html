@@ -2,12 +2,12 @@
   <!-- Page Header -->
   <div class="page-header">
     <div>
-      <h2 class="page-title">Base de Données Clients</h2>
-      <p class="page-desc">Gérez le registre des clients, leurs coordonnées de contact, permis de conduire et historique de locations.</p>
+      <h2 class="page-title">{{ 'clients.pageTitle' | t }}</h2>
+      <p class="page-desc">{{ 'clients.pageDesc' | t }}</p>
     </div>
     <button (click)="openAddDialog()" class="btn-primary">
       <i class="pi pi-plus"></i>
-      <span>Ajouter un Client</span>
+      <span>{{ 'clients.addClient' | t }}</span>
     </button>
   </div>
 
@@ -19,7 +19,7 @@
         type="text" 
         [(ngModel)]="searchQuery" 
         (ngModelChange)="onSearchChange()"
-        placeholder="Rechercher par nom, téléphone, email, ID..."
+        [placeholder]="'clients.searchPlaceholder' | t"
         class="form-input"
       />
     </div>
@@ -31,12 +31,12 @@
       <table class="modern-table">
         <thead>
           <tr>
-            <th>Client</th>
-            <th>Identité</th>
-            <th>Contact</th>
-            <th class="col-center">Permis</th>
-            <th>Validité</th>
-            <th class="col-center">Actions</th>
+            <th>{{ 'common.client' | t }}</th>
+            <th>{{ 'clients.identity' | t }}</th>
+            <th>{{ 'clients.contact' | t }}</th>
+            <th class="col-center">{{ 'clients.license' | t }}</th>
+            <th>{{ 'clients.licenseValidity' | t }}</th>
+            <th class="col-center">{{ 'common.actions' | t }}</th>
           </tr>
         </thead>
         <tbody>
@@ -54,13 +54,13 @@
               <span [class.text-danger]="isLicenseExpired(client.licenseExpiryDate)" class="cell-primary">
                 {{ client.licenseExpiryDate | date:'dd/MM/yyyy' }}
               </span>
-              <span *ngIf="isLicenseExpired(client.licenseExpiryDate)" class="badge badge-danger" style="margin-left: 6px;">Expiré</span>
+              <span *ngIf="isLicenseExpired(client.licenseExpiryDate)" class="badge badge-danger" style="margin-left: 6px;">{{ 'clients.expired' | t }}</span>
             </td>
             <td>
               <div class="cell-actions">
-                <button (click)="openDetails(client)" title="Historique" class="btn-icon"><i class="pi pi-history"></i></button>
-                <button (click)="openEditDialog(client)" title="Modifier" class="btn-icon"><i class="pi pi-pencil"></i></button>
-                <button (click)="deleteClient(client.id)" title="Supprimer" class="btn-icon danger"><i class="pi pi-trash"></i></button>
+                <button (click)="openDetails(client)" [title]="'clients.history' | t" class="btn-icon"><i class="pi pi-history"></i></button>
+                <button (click)="openEditDialog(client)" [title]="'common.edit' | t" class="btn-icon"><i class="pi pi-pencil"></i></button>
+                <button (click)="deleteClient(client.id)" [title]="'common.delete' | t" class="btn-icon danger"><i class="pi pi-trash"></i></button>
               </div>
             </td>
           </tr>
@@ -70,12 +70,12 @@
 
     <div *ngIf="clients.length === 0" class="table-empty">
       <i class="pi pi-users"></i>
-      <span class="table-empty-title">Aucun client trouvé</span>
-      <p class="table-empty-desc">Ajoutez un client ou modifiez votre recherche.</p>
+      <span class="table-empty-title">{{ 'clients.noClientFound' | t }}</span>
+      <p class="table-empty-desc">{{ 'clients.noClientDesc' | t }}</p>
     </div>
 
     <div *ngIf="clients.length > 0" class="table-footer">
-      <span class="table-footer-info"><strong>{{ totalCount }}</strong> client(s) au total</span>
+      <span class="table-footer-info"><strong>{{ totalCount }}</strong> {{ 'clients.totalClients' | t }}</span>
       <div *ngIf="totalCount > pageSize" class="pagination">
         <button [disabled]="page === 1" (click)="onPageChange(page - 1)" class="page-btn"><i class="pi pi-chevron-left"></i></button>
         <button *ngFor="let p of pages" (click)="onPageChange(p)" [class.active]="p === page" class="page-btn">{{ p }}</button>
@@ -89,59 +89,61 @@
     [(visible)]="showCrudDialog" 
     [style]="{width: '500px'}" 
     [modal]="true" 
-    [header]="isEditMode ? 'Modifier la fiche client' : 'Créer un nouveau client'"
+    [header]="isEditMode ? ('clients.editClient' | t) : ('clients.newClient' | t)"
+    [draggable]="false"
+    [resizable]="false"
   >
     <form (ngSubmit)="onSubmitClient()" class="form-grid">
       <div class="form-full">
-        <label class="form-label">Nom Complet</label>
+        <label class="form-label">{{ 'clients.fullName' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.fullName" name="fullName" required class="form-input" placeholder="Jean Dupont"/>
       </div>
       <div>
-        <label class="form-label">N° ID National / Passeport</label>
+        <label class="form-label">{{ 'clients.nationalId' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.nationalId" name="nationalId" required class="form-input" placeholder="N° identité unique"/>
       </div>
       <div>
-        <label class="form-label">Date de naissance</label>
+        <label class="form-label">{{ 'clients.dateOfBirth' | t }}</label>
         <p-datepicker [(ngModel)]="clientForm.dateOfBirth" name="dateOfBirth" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">N° Permis de Conduire</label>
+        <label class="form-label">{{ 'clients.licenseNumber' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.licenseNumber" name="licenseNumber" required class="form-input" placeholder="Permis N°"/>
       </div>
       <div>
-        <label class="form-label">Catégorie du Permis</label>
+        <label class="form-label">{{ 'clients.licenseCategory' | t }}</label>
         <select [(ngModel)]="clientForm.licenseCategory" name="licenseCategory" required class="form-input">
-          <option *ngFor="let cat of licenseCategories" [value]="cat">Catégorie {{ cat }}</option>
+          <option *ngFor="let cat of licenseCategories" [value]="cat">{{ 'clients.category' | t }} {{ cat }}</option>
         </select>
       </div>
       <div>
-        <label class="form-label">Date d'obtention Permis</label>
+        <label class="form-label">{{ 'clients.licenseIssueDate' | t }}</label>
         <p-datepicker [(ngModel)]="clientForm.licenseIssueDate" name="licenseIssueDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">Date d'expiration Permis</label>
+        <label class="form-label">{{ 'clients.licenseExpiryDate' | t }}</label>
         <p-datepicker [(ngModel)]="clientForm.licenseExpiryDate" name="licenseExpiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">N° de Téléphone</label>
+        <label class="form-label">{{ 'clients.phone' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.phone" name="phone" required class="form-input" placeholder="+33 6 12 34 56 78"/>
       </div>
       <div>
-        <label class="form-label">Adresse E-mail</label>
+        <label class="form-label">{{ 'clients.email' | t }}</label>
         <input type="email" [(ngModel)]="clientForm.email" name="email" class="form-input" placeholder="jean.dupont@mail.com"/>
       </div>
       <div class="form-full">
-        <label class="form-label">Adresse</label>
+        <label class="form-label">{{ 'clients.address' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.address" name="address" class="form-input" placeholder="Adresse de domicile"/>
       </div>
       <div class="form-full">
-        <label class="form-label">Remarques / Notes</label>
+        <label class="form-label">{{ 'clients.notesRemarks' | t }}</label>
         <textarea [(ngModel)]="clientForm.notes" name="notes" rows="3" class="form-input" placeholder="Remarques éventuelles sur la conduite, cautions, etc."></textarea>
       </div>
 
       <div class="form-full form-actions">
-        <button type="button" (click)="showCrudDialog = false" class="btn-secondary">Annuler</button>
-        <button type="submit" class="btn-primary">Enregistrer</button>
+        <button type="button" (click)="showCrudDialog = false" class="btn-secondary">{{ 'common.cancel' | t }}</button>
+        <button type="submit" class="btn-primary">{{ 'common.save' | t }}</button>
       </div>
     </form>
   </p-dialog>
@@ -151,53 +153,55 @@
     [(visible)]="showDetailsDialog" 
     [style]="{width: '650px'}" 
     [modal]="true" 
-    [header]="selectedClient ? 'Dossier Client: ' + selectedClient.fullName : ''"
+    [header]="selectedClient ? ('clients.clientFile' | t) + ': ' + selectedClient.fullName : ''"
+    [draggable]="false"
+    [resizable]="false"
   >
     <div *ngIf="selectedClient">
       <!-- General Specs -->
       <div class="specs-grid">
         <div class="spec-item">
-          <span class="spec-label">ID National</span>
+          <span class="spec-label">{{ 'clients.nationalIdLabel' | t }}</span>
           <span class="spec-value">{{ selectedClient.nationalId }}</span>
         </div>
         <div class="spec-item">
-          <span class="spec-label">Téléphone</span>
+          <span class="spec-label">{{ 'clients.phoneLabel' | t }}</span>
           <span class="spec-value">{{ selectedClient.phone }}</span>
         </div>
         <div class="spec-item">
-          <span class="spec-label">Permis</span>
-          <span class="spec-value">Cat. {{ selectedClient.licenseCategory }} - N° {{ selectedClient.licenseNumber }}</span>
+          <span class="spec-label">{{ 'clients.licenseLabel' | t }}</span>
+          <span class="spec-value">{{ 'clients.category' | t }} {{ selectedClient.licenseCategory }} - N° {{ selectedClient.licenseNumber }}</span>
         </div>
         <div class="spec-item">
-          <span class="spec-label">Expiration</span>
+          <span class="spec-label">{{ 'clients.expirationLabel' | t }}</span>
           <span class="spec-value">
             <span [class.text-danger]="isLicenseExpired(selectedClient.licenseExpiryDate)">
               {{ selectedClient.licenseExpiryDate | date:'yyyy-MM-dd' }}
             </span>
-            <span *ngIf="isLicenseExpired(selectedClient.licenseExpiryDate)" class="badge badge-danger" style="margin-left: 4px;">Expiré</span>
+            <span *ngIf="isLicenseExpired(selectedClient.licenseExpiryDate)" class="badge badge-danger" style="margin-left: 4px;">{{ 'clients.expired' | t }}</span>
           </span>
         </div>
       </div>
 
       <!-- Notes -->
       <div *ngIf="selectedClient.notes" class="notes-box">
-        <div class="notes-box-title">Notes administratives :</div>
+        <div class="notes-box-title">{{ 'clients.adminNotes' | t }}</div>
         <div>{{ selectedClient.notes }}</div>
       </div>
 
       <!-- Rental History -->
       <div>
-        <h4 class="section-title">Historique des locations</h4>
+        <h4 class="section-title">{{ 'clients.rentalHistory' | t }}</h4>
         <div class="table-scroll">
           <table class="modern-table">
             <thead>
               <tr>
-                <th>N° Contrat</th>
-                <th>Véhicule</th>
-                <th>Immatriculation</th>
-                <th>Période</th>
-                <th>Montant</th>
-                <th>Statut</th>
+                <th>{{ 'clients.contractNo' | t }}</th>
+                <th>{{ 'clients.vehicleLabel' | t }}</th>
+                <th>{{ 'clients.registration' | t }}</th>
+                <th>{{ 'clients.period' | t }}</th>
+                <th>{{ 'clients.amountLabel' | t }}</th>
+                <th>{{ 'common.status' | t }}</th>
               </tr>
             </thead>
             <tbody>
@@ -205,7 +209,7 @@
                 <td style="font-weight: 600; color: var(--color-accent);">{{ item.contractNumber }}</td>
                 <td style="font-weight: 600;">{{ item.vehicleBrand }} {{ item.vehicleModel }}</td>
                 <td style="color: var(--color-text-secondary);">{{ item.vehicleMatricule }}</td>
-                <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.startDate | date:'yyyy-MM-dd' }} au {{ (item.actualReturnDate || item.expectedReturnDate) | date:'yyyy-MM-dd' }}</td>
+                <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.startDate | date:'yyyy-MM-dd' }} {{ 'common.to' | t | lowercase }} {{ (item.actualReturnDate || item.expectedReturnDate) | date:'yyyy-MM-dd' }}</td>
                 <td style="font-weight: 600;">{{ item.finalAmountDue | currency:'EUR':'symbol':'1.0' }}</td>
                 <td>
                   <span 
@@ -215,15 +219,13 @@
                     [class.badge-danger]="item.contractStatus === 'Cancelled'"
                     class="badge"
                   >
-                    {{ item.contractStatus === 'Completed' ? 'Terminé' : 
-                       item.contractStatus === 'Active' ? 'Actif' : 
-                       item.contractStatus === 'Draft' ? 'Brouillon' : 'Annulé' }}
+                    {{ 'statuses.' + item.contractStatus.toLowerCase() | t }}
                   </span>
                 </td>
               </tr>
               <tr *ngIf="rentalHistory.length === 0">
                 <td colspan="6" style="text-align: center; padding: 20px; color: var(--color-text-muted);">
-                  Aucun contrat de location enregistré pour ce client.
+                  {{ 'clients.noRentalHistory' | t }}
                 </td>
               </tr>
             </tbody>

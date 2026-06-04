@@ -5,11 +5,13 @@ import { ApiService } from '../../services/api.service';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { DatePickerModule } from 'primeng/datepicker';
+import { I18nService } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-consumables',
   standalone: true,
-  imports: [CommonModule, FormsModule, TableModule, DialogModule, DatePickerModule],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, DatePickerModule, TranslatePipe],
   templateUrl: './consumables.component.html',
   styleUrls: ['./consumables.component.css']
 })
@@ -41,7 +43,7 @@ export class ConsumablesComponent implements OnInit {
     'Battery'
   ];
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, public i18n: I18nService) {}
 
   ngOnInit(): void {
     this.loadVehicles();
@@ -105,7 +107,7 @@ export class ConsumablesComponent implements OnInit {
 
   openLogDialog(type?: string): void {
     if (!this.selectedVehicleId) {
-      alert('Veuillez sélectionner un véhicule d\'abord.');
+      alert(this.i18n.t('consumables.selectVehiclePrompt'));
       return;
     }
 
@@ -135,7 +137,7 @@ export class ConsumablesComponent implements OnInit {
           this.currentVehicleOdometer = payload.replacementKm;
         }
       },
-      error: (err) => alert(err.error?.message || 'Erreur lors de l\'enregistrement')
+      error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorCreate'))
     });
   }
 

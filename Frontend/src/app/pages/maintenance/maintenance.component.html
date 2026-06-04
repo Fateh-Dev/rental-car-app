@@ -2,17 +2,17 @@
   <!-- Page Header -->
   <div class="page-header">
     <div>
-      <h2 class="page-title">Suivi des Maintenances</h2>
-      <p class="page-desc">Enregistrez les interventions mécaniques (préventives ou correctives) et planifiez les prochains entretiens.</p>
+      <h2 class="page-title">{{ 'maintenance.pageTitle' | t }}</h2>
+      <p class="page-desc">{{ 'maintenance.pageDesc' | t }}</p>
     </div>
     <div class="header-actions">
       <button (click)="openCalendar()" class="btn-secondary">
         <i class="pi pi-calendar"></i>
-        <span>Calendrier d'Entretien</span>
+        <span>{{ 'maintenance.maintenanceCalendar' | t }}</span>
       </button>
       <button (click)="openAddDialog()" class="btn-primary">
         <i class="pi pi-plus"></i>
-        <span>Enregistrer Intervention</span>
+        <span>{{ 'maintenance.registerIntervention' | t }}</span>
       </button>
     </div>
   </div>
@@ -23,15 +23,15 @@
       <table class="modern-table">
         <thead>
           <tr>
-            <th>Véhicule</th>
-            <th>Intervention</th>
-            <th>Dates</th>
+            <th>{{ 'common.vehicle' | t }}</th>
+            <th>{{ 'maintenance.intervention' | t }}</th>
+            <th>{{ 'maintenance.dates' | t }}</th>
             <th>Km</th>
-            <th class="col-right">Coût</th>
-            <th>Atelier</th>
-            <th>Facture</th>
-            <th class="col-center">Statut</th>
-            <th class="col-center">Actions</th>
+            <th class="col-right">{{ 'common.cost' | t }}</th>
+            <th>{{ 'maintenance.workshop' | t }}</th>
+            <th>{{ 'maintenance.invoice' | t }}</th>
+            <th class="col-center">{{ 'common.status' | t }}</th>
+            <th class="col-center">{{ 'common.actions' | t }}</th>
           </tr>
         </thead>
         <tbody>
@@ -42,11 +42,11 @@
                 <span class="cell-stack-sub cell-mono">{{ maint.vehicle?.matricule }}</span>
               </div>
             </td>
-            <td><span class="cell-primary">{{ maint.maintenanceType }}</span></td>
+            <td><span class="cell-primary">{{ i18n.translateMaintenanceType(maint.maintenanceType) }}</span></td>
             <td>
               <div class="cell-stack">
                 <span class="cell-muted">{{ maint.datePerformed | date:'dd/MM/yyyy' }}</span>
-                <span class="cell-stack-sub" *ngIf="maint.nextScheduledDate">Prochain: {{ maint.nextScheduledDate | date:'dd/MM/yyyy' }}</span>
+                <span class="cell-stack-sub" *ngIf="maint.nextScheduledDate">{{ 'maintenance.nextScheduled' | t }}: {{ maint.nextScheduledDate | date:'dd/MM/yyyy' }}</span>
                 <span class="cell-stack-sub" *ngIf="!maint.nextScheduledDate">—</span>
               </div>
             </td>
@@ -55,7 +55,7 @@
             <td><span class="cell-muted">{{ maint.workshopName }}</span></td>
             <td>
               <a *ngIf="maint.invoiceFilePath" [href]="'http://localhost:5222' + maint.invoiceFilePath" target="_blank" class="table-link">
-                {{ maint.invoiceNumber || 'Voir' }}
+                {{ maint.invoiceNumber || ('common.see' | t) }}
               </a>
               <span *ngIf="!maint.invoiceFilePath" class="cell-muted">—</span>
             </td>
@@ -66,13 +66,13 @@
                 [class.badge-success]="maint.status === 'Completed'"
                 class="badge"
               >
-                {{ maint.status === 'Scheduled' ? 'Planifié' : maint.status === 'InProgress' ? 'En cours' : 'Terminé' }}
+                {{ 'statuses.' + (maint.status === 'InProgress' ? 'inProgress' : maint.status.toLowerCase()) | t }}
               </span>
             </td>
             <td>
               <div class="cell-actions">
-                <button (click)="openEditDialog(maint)" title="Modifier" class="btn-icon"><i class="pi pi-pencil"></i></button>
-                <button (click)="deleteMaint(maint.id)" title="Supprimer" class="btn-icon danger"><i class="pi pi-trash"></i></button>
+                <button (click)="openEditDialog(maint)" [title]="'common.edit' | t" class="btn-icon"><i class="pi pi-pencil"></i></button>
+                <button (click)="deleteMaint(maint.id)" [title]="'common.delete' | t" class="btn-icon danger"><i class="pi pi-trash"></i></button>
               </div>
             </td>
           </tr>
@@ -82,12 +82,12 @@
 
     <div *ngIf="maintenances.length === 0" class="table-empty">
       <i class="pi pi-cog"></i>
-      <span class="table-empty-title">Aucune maintenance enregistrée</span>
-      <p class="table-empty-desc">Enregistrez une intervention pour commencer le suivi.</p>
+      <span class="table-empty-title">{{ 'maintenance.noMaintenance' | t }}</span>
+      <p class="table-empty-desc">{{ 'maintenance.noMaintenanceDesc' | t }}</p>
     </div>
 
     <div *ngIf="maintenances.length > 0" class="table-footer">
-      <span class="table-footer-info"><strong>{{ maintenances.length }}</strong> intervention(s)</span>
+      <span class="table-footer-info"><strong>{{ maintenances.length }}</strong> {{ 'maintenance.interventions' | t }}</span>
     </div>
   </div>
 
@@ -96,94 +96,96 @@
     [(visible)]="showCrudDialog" 
     [style]="{width: '500px'}" 
     [modal]="true" 
-    [header]="isEditMode ? 'Modifier la fiche de maintenance' : 'Enregistrer une intervention'"
+    [header]="isEditMode ? ('maintenance.editMaintenance' | t) : ('maintenance.newIntervention' | t)"
+    [draggable]="false"
+    [resizable]="false"
   >
     <form (ngSubmit)="onSubmitMaint()" class="form-grid">
       <div>
-        <label class="form-label">Véhicule</label>
+        <label class="form-label">{{ 'common.vehicle' | t }}</label>
         <select [(ngModel)]="maintenanceForm.vehicleId" name="vehicleId" required [disabled]="isEditMode" class="form-input">
-          <option [ngValue]="null">Choisir un véhicule...</option>
+          <option [ngValue]="null">{{ 'contracts.chooseVehicle' | t }}</option>
           <option *ngFor="let v of vehicles" [value]="v.id">{{ v.brand }} {{ v.model }} ({{ v.matricule }})</option>
         </select>
       </div>
 
       <div>
-        <label class="form-label">Type d'intervention</label>
+        <label class="form-label">{{ 'maintenance.interventionType' | t }}</label>
         <select [(ngModel)]="maintenanceForm.maintenanceType" name="maintenanceType" required class="form-input">
-          <option *ngFor="let t of maintenanceTypes" [value]="t">{{ t }}</option>
+          <option *ngFor="let t of maintenanceTypes" [value]="t">{{ i18n.translateMaintenanceType(t) }}</option>
         </select>
       </div>
 
       <div>
-        <label class="form-label">Date de l'intervention</label>
+        <label class="form-label">{{ 'maintenance.interventionDate' | t }}</label>
         <p-datepicker [(ngModel)]="maintenanceForm.datePerformed" name="datePerformed" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
 
       <div>
-        <label class="form-label">Prochain entretien</label>
+        <label class="form-label">{{ 'maintenance.nextMaintenance' | t }}</label>
         <p-datepicker [(ngModel)]="maintenanceForm.nextScheduledDate" name="nextScheduledDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
 
       <div>
-        <label class="form-label">Compteur km (Intervention)</label>
+        <label class="form-label">{{ 'maintenance.counterKm' | t }}</label>
         <input type="number" [(ngModel)]="maintenanceForm.kmAtMaintenance" name="kmAtMaintenance" required class="form-input"/>
       </div>
 
       <div>
-        <label class="form-label">Statut d'intervention</label>
+        <label class="form-label">{{ 'maintenance.interventionStatus' | t }}</label>
         <select [(ngModel)]="maintenanceForm.status" name="status" required class="form-input">
-          <option *ngFor="let s of statuses" [value]="s.value">{{ s.label }}</option>
+          <option *ngFor="let s of statuses" [value]="s.value">{{ 'statuses.' + (s.value === 'InProgress' ? 'inProgress' : s.value.toLowerCase()) | t }}</option>
         </select>
       </div>
 
       <!-- Cost Split -->
       <div class="cost-box">
         <div>
-          <label class="form-label" style="color: var(--color-text-secondary);">Main d'œuvre (€)</label>
+          <label class="form-label" style="color: var(--color-text-secondary);">{{ 'maintenance.laborCost' | t }}</label>
           <input type="number" [(ngModel)]="maintenanceForm.laborCost" name="laborCost" class="form-input"/>
         </div>
         <div>
-          <label class="form-label" style="color: var(--color-text-secondary);">Pièces détachées (€)</label>
+          <label class="form-label" style="color: var(--color-text-secondary);">{{ 'maintenance.partsCost' | t }}</label>
           <input type="number" [(ngModel)]="maintenanceForm.partsCost" name="partsCost" class="form-input"/>
         </div>
       </div>
 
       <div>
-        <label class="form-label">Nom de l'atelier / Garage</label>
+        <label class="form-label">{{ 'maintenance.workshopName' | t }}</label>
         <input type="text" [(ngModel)]="maintenanceForm.workshopName" name="workshopName" required class="form-input" placeholder="Garage Central"/>
       </div>
 
       <div>
-        <label class="form-label">Contact de l'atelier</label>
+        <label class="form-label">{{ 'maintenance.workshopContact' | t }}</label>
         <input type="text" [(ngModel)]="maintenanceForm.workshopContact" name="workshopContact" class="form-input" placeholder="Tél ou email"/>
       </div>
 
       <div class="form-full">
-        <label class="form-label">Adresse de l'atelier</label>
+        <label class="form-label">{{ 'maintenance.workshopAddress' | t }}</label>
         <input type="text" [(ngModel)]="maintenanceForm.workshopAddress" name="workshopAddress" class="form-input" placeholder="Adresse du garage"/>
       </div>
 
       <div>
-        <label class="form-label">Facture N°</label>
+        <label class="form-label">{{ 'maintenance.invoiceNo' | t }}</label>
         <input type="text" [(ngModel)]="maintenanceForm.invoiceNumber" name="invoiceNumber" class="form-input" placeholder="N° de facture"/>
       </div>
 
       <div>
-        <label class="form-label">Fichier Facture (PDF/Image)</label>
+        <label class="form-label">{{ 'maintenance.invoiceFile' | t }}</label>
         <div style="display: flex; align-items: center; gap: 8px;">
           <input type="file" (change)="onInvoiceUpload($event)" style="font-size: 11px; padding: 4px 0;"/>
-          <span *ngIf="uploadingInvoice" style="font-size: 11px; color: var(--color-accent);" class="animate-pulse">Chargement...</span>
+          <span *ngIf="uploadingInvoice" style="font-size: 11px; color: var(--color-accent);" class="animate-pulse">{{ 'common.loading' | t }}</span>
         </div>
       </div>
 
       <div class="form-full">
-        <label class="form-label">Description des travaux</label>
+        <label class="form-label">{{ 'maintenance.workDescription' | t }}</label>
         <textarea [(ngModel)]="maintenanceForm.description" name="description" rows="3" class="form-input" placeholder="Vidange, changement plaquettes de frein avant..."></textarea>
       </div>
 
       <div class="form-full form-actions">
-        <button type="button" (click)="showCrudDialog = false" class="btn-secondary">Annuler</button>
-        <button type="submit" class="btn-primary">Enregistrer</button>
+        <button type="button" (click)="showCrudDialog = false" class="btn-secondary">{{ 'common.cancel' | t }}</button>
+        <button type="submit" class="btn-primary">{{ 'common.save' | t }}</button>
       </div>
     </form>
   </p-dialog>
@@ -193,11 +195,13 @@
     [(visible)]="showCalendarDialog" 
     [style]="{width: '500px'}" 
     [modal]="true" 
-    header="Calendrier de maintenance"
+    [header]="'maintenance.calendarTitle' | t"
+    [draggable]="false"
+    [resizable]="false"
   >
     <div style="max-height: 400px; overflow-y: auto; padding-right: 4px;">
       <div *ngIf="calendarEvents.length === 0" style="text-align: center; padding: 20px; color: var(--color-text-muted);">
-        Aucun entretien programmé.
+        {{ 'maintenance.noScheduledMaintenance' | t }}
       </div>
       
       <div class="event-timeline" *ngIf="calendarEvents.length > 0">
@@ -207,16 +211,16 @@
             <div>
               <span class="event-date">{{ item.start | date:'yyyy-MM-dd' }}</span>
               <h5 class="event-title">{{ item.title }}</h5>
-              <span class="event-desc">Plaque: {{ item.vehicleMatricule }}</span>
+              <span class="event-desc">{{ 'maintenance.plateLabel' | t }}: {{ item.vehicleMatricule }}</span>
             </div>
-            <span class="badge badge-info">{{ item.maintenanceType }}</span>
+            <span class="badge badge-info">{{ i18n.translateMaintenanceType(item.maintenanceType) }}</span>
           </div>
         </div>
       </div>
     </div>
     
     <div style="display: flex; justify-content: flex-end; margin-top: 16px; border-top: 1px solid var(--color-border-light); padding-top: 12px;">
-      <button (click)="showCalendarDialog = false" class="btn-secondary">Fermer</button>
+      <button (click)="showCalendarDialog = false" class="btn-secondary">{{ 'common.close' | t }}</button>
     </div>
   </p-dialog>
 </div>

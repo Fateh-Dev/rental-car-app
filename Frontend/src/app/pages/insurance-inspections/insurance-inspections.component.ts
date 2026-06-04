@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { TableModule } from 'primeng/table';
+import { I18nService } from '../../services/i18n.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-insurance-inspections',
   standalone: true,
-  imports: [CommonModule, TableModule],
+  imports: [CommonModule, TableModule, TranslatePipe],
   templateUrl: './insurance-inspections.component.html',
   styleUrls: ['./insurance-inspections.component.css']
 })
@@ -14,7 +16,7 @@ export class InsuranceInspectionsComponent implements OnInit {
   policies: any[] = [];
   inspections: any[] = [];
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, public i18n: I18nService) {}
 
   ngOnInit(): void {
     this.loadInsuranceAndInspections();
