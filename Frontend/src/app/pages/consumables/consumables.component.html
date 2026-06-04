@@ -1,0 +1,304 @@
+<div class="page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Suivi des Consommables & Entretien Périodique</h2>
+      <p class="page-desc">Supervisez l'état d'usure des filtres, pneus, freins, batteries et huile moteur. Enregistrez les remplacements réguliers.</p>
+    </div>
+    <div class="header-actions">
+      <button (click)="showConfigDialog = true" class="btn-secondary">
+        <i class="pi pi-sliders-h"></i>
+        <span>Configurer Intervalles</span>
+      </button>
+      <button (click)="openLogDialog()" class="btn-primary">
+        <i class="pi pi-plus"></i>
+        <span>Enregistrer Remplacement</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Vehicle selector -->
+  <div class="card selector-bar">
+    <div class="selector-left">
+      <label class="form-label" style="margin: 0; text-transform: none; font-size: 13px; font-weight: 600;">Sélectionner un Véhicule :</label>
+      <select 
+        [(ngModel)]="selectedVehicleId" 
+        (change)="onVehicleSelect()"
+        class="form-input"
+        style="width: 250px;"
+      >
+        <option [ngValue]="null" disabled>Choisir un véhicule...</option>
+        <option *ngFor="let v of vehicles" [value]="v.id">{{ v.brand }} {{ v.model }} ({{ v.matricule }})</option>
+      </select>
+    </div>
+
+    <div *ngIf="selectedVehicleId" class="odometer-badge">
+      Compteur Actuel : <span class="odometer-value">{{ currentVehicleOdometer }} km</span>
+    </div>
+  </div>
+
+  <!-- Consumable Status Grid Cards -->
+  <div *ngIf="consumableStatusReport.length === 0" class="card empty-state">
+    <i class="pi pi-cog empty-icon" style="font-size: 32px; display: block; margin-bottom: 8px;"></i>
+    <p>Veuillez sélectionner un véhicule pour visualiser l'état des consommables.</p>
+  </div>
+
+  <div *ngIf="consumableStatusReport.length > 0" class="consumables-grid">
+    <div 
+      *ngFor="let item of consumableStatusReport" 
+      class="card consumable-card"
+      [class.due]="item.status === 'Due'"
+      [class.warning]="item.status === 'Warning'"
+    >
+      <div class="card-details">
+        <!-- Card Header -->
+        <div class="card-header">
+          <div>
+            <h4 class="card-title">{{ item.consumableType }}</h4>
+            <span class="card-subtitle">
+              Intervalle: {{ item.intervalKm > 0 ? item.intervalKm + ' km' : '' }} 
+              {{ item.intervalMonths > 0 ? (item.intervalKm > 0 ? ' / ' : '') + item.intervalMonths + ' m' : '' }}
+            </span>
+          </div>
+
+          <span 
+            [class.badge-success]="item.status === 'OK'"
+            [class.badge-warning]="item.status === 'Warning'"
+            [class.badge-danger]="item.status === 'Due'"
+            class="badge"
+          >
+            {{ item.status === 'OK' ? 'Conforme' : item.status === 'Warning' ? 'Bientôt Dû' : 'À Remplacer' }}
+          </span>
+        </div>
+
+        <!-- Detail Usage Bars -->
+        <div class="info-row">
+          <span>Dernier remplacement :</span>
+          <span style="font-weight: 600; color: var(--color-text);">
+            {{ item.lastReplacementDate ? (item.lastReplacementDate | date:'yyyy-MM-dd') : 'À la commande' }} 
+            ({{ item.lastReplacementKm || 0 }} km)
+          </span>
+        </div>
+
+        <!-- Usage Meter -->
+        <div *ngIf="item.intervalKm > 0" class="progress-group">
+          <div class="info-row" style="font-size: 11px; margin-bottom: 2px;">
+            <span>Kilomètres parcourus :</span>
+            <span style="font-weight: 600;">{{ item.kmSinceReplacement }} / {{ item.intervalKm }} km</span>
+          </div>
+          <!-- Progress Bar -->
+          <div class="progress-container">
+            <div 
+              [style.width.%]="(item.kmSinceReplacement / item.intervalKm) * 100"
+              [class.progress-success]="item.status === 'OK'"
+              [class.progress-warning]="item.status === 'Warning'"
+              [class.progress-danger]="item.status === 'Due'"
+              class="progress-bar"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Months usage if applicable -->
+        <div *ngIf="item.intervalMonths > 0" class="info-row" style="margin-top: 4px;">
+          <span>Temps écoulé :</span>
+          <span style="font-weight: 600;">{{ item.monthsSinceReplacement }} m / {{ item.intervalMonths }} m</span>
+        </div>
+
+        <!-- Log Info Details if any -->
+        <div *ngIf="item.details" class="extra-specs-box">
+          <div *ngIf="item.details.viscosity" class="spec-line">
+            <span>Viscosité/Huile :</span>
+            <span style="font-weight: 700;">{{ item.details.oilType }} {{ item.details.viscosity }}</span>
+          </div>
+          <div *ngIf="item.details.brand" class="spec-line">
+            <span>Marque/Taille :</span>
+            <span style="font-weight: 700;">{{ item.details.brand }} {{ item.details.size }}</span>
+          </div>
+          <div *ngIf="item.details.axle" class="spec-line">
+            <span>Essieu :</span>
+            <span style="font-weight: 700;">{{ item.details.axle }}</span>
+          </div>
+          <div *ngIf="item.details.notes" class="spec-line-notes">
+            "{{ item.details.notes }}"
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Logger action -->
+      <div class="card-actions">
+        <button 
+          (click)="openLogDialog(item.consumableType)" 
+          class="btn-link"
+        >
+          <i class="pi pi-check"></i> Enregistrer Remplacement
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPLACEMENT LOG MODAL DIALOG -->
+  <p-dialog 
+    [(visible)]="showLogDialog" 
+    [style]="{width: '450px'}" 
+    [modal]="true" 
+    header="Log de remplacement de consommable"
+  >
+    <form (ngSubmit)="onSubmitLog()" class="form-grid">
+      <div class="form-full">
+        <label class="form-label">Type de consommable</label>
+        <select [(ngModel)]="logForm.consumableType" name="consumableType" required class="form-input">
+          <option *ngFor="let type of consumableTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="form-label">Date du remplacement</label>
+        <p-datepicker [(ngModel)]="logForm.replacementDate" name="replacementDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+      </div>
+      <div>
+        <label class="form-label">Kilométrage (Compteur)</label>
+        <input type="number" [(ngModel)]="logForm.replacementKm" name="replacementKm" required class="form-input"/>
+      </div>
+
+      <!-- Conditional fields for Oil change -->
+      <div *ngIf="logForm.consumableType === 'OilChange'" class="conditional-box">
+        <div>
+          <label class="form-label">Type d'huile</label>
+          <input type="text" [(ngModel)]="logForm.oilType" name="oilType" class="form-input" placeholder="e.g. Synthétique"/>
+        </div>
+        <div>
+          <label class="form-label">Viscosité</label>
+          <input type="text" [(ngModel)]="logForm.viscosity" name="viscosity" class="form-input" placeholder="e.g. 5W-40"/>
+        </div>
+      </div>
+
+      <!-- Conditional fields for Brakes or Tires -->
+      <div *ngIf="logForm.consumableType.includes('Brakes') || logForm.consumableType.includes('Tires')" class="conditional-box">
+        <div>
+          <label class="form-label">Essieu / Position</label>
+          <select [(ngModel)]="logForm.axle" name="axle" class="form-input">
+            <option value="Front">Essieu Avant</option>
+            <option value="Rear">Essieu Arrière</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Marque</label>
+          <input type="text" [(ngModel)]="logForm.brand" name="brand" class="form-input" placeholder="e.g. Michelin / Bosch"/>
+        </div>
+        <div *ngIf="logForm.consumableType.includes('Tires')" class="form-full" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px;">
+          <div>
+            <label class="form-label">Dimensions</label>
+            <input type="text" [(ngModel)]="logForm.size" name="size" class="form-input" placeholder="e.g. 205/55 R16"/>
+          </div>
+          <div>
+            <label class="form-label">Type</label>
+            <input type="text" [(ngModel)]="logForm.typeDetail" name="typeDetail" class="form-input" placeholder="Été / Hiver / 4S"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conditional fields for Battery -->
+      <div *ngIf="logForm.consumableType === 'Battery'" class="conditional-box">
+        <div>
+          <label class="form-label">Marque de batterie</label>
+          <input type="text" [(ngModel)]="logForm.brand" name="brand" class="form-input" placeholder="e.g. Varta / Bosch"/>
+        </div>
+        <div>
+          <label class="form-label">Capacité / Ampérage</label>
+          <input type="text" [(ngModel)]="logForm.typeDetail" name="typeDetail" class="form-input" placeholder="e.g. 70Ah / 12V"/>
+        </div>
+      </div>
+
+      <!-- General details for user custom types -->
+      <div *ngIf="!['OilChange', 'AirFilter', 'OilFilter', 'FuelFilter', 'CabinFilter', 'FrontBrakes', 'RearBrakes', 'FrontTires', 'RearTires', 'Battery'].includes(logForm.consumableType)" class="conditional-box">
+        <div>
+          <label class="form-label">Marque / Fabricant</label>
+          <input type="text" [(ngModel)]="logForm.brand" name="brand" class="form-input"/>
+        </div>
+        <div>
+          <label class="form-label">Détails techniques</label>
+          <input type="text" [(ngModel)]="logForm.typeDetail" name="typeDetail" class="form-input"/>
+        </div>
+      </div>
+
+      <div class="form-full">
+        <label class="form-label">Notes / Remarques</label>
+        <textarea [(ngModel)]="logForm.notes" name="notes" rows="2" class="form-input" placeholder="Notez d'éventuels détails sur le remplacement..."></textarea>
+      </div>
+
+      <div class="form-full form-actions">
+        <button type="button" (click)="showLogDialog = false" class="btn-secondary">Annuler</button>
+        <button type="submit" class="btn-primary">Enregistrer Remplacement</button>
+      </div>
+    </form>
+  </p-dialog>
+
+  <!-- CONFIGURATIONS LIST MODAL DIALOG -->
+  <p-dialog 
+    [(visible)]="showConfigDialog" 
+    [style]="{width: '500px'}" 
+    [modal]="true" 
+    header="Intervalles de maintenance & alertes"
+  >
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-border-light); padding-bottom: 8px;">
+        <span style="color: var(--color-text-secondary); font-size: 12px;">Définissez les seuils critiques pour vos consommables.</span>
+        <button (click)="openConfigDialog()" class="btn-primary" style="padding: 4px 10px; font-size: 11px;">
+          <i class="pi pi-plus"></i> Créer Règle
+        </button>
+      </div>
+
+      <div class="config-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Consommable</th>
+              <th>Limite (km)</th>
+              <th>Limite (Mois)</th>
+              <th style="text-align: right; width: 60px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let conf of configs">
+              <td style="font-weight: 600;">{{ conf.consumableType }}</td>
+              <td style="font-weight: 500;">{{ conf.intervalKm > 0 ? conf.intervalKm + ' km' : 'Aucun' }}</td>
+              <td style="font-weight: 500;">{{ conf.intervalMonths > 0 ? conf.intervalMonths + ' mois' : 'Aucun' }}</td>
+              <td style="text-align: right;">
+                <button (click)="openConfigDialog(conf)" class="btn-icon" style="width: 24px; height: 24px;">
+                  <i class="pi pi-pencil" style="font-size: 10px;"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Config dialog editing form (inline dialog box nested or standalone) -->
+      <div *ngIf="selectedConfig" class="inline-config-form">
+        <h5 class="inline-config-title">Configurer la règle pour {{ selectedConfig.consumableType || 'Nouveau' }}</h5>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div *ngIf="!selectedConfig.id">
+            <label class="form-label">Type Consommable</label>
+            <input type="text" [(ngModel)]="selectedConfig.consumableType" class="form-input"/>
+          </div>
+          <div>
+            <label class="form-label">Intervalle (km)</label>
+            <input type="number" [(ngModel)]="selectedConfig.intervalKm" class="form-input" placeholder="e.g. 10000"/>
+          </div>
+          <div>
+            <label class="form-label">Intervalle (Mois)</label>
+            <input type="number" [(ngModel)]="selectedConfig.intervalMonths" class="form-input" placeholder="e.g. 12"/>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; border-top: 1px solid var(--color-border-light); padding-top: 10px;">
+          <button (click)="selectedConfig = null" class="btn-secondary" style="padding: 4px 10px; font-size: 11px;">Annuler</button>
+          <button (click)="onSubmitConfig()" class="btn-primary" style="padding: 4px 10px; font-size: 11px;">Valider Règle</button>
+        </div>
+      </div>
+    </div>
+    
+    <div style="display: flex; justify-content: flex-end; margin-top: 16px; border-top: 1px solid var(--color-border-light); padding-top: 12px;">
+      <button (click)="showConfigDialog = false" class="btn-secondary">Fermer</button>
+    </div>
+  </p-dialog>
+</div>

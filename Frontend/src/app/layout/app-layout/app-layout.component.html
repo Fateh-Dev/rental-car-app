@@ -1,0 +1,117 @@
+<div class="app-shell">
+  <div
+    class="sidebar-backdrop"
+    [class.is-visible]="sidebarOpen"
+    (click)="closeSidebar()"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.sidebar-open]="sidebarOpen" [class.sidebar-closed]="!sidebarOpen">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <i class="pi pi-car"></i>
+        <span>Parc Auto</span>
+      </div>
+      <button (click)="toggleSidebar()" class="sidebar-close-btn md-hidden">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a 
+        *ngFor="let item of menuItems; trackBy: trackByRoute" 
+        [attr.href]="item.route"
+        (click)="navigateTo(item.route, $event)"
+        [class.active]="isLinkActive(item.route)"
+        class="nav-item"
+      >
+        <i [class]="item.icon"></i>
+        <span>{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar">{{ adminName.charAt(0).toUpperCase() }}</div>
+        <span class="user-name">{{ adminName }}</span>
+      </div>
+      <button (click)="logout()" class="btn-icon sidebar-logout" title="Se déconnecter">
+        <i class="pi pi-sign-out"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-wrapper">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button (click)="toggleSidebar()" class="btn-icon topbar-menu-btn">
+          <i class="pi pi-bars"></i>
+        </button>
+        <h1 class="topbar-title">Système de Gestion de Flotte</h1>
+      </div>
+
+      <div class="topbar-right">
+        <!-- Alerts Bell -->
+        <div class="alerts-wrapper">
+          <button (click)="toggleAlertsDropdown()" class="btn-icon alerts-btn">
+            <i class="pi pi-bell"></i>
+            <span 
+              *ngIf="alertsCount > 0"
+              class="alerts-dot"
+              [class.critical]="criticalAlertsCount > 0"
+            ></span>
+          </button>
+
+          <div *ngIf="showAlertsDropdown" class="alerts-dropdown card">
+            <div class="alerts-dropdown-header">
+              <span class="alerts-dropdown-title">Alertes actives</span>
+              <a routerLink="/alerts" (click)="showAlertsDropdown = false" class="alerts-view-all">Voir tout</a>
+            </div>
+            <div class="alerts-dropdown-body">
+              <div *ngIf="recentAlerts.length === 0" class="alerts-empty">
+                Aucune alerte active.
+              </div>
+              <a 
+                *ngFor="let alert of recentAlerts"
+                [routerLink]="alert.type === 'DriverLicense' ? '/clients' : '/alerts'"
+                (click)="showAlertsDropdown = false"
+                class="alert-item"
+              >
+                <i class="pi pi-exclamation-triangle alert-icon"
+                  [class.text-danger]="alert.severity === 'Critical'"
+                  [class.text-warning]="alert.severity === 'Warning'"
+                  [class.text-accent]="alert.severity === 'Info'"
+                ></i>
+                <div class="alert-content">
+                  <div class="alert-target">{{ alert.target }}</div>
+                  <div class="alert-message">{{ alert.message }}</div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="topbar-divider"></div>
+
+        <!-- User -->
+        <div class="topbar-user">
+          <div class="topbar-user-info">
+            <span class="topbar-user-name">{{ adminName }}</span>
+            <span class="topbar-user-role">Admin</span>
+          </div>
+          <a routerLink="/settings" class="user-avatar topbar-avatar">
+            {{ adminName.charAt(0).toUpperCase() }}
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

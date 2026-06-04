@@ -1,0 +1,332 @@
+<div class="page">
+  <!-- Top Header Dashboard Controls -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-header-title">Suivi Kilométrage & Carburant</h2>
+      <p class="page-header-desc">Gérez les relevés d'odomètres, les consommations de carburant et détectez les anomalies.</p>
+    </div>
+    <div class="header-actions">
+      <button (click)="exportAllKmCsv()" class="btn-secondary" style="border-color: #475569; color: #fff; background: transparent;">
+        <i class="pi pi-download"></i> Exporter Odomètres
+      </button>
+      <button (click)="exportAllFuelCsv()" class="btn-primary">
+        <i class="pi pi-download"></i> Exporter Carburant
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Split Layout -->
+  <div class="split-layout">
+    <!-- Left Column: Fleet List and Inactivity Alerts -->
+    <div class="split-left">
+      
+      <!-- Inactivity Alerts Card -->
+      <div *ngIf="inactiveVehicles.length > 0" class="inactivity-card">
+        <div class="inactivity-header">
+          <div class="inactivity-icon-box">
+            <i class="pi pi-exclamation-triangle" style="font-size: 14px;"></i>
+          </div>
+          <div>
+            <h3 class="inactivity-title">Inactivité Kilométrique Détectée</h3>
+            <p class="inactivity-desc">
+              Véhicules sans activité (contrat ou relevé) depuis plus de <strong>{{ inactivityThresholdDays }} jours</strong>.
+            </p>
+          </div>
+        </div>
+        <div class="inactivity-list">
+          <div *ngFor="let v of inactiveVehicles" class="inactivity-item">
+            <span style="font-weight: 600;">{{ v.brand }} {{ v.model }} <span style="color: var(--color-text-muted); font-size: 11px;">({{ v.matricule }})</span></span>
+            <span class="badge badge-warning" style="text-transform: none;">
+              {{ v.daysInactive }} jours d'inactivité
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fleet Odometer Overview -->
+      <div class="card" style="overflow: hidden;">
+        <div class="vehicle-list-card-header">
+          <h3 class="vehicle-list-title">
+            <i class="pi pi-car text-accent"></i> Parc Automobile (Odomètres)
+          </h3>
+          <span class="vehicle-list-count">
+            {{ vehiclesList.length }} Véhicules
+          </span>
+        </div>
+        
+        <div class="vehicle-list">
+          <div *ngFor="let vehicle of vehiclesList" 
+               (click)="selectVehicle(vehicle)"
+               [class.active]="selectedVehicle?.id === vehicle.id"
+               class="vehicle-item"
+          >
+            <div class="vehicle-info">
+              <h4 class="vehicle-name">{{ vehicle.brand }} {{ vehicle.model }}</h4>
+              <span class="vehicle-plate">Matricule: <span style="font-family: monospace; font-weight: 600; color: var(--color-text);">{{ vehicle.matricule }}</span></span>
+              <div class="vehicle-badges">
+                <span class="badge"
+                      [class.badge-success]="vehicle.status === 'Available'"
+                      [class.badge-accent]="vehicle.status === 'Rented'"
+                      [class.badge-warning]="vehicle.status === 'InMaintenance'"
+                      style="font-size: 9px;"
+                >
+                  {{ vehicle.status === 'Available' ? 'Libre' : vehicle.status === 'Rented' ? 'Loué' : 'Garage' }}
+                </span>
+                <span class="badge badge-neutral" style="font-size: 9px;">
+                  {{ vehicle.fuelType }}
+                </span>
+              </div>
+            </div>
+            
+            <div class="vehicle-odometer-box">
+              <div>
+                <span class="odometer-number">{{ vehicle.currentKm | number }}</span>
+                <span style="color: var(--color-text-muted); font-size: 11px; margin-left: 2px;">km</span>
+              </div>
+              <button (click)="openAddKm(vehicle, $event)" class="btn-primary" style="padding: 4px 8px; font-size: 11px; background: var(--color-bg); color: var(--color-text-secondary); border: 1px solid var(--color-border);">
+                <i class="pi pi-plus" style="font-size: 9px;"></i> Relevé
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Selected Vehicle Logs & Analytics -->
+    <div class="split-right">
+      
+      <!-- Unselected State -->
+      <div *ngIf="!selectedVehicle" class="card unselected-placeholder" style="border-style: dashed;">
+        <i class="pi pi-chart-line unselected-icon"></i>
+        <h3 style="font-weight: 700; font-size: 15px; color: var(--color-text); margin: 0;">Aucun Véhicule Sélectionné</h3>
+        <p style="font-size: 13px; color: var(--color-text-muted); max-w: 320px; margin: 4px 0 0;">
+          Sélectionnez un véhicule dans la liste de gauche pour consulter son historique kilométrique complet, ses pleins de carburant et sa consommation.
+        </p>
+      </div>
+
+      <!-- Selected State Dashboard -->
+      <div *ngIf="selectedVehicle" style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <!-- Selected Vehicle Meta Info -->
+        <div class="card meta-info-bar">
+          <div class="meta-title-box">
+            <div class="meta-title-row">
+              <h3 class="meta-title">{{ selectedVehicle.brand }} {{ selectedVehicle.model }}</h3>
+              <span class="meta-plate">{{ selectedVehicle.matricule }}</span>
+            </div>
+            <p class="meta-desc">
+              Odomètre actuel: <strong style="color: var(--color-text);">{{ selectedVehicle.currentKm | number }} km</strong> | Transmission: {{ selectedVehicle.transmission === 'Manual' ? 'Manuelle' : 'Automatique' }}
+            </p>
+          </div>
+          <div class="meta-actions">
+            <button (click)="openAddFuel()" class="btn-primary">
+              <i class="pi pi-plus"></i> Enregistrer Plein
+            </button>
+            <button (click)="exportVehicleFuelCsv()" class="btn-secondary">
+              <i class="pi pi-download"></i> CSV Carburant
+            </button>
+            <button (click)="exportVehicleKmCsv()" class="btn-secondary">
+              <i class="pi pi-download"></i> CSV Km
+            </button>
+          </div>
+        </div>
+
+        <!-- Fuel Consumption Trend Chart -->
+        <div class="card" style="padding: 16px;">
+          <h3 class="card-title-inner" style="margin-bottom: 16px;">
+            <i class="pi pi-chart-line text-accent"></i> Évolution de la Consommation (L/100km)
+          </h3>
+          <div *ngIf="chartData" style="height: 240px; position: relative;">
+            <p-chart type="line" [data]="chartData" [options]="chartOptions" height="240px"></p-chart>
+          </div>
+          <div *ngIf="!chartData" style="height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--color-text-muted); text-align: center;">
+            <i class="pi pi-info-circle" style="font-size: 20px; margin-bottom: 4px;"></i>
+            <span style="font-size: 13px; font-weight: 600;">Données insuffisantes pour le graphique de tendance.</span>
+            <span style="font-size: 11px; margin-top: 2px;">(Nécessite au moins 2 pleins de carburant)</span>
+          </div>
+        </div>
+
+        <!-- Fuel Fill-up Log Table -->
+        <div class="card" style="overflow: hidden;">
+          <div class="card-header-inner">
+            <h3 class="card-title-inner">
+              <i class="pi pi-filter text-accent"></i> Historique des Pleins de Carburant
+            </h3>
+          </div>
+          
+          <div style="padding: 8px;">
+            <p-table [value]="fuelLogs" [rows]="5" [paginator]="true" responsiveLayout="scroll" styleClass="p-datatable-sm">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Date</th>
+                  <th>Odomètre</th>
+                  <th>Litres</th>
+                  <th>Prix/L</th>
+                  <th>Total</th>
+                  <th>Moyenne</th>
+                  <th>Station</th>
+                  <th style="width: 50px;"></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-entry>
+                <tr>
+                  <td>{{ entry.log.date | date:'dd/MM/yyyy' }}</td>
+                  <td style="font-weight: 600;">{{ entry.log.kmValue | number }} km</td>
+                  <td>{{ entry.log.liters }} L</td>
+                  <td>{{ entry.log.costPerLiter | number:'1.2-2' }} €</td>
+                  <td style="font-weight: 600;">{{ entry.log.totalCost | number:'1.2-2' }} €</td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                      <span *ngIf="entry.kmDrivenSinceLastFill > 0" style="font-weight: 700; color: var(--color-accent);">
+                        {{ entry.consumptionL100 }} <span style="font-size: 9px; color: var(--color-text-secondary); font-weight: 500;">L/100</span>
+                      </span>
+                      <span *ngIf="entry.kmDrivenSinceLastFill <= 0" style="color: var(--color-text-muted);">--</span>
+                      <!-- Anomaly Flag Badge -->
+                      <span *ngIf="entry.log.isAnomaly" class="badge badge-danger" style="font-size: 9px;" title="Moyenne très élevée ou anormale">
+                        Anomalie
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="font-weight: 600; color: var(--color-text-secondary);">{{ entry.log.stationName }}</div>
+                    <div style="font-size: 10px; color: var(--color-text-muted);">{{ entry.log.fuelType }}</div>
+                  </td>
+                  <td style="text-align: center;">
+                    <button (click)="deleteFuelLog(entry.log.id)" class="btn-icon danger" style="width: 24px; height: 24px;">
+                      <i class="pi pi-trash" style="font-size: 10px;"></i>
+                    </button>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="8" style="text-align: center; padding: 20px; color: var(--color-text-muted);">Aucun plein enregistré pour ce véhicule.</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+
+        <!-- Kilometer Odometer Timeline -->
+        <div class="card" style="overflow: hidden;">
+          <div class="card-header-inner">
+            <h3 class="card-title-inner">
+              <i class="pi pi-history text-accent"></i> Historique Odométrique (Suivi Kilométrage)
+            </h3>
+          </div>
+          
+          <div style="padding: 8px;">
+            <p-table [value]="kmHistory" [rows]="5" [paginator]="true" responsiveLayout="scroll" styleClass="p-datatable-sm">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Date / Heure</th>
+                  <th>Valeur Odomètre</th>
+                  <th>Source</th>
+                  <th>Remarques / Événement</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-entry>
+                <tr>
+                  <td style="font-size: 12px; color: var(--color-text-secondary);">{{ entry.date | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td style="font-weight: 700; color: var(--color-text);">{{ entry.kmValue | number }} km</td>
+                  <td>
+                    <span class="badge"
+                          [class.badge-accent]="entry.source === 'Manual'"
+                          [class.badge-warning]="entry.source === 'Fuel'"
+                          [class.badge-success]="entry.source === 'Contract'"
+                    >
+                      {{ entry.source === 'Manual' ? 'Manuel' : entry.source === 'Fuel' ? 'Carburant' : 'Contrat' }}
+                    </span>
+                  </td>
+                  <td style="font-size: 12px; color: var(--color-text-secondary);">{{ entry.notes }}</td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="4" style="text-align: center; padding: 20px; color: var(--color-text-muted);">Aucun historique de kilométrage.</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Dialog: Add Manual Kilometer Entry -->
+<p-dialog header="Relevé Odomètre Manuel" [(visible)]="showAddKmDialog" [modal]="true" [style]="{width: '400px'}">
+  <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+    <div>
+      <label class="form-label">Date du relevé</label>
+      <p-datepicker [(ngModel)]="kmForm.date" dateFormat="dd/mm/yy" [showTime]="true" appendTo="body" class="w-full"></p-datepicker>
+    </div>
+    
+    <div>
+      <label class="form-label">Index Odomètre (Compteur en Km)</label>
+      <input type="number" [(ngModel)]="kmForm.kmValue" class="form-input" required />
+    </div>
+
+    <div>
+      <label class="form-label">Notes / Raison du relevé</label>
+      <textarea [(ngModel)]="kmForm.notes" rows="2" class="form-input" placeholder="Relevé mensuel, maintenance, etc."></textarea>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; border-top: 1px solid var(--color-border-light); padding-top: 12px;">
+    <button (click)="showAddKmDialog = false" class="btn-secondary">Annuler</button>
+    <button (click)="submitKm()" class="btn-primary">Enregistrer</button>
+  </div>
+</p-dialog>
+
+<!-- Dialog: Add Fuel Fill-up Log -->
+<p-dialog header="Enregistrer un Plein de Carburant" [(visible)]="showAddFuelDialog" [modal]="true" [style]="{width: '450px'}">
+  <div class="form-grid" style="margin-top: 8px;">
+    <div>
+      <label class="form-label">Date</label>
+      <p-datepicker [(ngModel)]="fuelForm.date" dateFormat="dd/mm/yy" [showTime]="true" appendTo="body" class="w-full"></p-datepicker>
+    </div>
+    <div>
+      <label class="form-label">Index Km (Odomètre)</label>
+      <input type="number" [(ngModel)]="fuelForm.kmValue" class="form-input" required />
+    </div>
+
+    <div>
+      <label class="form-label">Volume (Litres)</label>
+      <input type="number" step="0.01" [(ngModel)]="fuelForm.liters" class="form-input" required />
+    </div>
+    <div>
+      <label class="form-label">Prix par Litre (€/L)</label>
+      <input type="number" step="0.001" [(ngModel)]="fuelForm.costPerLiter" class="form-input" required />
+    </div>
+
+    <div class="form-full">
+      <label class="form-label">Nom de la Station Service</label>
+      <input type="text" [(ngModel)]="fuelForm.stationName" placeholder="Ex: Shell, TotalEnergies, Q8..." class="form-input" required />
+    </div>
+
+    <div class="form-full">
+      <label class="form-label">Type de Carburant</label>
+      <select [(ngModel)]="fuelForm.fuelType" class="form-input">
+        <option value="Gasoline">Essence (Sans Plomb)</option>
+        <option value="Diesel">Gazole / Diesel</option>
+        <option value="Electric">Électricité</option>
+        <option value="Hybrid">Hybride</option>
+        <option value="LPG">GPL</option>
+      </select>
+    </div>
+
+    <!-- Calculated Info Hint -->
+    <div class="calc-hint-box">
+      <span>Coût Total Estimé:</span>
+      <strong style="font-size: 13px;">{{ (fuelForm.liters * fuelForm.costPerLiter) | number:'1.2-2' }} €</strong>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; border-top: 1px solid var(--color-border-light); padding-top: 12px;">
+    <button (click)="showAddFuelDialog = false" class="btn-secondary">Annuler</button>
+    <button (click)="submitFuel()" class="btn-primary">Enregistrer</button>
+  </div>
+</p-dialog>

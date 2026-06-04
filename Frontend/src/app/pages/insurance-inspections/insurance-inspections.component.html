@@ -1,0 +1,102 @@
+<div class="page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h2 class="page-title">Supervision Assurances & Contrôles Techniques</h2>
+    <p class="page-desc">Supervisez l'état administratif de votre flotte. Identifiez d'un coup d'œil les contrats d'assurance et contrôles techniques arrivant à échéance.</p>
+  </div>
+
+  <!-- Grid layout for Insurances & Inspections Expirations -->
+  <div class="grid-2col">
+    <!-- Insurance policies expiries -->
+    <div class="card" style="padding: 20px;">
+      <div class="card-header-inner">
+        <div>
+          <h4 class="card-title-inner">Échéancier Assurances</h4>
+          <p class="card-desc-inner">Polices arrivant à échéance (Seuils: 30, 15, 7 jours)</p>
+        </div>
+        <span class="badge badge-accent">Auto</span>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <p-table [value]="policies" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Véhicule</th>
+              <th>Échéance</th>
+              <th>Temps Restant</th>
+              <th style="width: 100px; text-align: center;">Gravité</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-policy>
+            <tr>
+              <td style="font-weight: 600;">{{ policy.vehicle }}</td>
+              <td>{{ policy.date | date:'yyyy-MM-dd' }}</td>
+              <td style="font-weight: 600; color: var(--color-text-secondary);">{{ policy.daysOrKm }}</td>
+              <td style="text-align: center;">
+                <span 
+                  [class.badge-danger]="policy.severity === 'Critical'"
+                  [class.badge-warning]="policy.severity === 'Warning'"
+                  [class.badge-info]="policy.severity === 'Info'"
+                  class="badge"
+                >
+                  {{ policy.severity === 'Critical' ? 'Critique' : policy.severity === 'Warning' ? 'Attention' : 'Info' }}
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 20px; color: var(--color-text-muted);">Aucun contrat d'assurance en alerte.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+    <!-- Technical inspections expiries -->
+    <div class="card" style="padding: 20px;">
+      <div class="card-header-inner">
+        <div>
+          <h4 class="card-title-inner">Échéancier Contrôles Techniques</h4>
+          <p class="card-desc-inner">Visites réglementaires et contre-visites requises</p>
+        </div>
+        <span class="badge badge-success">Conforme</span>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <p-table [value]="inspections" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Véhicule</th>
+              <th>Échéance</th>
+              <th>Alerte / Statut</th>
+              <th style="width: 100px; text-align: center;">Gravité</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-insp>
+            <tr>
+              <td style="font-weight: 600;">{{ insp.vehicle }}</td>
+              <td>{{ insp.date | date:'yyyy-MM-dd' }}</td>
+              <td style="font-weight: 600; color: var(--color-text-secondary);">{{ insp.daysOrKm }}</td>
+              <td style="text-align: center;">
+                <span 
+                  [class.badge-danger]="insp.severity === 'Critical'"
+                  [class.badge-warning]="insp.severity === 'Warning'"
+                  [class.badge-info]="insp.severity === 'Info'"
+                  class="badge"
+                >
+                  {{ insp.severity === 'Critical' ? 'Critique' : insp.severity === 'Warning' ? 'Attention' : 'Info' }}
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 20px; color: var(--color-text-muted);">Aucun contrôle technique en alerte.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>

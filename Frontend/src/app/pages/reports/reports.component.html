@@ -1,0 +1,219 @@
+<div class="page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-header-title" style="color: white;">Rapports & Analyses Opérationnelles</h2>
+      <p class="page-header-desc">Évaluez la rentabilité, le taux d'utilisation de la flotte, le coût total de possession (TCO) et suivez les impayés.</p>
+    </div>
+    <div class="header-actions">
+      <button (click)="exportProfitabilityCsv()" class="btn-primary">
+        <i class="pi pi-download"></i> Exporter Rentabilité (CSV)
+      </button>
+    </div>
+  </div>
+
+  <!-- Financial & Utilization Overview Cards -->
+  <div class="kpi-grid">
+    <!-- Total Revenue Card -->
+    <div class="card kpi-card">
+      <div class="kpi-left">
+        <span class="kpi-label">Chiffre d'Affaires Brut</span>
+        <h2 class="kpi-number">{{ revenue.totalRevenue | number:'1.2-2' }} €</h2>
+        <div class="kpi-sub-row">
+          <span style="color: var(--color-success); font-weight: 600;"><i class="pi pi-check" style="font-size: 9px;"></i> Payé: {{ revenue.paidRevenue | number:'1.0-0' }} €</span>
+          <span style="color: var(--color-danger); font-weight: 600;"><i class="pi pi-exclamation-circle" style="font-size: 9px;"></i> Dû: {{ revenue.unpaidRevenue | number:'1.0-0' }} €</span>
+        </div>
+      </div>
+      <div class="kpi-icon-box indigo">
+        <i class="pi pi-wallet text-xl"></i>
+      </div>
+    </div>
+
+    <!-- Average Fleet Utilization Rate Card -->
+    <div class="card kpi-card">
+      <div class="kpi-left">
+        <span class="kpi-label">Taux d'Utilisation Moyen</span>
+        <h2 class="kpi-number">{{ averageUtilization | number:'1.0-2' }}%</h2>
+        <span class="kpi-subtext">Temps loué / Durée totale.</span>
+      </div>
+      <div class="kpi-icon-box emerald">
+        <i class="pi pi-chart-bar text-xl"></i>
+      </div>
+    </div>
+
+    <!-- Fleet Status Quick Stats -->
+    <div class="card kpi-card">
+      <div class="kpi-left">
+        <span class="kpi-label">Taille de la Flotte</span>
+        <h2 class="kpi-number">{{ fleetStatus.total }} Véhicules</h2>
+        <div class="kpi-sub-row" style="margin-top: 6px;">
+          <span class="badge badge-accent" style="font-size: 9px;">{{ fleetStatus.rented }} Loués</span>
+          <span class="badge badge-warning" style="font-size: 9px;">{{ fleetStatus.inMaintenance }} Garage</span>
+        </div>
+      </div>
+      <div class="kpi-icon-box amber">
+        <i class="pi pi-car text-xl"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Block -->
+  <div class="grid-2col">
+    <!-- Fleet Availability Chart -->
+    <div class="card chart-card">
+      <div class="chart-header">
+        <h3 class="chart-title"><i class="pi pi-chart-pie text-accent"></i> État de Disponibilité Flotte</h3>
+      </div>
+      <div class="chart-container">
+        <p-chart *ngIf="fleetStatusChart" type="doughnut" [data]="fleetStatusChart" [options]="fleetStatusOptions" class="w-full max-w-[220px]"></p-chart>
+      </div>
+    </div>
+
+    <!-- Revenue Paid vs Unpaid Chart -->
+    <div class="card chart-card">
+      <div class="chart-header">
+        <h3 class="chart-title"><i class="pi pi-dollar text-accent"></i> Taux de Recouvrement Financier</h3>
+        <!-- Date Filters -->
+        <div style="display: flex; gap: 4px; align-items: center;">
+          <p-datepicker [(ngModel)]="startDate" placeholder="Début" (ngModelChange)="loadRevenue()" dateFormat="dd/mm/y" appendTo="body" style="width: 100px; font-size: 11px;"></p-datepicker>
+          <span style="font-size: 11px; color: var(--color-text-muted);">à</span>
+          <p-datepicker [(ngModel)]="endDate" placeholder="Fin" (ngModelChange)="loadRevenue()" dateFormat="dd/mm/y" appendTo="body" style="width: 100px; font-size: 11px;"></p-datepicker>
+        </div>
+      </div>
+      <div class="chart-container">
+        <p-chart *ngIf="revenueChart" type="doughnut" [data]="revenueChart" [options]="revenueOptions" class="w-full max-w-[220px]"></p-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Fleet Cost & Profitability Table -->
+  <div class="card" style="overflow: hidden;">
+    <div class="table-header-inner">
+      <h3 class="table-title-inner">
+        <i class="pi pi-calculator text-accent"></i> Analyse de Rentabilité par Véhicule (TCO)
+      </h3>
+    </div>
+
+    <div style="padding: 8px;">
+      <p-table [value]="profitabilityReport" [rows]="10" [paginator]="true" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Véhicule</th>
+            <th>Matricule</th>
+            <th style="text-align: center;">Taux Utilisation</th>
+            <th>Revenus</th>
+            <th>Maintenance</th>
+            <th>Carburant (Fuel)</th>
+            <th>Assurance</th>
+            <th>TCO (Coût Total)</th>
+            <th>Bénéfice Net</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td style="font-weight: 600; color: var(--color-text);">{{ item.brand }} {{ item.model }}</td>
+            <td style="font-family: monospace; font-size: 12px; color: var(--color-text-secondary);">{{ item.matricule }}</td>
+            <td style="text-align: center; font-weight: 700; color: var(--color-text-secondary);">{{ item.utilizationRate }}%</td>
+            <td style="color: var(--color-success); font-weight: 600;">{{ item.revenue | number:'1.2-2' }} €</td>
+            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.maintenanceCost | number:'1.2-2' }} €</td>
+            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.fuelCost | number:'1.2-2' }} €</td>
+            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.insuranceCost | number:'1.2-2' }} €</td>
+            <td style="color: var(--color-warning); font-weight: 600;">{{ item.totalCost | number:'1.2-2' }} €</td>
+            <td style="font-weight: 800; font-size: 14px;" [class.text-success]="item.profitability >= 0" [class.text-danger]="item.profitability < 0">
+              {{ item.profitability | number:'1.2-2' }} €
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="9" style="text-align: center; padding: 20px; color: var(--color-text-muted);">Aucune donnée de rentabilité disponible.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <!-- Bottom Details Grid: Top Clients & Unpaid Invoices -->
+  <div class="split-layout">
+    
+    <!-- Top Clients Table -->
+    <div class="split-left card" style="overflow: hidden;">
+      <div class="table-header-inner">
+        <h3 class="table-title-inner">
+          <i class="pi pi-users text-accent"></i> Top Clients (Par Volume & Revenu)
+        </h3>
+      </div>
+      
+      <div style="padding: 8px;">
+        <p-table [value]="topClients" [rows]="5" responsiveLayout="scroll" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Nom du Client</th>
+              <th style="text-align: center; width: 80px;">Locations</th>
+              <th style="text-align: right; width: 120px;">Total Loué</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-client>
+            <tr>
+              <td style="font-weight: 600; color: var(--color-text);">{{ client.name }}</td>
+              <td style="text-align: center; font-weight: 700; color: var(--color-text-secondary);">{{ client.rentalsCount }}</td>
+              <td style="text-align: right; font-weight: 800; color: var(--color-accent);">{{ client.totalRevenue | number:'1.2-2' }} €</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="3" style="text-align: center; padding: 20px; color: var(--color-text-muted);">Aucun client disponible.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+    <!-- Unpaid / Partially Paid Contracts Table -->
+    <div class="split-right card" style="overflow: hidden;">
+      <div class="table-header-inner">
+        <h3 class="table-title-inner">
+          <i class="pi pi-clock text-accent"></i> Factures & Contrats en Retard de Paiement
+        </h3>
+      </div>
+      
+      <div style="padding: 8px;">
+        <p-table [value]="unpaidContracts" [rows]="5" [paginator]="true" responsiveLayout="scroll" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>N° Contrat</th>
+              <th>Client</th>
+              <th>Véhicule</th>
+              <th style="text-align: right; width: 120px;">Montant Dû</th>
+              <th style="text-align: center; width: 120px;">Statut Pay.</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-c>
+            <tr>
+              <td style="font-family: monospace; font-weight: 600; color: var(--color-text);">{{ c.contractNumber }}</td>
+              <td style="font-size: 12px; color: var(--color-text-secondary);">{{ c.client?.fullName }}</td>
+              <td style="font-size: 12px; color: var(--color-text-secondary);">{{ c.vehicle?.brand }} {{ c.vehicle?.model }}</td>
+              <td style="text-align: right; font-weight: 700; color: var(--color-danger);">{{ c.finalAmountDue | number:'1.2-2' }} €</td>
+              <td style="text-align: center;">
+                <span class="badge"
+                      [class.badge-danger]="c.paymentStatus === 'Unpaid'"
+                      [class.badge-warning]="c.paymentStatus === 'PartiallyPaid'"
+                >
+                  {{ c.paymentStatus === 'Unpaid' ? 'Non Payé' : 'Partiel' }}
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5" style="text-align: center; padding: 20px; color: var(--color-text-muted);">
+                <i class="pi pi-check text-success" style="margin-right: 4px;"></i> Félicitations, aucun impayé enregistré !
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+  </div>
+</div>

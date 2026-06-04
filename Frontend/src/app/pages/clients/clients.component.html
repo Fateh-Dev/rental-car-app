@@ -1,0 +1,235 @@
+<div class="page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Base de Données Clients</h2>
+      <p class="page-desc">Gérez le registre des clients, leurs coordonnées de contact, permis de conduire et historique de locations.</p>
+    </div>
+    <button (click)="openAddDialog()" class="btn-primary">
+      <i class="pi pi-plus"></i>
+      <span>Ajouter un Client</span>
+    </button>
+  </div>
+
+  <!-- Search Card -->
+  <div class="card filter-bar">
+    <div class="filter-search">
+      <i class="pi pi-search filter-search-icon"></i>
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        (ngModelChange)="onSearchChange()"
+        placeholder="Rechercher par nom, téléphone, email, ID..."
+        class="form-input"
+      />
+    </div>
+  </div>
+
+  <!-- Client list -->
+  <div class="card table-card">
+    <div class="table-scroll" *ngIf="clients.length > 0">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Identité</th>
+            <th>Contact</th>
+            <th class="col-center">Permis</th>
+            <th>Validité</th>
+            <th class="col-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let client of clients">
+            <td>
+              <div class="cell-stack">
+                <span class="cell-stack-title">{{ client.fullName }}</span>
+                <span class="cell-stack-sub" *ngIf="client.email">{{ client.email }}</span>
+              </div>
+            </td>
+            <td><span class="cell-mono cell-muted">{{ client.nationalId }}</span></td>
+            <td><span class="cell-muted">{{ client.phone }}</span></td>
+            <td class="col-center"><span class="badge badge-accent">{{ client.licenseCategory }}</span></td>
+            <td>
+              <span [class.text-danger]="isLicenseExpired(client.licenseExpiryDate)" class="cell-primary">
+                {{ client.licenseExpiryDate | date:'dd/MM/yyyy' }}
+              </span>
+              <span *ngIf="isLicenseExpired(client.licenseExpiryDate)" class="badge badge-danger" style="margin-left: 6px;">Expiré</span>
+            </td>
+            <td>
+              <div class="cell-actions">
+                <button (click)="openDetails(client)" title="Historique" class="btn-icon"><i class="pi pi-history"></i></button>
+                <button (click)="openEditDialog(client)" title="Modifier" class="btn-icon"><i class="pi pi-pencil"></i></button>
+                <button (click)="deleteClient(client.id)" title="Supprimer" class="btn-icon danger"><i class="pi pi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="clients.length === 0" class="table-empty">
+      <i class="pi pi-users"></i>
+      <span class="table-empty-title">Aucun client trouvé</span>
+      <p class="table-empty-desc">Ajoutez un client ou modifiez votre recherche.</p>
+    </div>
+
+    <div *ngIf="clients.length > 0" class="table-footer">
+      <span class="table-footer-info"><strong>{{ totalCount }}</strong> client(s) au total</span>
+      <div *ngIf="totalCount > pageSize" class="pagination">
+        <button [disabled]="page === 1" (click)="onPageChange(page - 1)" class="page-btn"><i class="pi pi-chevron-left"></i></button>
+        <button *ngFor="let p of pages" (click)="onPageChange(p)" [class.active]="p === page" class="page-btn">{{ p }}</button>
+        <button [disabled]="page * pageSize >= totalCount" (click)="onPageChange(page + 1)" class="page-btn"><i class="pi pi-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT CLIENT DIALOG -->
+  <p-dialog 
+    [(visible)]="showCrudDialog" 
+    [style]="{width: '500px'}" 
+    [modal]="true" 
+    [header]="isEditMode ? 'Modifier la fiche client' : 'Créer un nouveau client'"
+  >
+    <form (ngSubmit)="onSubmitClient()" class="form-grid">
+      <div class="form-full">
+        <label class="form-label">Nom Complet</label>
+        <input type="text" [(ngModel)]="clientForm.fullName" name="fullName" required class="form-input" placeholder="Jean Dupont"/>
+      </div>
+      <div>
+        <label class="form-label">N° ID National / Passeport</label>
+        <input type="text" [(ngModel)]="clientForm.nationalId" name="nationalId" required class="form-input" placeholder="N° identité unique"/>
+      </div>
+      <div>
+        <label class="form-label">Date de naissance</label>
+        <p-datepicker [(ngModel)]="clientForm.dateOfBirth" name="dateOfBirth" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+      </div>
+      <div>
+        <label class="form-label">N° Permis de Conduire</label>
+        <input type="text" [(ngModel)]="clientForm.licenseNumber" name="licenseNumber" required class="form-input" placeholder="Permis N°"/>
+      </div>
+      <div>
+        <label class="form-label">Catégorie du Permis</label>
+        <select [(ngModel)]="clientForm.licenseCategory" name="licenseCategory" required class="form-input">
+          <option *ngFor="let cat of licenseCategories" [value]="cat">Catégorie {{ cat }}</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Date d'obtention Permis</label>
+        <p-datepicker [(ngModel)]="clientForm.licenseIssueDate" name="licenseIssueDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+      </div>
+      <div>
+        <label class="form-label">Date d'expiration Permis</label>
+        <p-datepicker [(ngModel)]="clientForm.licenseExpiryDate" name="licenseExpiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+      </div>
+      <div>
+        <label class="form-label">N° de Téléphone</label>
+        <input type="text" [(ngModel)]="clientForm.phone" name="phone" required class="form-input" placeholder="+33 6 12 34 56 78"/>
+      </div>
+      <div>
+        <label class="form-label">Adresse E-mail</label>
+        <input type="email" [(ngModel)]="clientForm.email" name="email" class="form-input" placeholder="jean.dupont@mail.com"/>
+      </div>
+      <div class="form-full">
+        <label class="form-label">Adresse</label>
+        <input type="text" [(ngModel)]="clientForm.address" name="address" class="form-input" placeholder="Adresse de domicile"/>
+      </div>
+      <div class="form-full">
+        <label class="form-label">Remarques / Notes</label>
+        <textarea [(ngModel)]="clientForm.notes" name="notes" rows="3" class="form-input" placeholder="Remarques éventuelles sur la conduite, cautions, etc."></textarea>
+      </div>
+
+      <div class="form-full form-actions">
+        <button type="button" (click)="showCrudDialog = false" class="btn-secondary">Annuler</button>
+        <button type="submit" class="btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </p-dialog>
+
+  <!-- CLIENT HISTORY & DETAILS DIALOG -->
+  <p-dialog 
+    [(visible)]="showDetailsDialog" 
+    [style]="{width: '650px'}" 
+    [modal]="true" 
+    [header]="selectedClient ? 'Dossier Client: ' + selectedClient.fullName : ''"
+  >
+    <div *ngIf="selectedClient">
+      <!-- General Specs -->
+      <div class="specs-grid">
+        <div class="spec-item">
+          <span class="spec-label">ID National</span>
+          <span class="spec-value">{{ selectedClient.nationalId }}</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">Téléphone</span>
+          <span class="spec-value">{{ selectedClient.phone }}</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">Permis</span>
+          <span class="spec-value">Cat. {{ selectedClient.licenseCategory }} - N° {{ selectedClient.licenseNumber }}</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">Expiration</span>
+          <span class="spec-value">
+            <span [class.text-danger]="isLicenseExpired(selectedClient.licenseExpiryDate)">
+              {{ selectedClient.licenseExpiryDate | date:'yyyy-MM-dd' }}
+            </span>
+            <span *ngIf="isLicenseExpired(selectedClient.licenseExpiryDate)" class="badge badge-danger" style="margin-left: 4px;">Expiré</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div *ngIf="selectedClient.notes" class="notes-box">
+        <div class="notes-box-title">Notes administratives :</div>
+        <div>{{ selectedClient.notes }}</div>
+      </div>
+
+      <!-- Rental History -->
+      <div>
+        <h4 class="section-title">Historique des locations</h4>
+        <div class="table-scroll">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>N° Contrat</th>
+                <th>Véhicule</th>
+                <th>Immatriculation</th>
+                <th>Période</th>
+                <th>Montant</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of rentalHistory">
+                <td style="font-weight: 600; color: var(--color-accent);">{{ item.contractNumber }}</td>
+                <td style="font-weight: 600;">{{ item.vehicleBrand }} {{ item.vehicleModel }}</td>
+                <td style="color: var(--color-text-secondary);">{{ item.vehicleMatricule }}</td>
+                <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.startDate | date:'yyyy-MM-dd' }} au {{ (item.actualReturnDate || item.expectedReturnDate) | date:'yyyy-MM-dd' }}</td>
+                <td style="font-weight: 600;">{{ item.finalAmountDue | currency:'EUR':'symbol':'1.0' }}</td>
+                <td>
+                  <span 
+                    [class.badge-success]="item.contractStatus === 'Completed'"
+                    [class.badge-accent]="item.contractStatus === 'Active'"
+                    [class.badge-info]="item.contractStatus === 'Draft'"
+                    [class.badge-danger]="item.contractStatus === 'Cancelled'"
+                    class="badge"
+                  >
+                    {{ item.contractStatus === 'Completed' ? 'Terminé' : 
+                       item.contractStatus === 'Active' ? 'Actif' : 
+                       item.contractStatus === 'Draft' ? 'Brouillon' : 'Annulé' }}
+                  </span>
+                </td>
+              </tr>
+              <tr *ngIf="rentalHistory.length === 0">
+                <td colspan="6" style="text-align: center; padding: 20px; color: var(--color-text-muted);">
+                  Aucun contrat de location enregistré pour ce client.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </p-dialog>
+</div>

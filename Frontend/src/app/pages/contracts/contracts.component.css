@@ -1,0 +1,296 @@
+.btn-sm-success {
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--color-success);
+  gap: 4px;
+}
+
+/* ── Wizard Forms ── */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-full {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+/* Alert system */
+.alert-warning {
+  padding: 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: var(--color-danger);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+/* Calculation summary section in forms */
+.summary-grid {
+  grid-column: 1 / -1;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.summary-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-top: 4px;
+}
+
+/* Totals box */
+.totals-row {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--color-border-light);
+  padding-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.amount-due-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.amount-due-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.amount-due-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-accent);
+}
+
+.payment-details {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.payment-control {
+  width: 140px;
+}
+
+/* Return summary banner */
+.return-info-banner {
+  background: var(--color-accent-light);
+  border: 1px solid #dbeafe;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.return-info-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+/* Maintenance Checkbox wrapper */
+.maintenance-check-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  margin-top: 8px;
+}
+
+/* ── Print area styling ── */
+.invoice-print {
+  padding: 24px;
+  background: #fff;
+  color: #1f2937;
+  font-size: 12px;
+}
+
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.invoice-brand {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.invoice-meta {
+  text-align: right;
+}
+
+.invoice-meta-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.invoice-meta-number {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.invoice-addresses {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.address-block-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}
+
+.address-block-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.invoice-table th {
+  text-align: left;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+  color: #9ca3af;
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.invoice-table td {
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.invoice-totals-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;
+  margin-bottom: 32px;
+}
+
+.totals-details {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.totals-line {
+  display: flex;
+  justify-content: space-between;
+}
+
+.totals-line-grand {
+  font-size: 14px;
+  font-weight: 800;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 8px;
+  color: #111827;
+}
+
+.invoice-signatures {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 10px;
+  margin-top: 48px;
+}
+
+.signature-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signature-line {
+  margin-top: 40px;
+  width: 160px;
+  height: 1px;
+  background: #d1d5db;
+}
+
+@media print {
+  body {
+    background: white;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .invoice-print {
+    padding: 0;
+  }
+}

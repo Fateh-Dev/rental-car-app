@@ -1,0 +1,573 @@
+<div class="page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Gestion de la Flotte</h2>
+      <p class="page-desc">Enregistrez et suivez les véhicules du parc.</p>
+    </div>
+    <button (click)="openAddDialog()" class="btn-primary">
+      <i class="pi pi-plus"></i>
+      Ajouter un véhicule
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="card filter-bar">
+    <div class="filter-search">
+      <i class="pi pi-search filter-search-icon"></i>
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        (ngModelChange)="onFilterChange()"
+        placeholder="Rechercher par marque, modèle, plaque, VIN..."
+        class="form-input has-icon"
+      />
+    </div>
+    <select [(ngModel)]="filterType" (change)="onFilterChange()" class="form-input filter-select">
+      <option value="">Tous les Types</option>
+      <option *ngFor="let t of vehicleTypes" [value]="t">{{ t }}</option>
+    </select>
+    <select [(ngModel)]="filterFuelType" (change)="onFilterChange()" class="form-input filter-select">
+      <option value="">Tous Carburants</option>
+      <option *ngFor="let f of fuelTypes" [value]="f">{{ f }}</option>
+    </select>
+    <select [(ngModel)]="filterStatus" (change)="onFilterChange()" class="form-input filter-select">
+      <option value="">Tous Statuts</option>
+      <option *ngFor="let s of statuses" [value]="s.value">{{ s.label }}</option>
+    </select>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="vehicles.length === 0" class="card empty-state">
+    <i class="pi pi-car empty-icon"></i>
+    <p>Aucun véhicule ne correspond aux critères.</p>
+  </div>
+
+  <!-- Vehicle Grid -->
+  <div *ngIf="vehicles.length > 0" class="vehicle-grid">
+    <div *ngFor="let vehicle of vehicles" class="card vehicle-card">
+      <!-- Image -->
+      <div class="vehicle-img">
+        <img *ngIf="vehicle.photoPath" [src]="'http://localhost:5222' + vehicle.photoPath" [alt]="vehicle.brand" />
+        <div *ngIf="!vehicle.photoPath" class="vehicle-img-placeholder">
+          <i class="pi pi-image"></i>
+        </div>
+        <span class="vehicle-status-badge"
+          [class.badge-success]="vehicle.status === 'Available'"
+          [class.badge-accent]="vehicle.status === 'Rented'"
+          [class.badge-warning]="vehicle.status === 'InMaintenance'"
+          [class.badge-info]="vehicle.status === 'Reserved'"
+          [class.badge-danger]="vehicle.status === 'Immobilized'"
+        >
+          {{ vehicle.status === 'Available' ? 'Libre' : 
+             vehicle.status === 'Rented' ? 'Loué' : 
+             vehicle.status === 'InMaintenance' ? 'En service' : 
+             vehicle.status === 'Reserved' ? 'Réservé' : 'Immobilisé' }}
+        </span>
+        <span class="vehicle-rate">{{ vehicle.dailyRate | currency:'EUR':'symbol':'1.0' }}/j</span>
+      </div>
+
+      <!-- Details -->
+      <div class="vehicle-body">
+        <div class="vehicle-top">
+          <h4 class="vehicle-name">{{ vehicle.brand }} {{ vehicle.model }}</h4>
+          <span class="badge badge-neutral">{{ vehicle.year }}</span>
+        </div>
+        <p class="vehicle-plate">{{ vehicle.matricule }}</p>
+
+        <div class="vehicle-specs">
+          <div class="spec-item">
+            <span class="spec-label">Moteur</span>
+            <span class="spec-value">{{ vehicle.fuelType }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Boîte</span>
+            <span class="spec-value">{{ vehicle.transmission === 'Manual' ? 'Manuelle' : 'Auto' }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Km</span>
+            <span class="spec-value">{{ vehicle.currentKm }}</span>
+          </div>
+        </div>
+
+        <div class="vehicle-actions">
+          <button (click)="openDetails(vehicle)" class="btn-link">
+            <i class="pi pi-folder-open"></i> Dossier
+          </button>
+          <div class="vehicle-actions-right">
+            <button (click)="openEditDialog(vehicle)" class="btn-icon"><i class="pi pi-pencil"></i></button>
+            <button (click)="deleteVehicle(vehicle.id)" class="btn-icon danger"><i class="pi pi-trash"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="totalCount > pageSize" class="pagination">
+    <button [disabled]="page === 1" (click)="onPageChange(page - 1)" class="btn-icon">
+      <i class="pi pi-chevron-left"></i>
+    </button>
+    <button 
+      *ngFor="let p of pages" 
+      (click)="onPageChange(p)"
+      class="page-btn"
+      [class.active]="p === page"
+    >{{ p }}</button>
+    <button [disabled]="page * pageSize >= totalCount" (click)="onPageChange(page + 1)" class="btn-icon">
+      <i class="pi pi-chevron-right"></i>
+    </button>
+  </div>
+
+  <!-- DETAILS MODAL -->
+  <p-dialog 
+    [(visible)]="showDetailsDialog" 
+    [style]="{width: '72vw'}" 
+    [modal]="true" 
+    [header]="selectedVehicle ? 'Suivi: ' + selectedVehicle.brand + ' ' + selectedVehicle.model + ' (' + selectedVehicle.matricule + ')' : ''"
+    styleClass="p-fluid"
+  >
+    <div class="details-layout">
+      <!-- Tab selector -->
+      <div class="details-tabs">
+        <button (click)="switchDetailsTab('consumables')" [class.active]="detailsTab === 'consumables'" class="details-tab">
+          <i class="pi pi-wrench"></i> Consommables
+        </button>
+        <button (click)="switchDetailsTab('insurance')" [class.active]="detailsTab === 'insurance'" class="details-tab">
+          <i class="pi pi-shield"></i> Assurances
+        </button>
+        <button (click)="switchDetailsTab('inspections')" [class.active]="detailsTab === 'inspections'" class="details-tab">
+          <i class="pi pi-exclamation-triangle"></i> Contrôles
+        </button>
+        <button (click)="switchDetailsTab('fuel')" [class.active]="detailsTab === 'fuel'" class="details-tab">
+          <i class="pi pi-filter"></i> Carburant
+        </button>
+        <button (click)="switchDetailsTab('km_history')" [class.active]="detailsTab === 'km_history'" class="details-tab">
+          <i class="pi pi-map-marker"></i> Kilométrage
+        </button>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="details-content">
+        <!-- Consumables -->
+        <div *ngIf="detailsTab === 'consumables'">
+          <div class="section-header">
+            <h5 class="section-title">État des consommables</h5>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Consommable</th>
+                <th>Dernier remplacement</th>
+                <th>Parcouru</th>
+                <th>Intervalle</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of consumablesStatus">
+                <td class="font-semibold">{{ item.consumableType }}</td>
+                <td>
+                  <span *ngIf="item.lastReplacementDate">{{ item.lastReplacementDate | date:'dd/MM/yyyy' }} ({{ item.lastReplacementKm }} km)</span>
+                  <span *ngIf="!item.lastReplacementDate" class="text-muted" style="font-style:italic">Aucun log</span>
+                </td>
+                <td>{{ item.kmSinceReplacement }} km / {{ item.monthsSinceReplacement }} mois</td>
+                <td class="text-secondary">{{ item.intervalKm > 0 ? item.intervalKm + ' km' : '' }}{{ item.intervalMonths > 0 ? ' / ' + item.intervalMonths + ' m' : '' }}</td>
+                <td>
+                  <span class="badge"
+                    [class.badge-success]="item.status === 'OK'"
+                    [class.badge-warning]="item.status === 'Warning'"
+                    [class.badge-danger]="item.status === 'Due'"
+                  >{{ item.status }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Insurance -->
+        <div *ngIf="detailsTab === 'insurance'">
+          <div class="section-header">
+            <h5 class="section-title">Historique des assurances</h5>
+            <button (click)="openAddPolicy()" class="btn-primary btn-sm"><i class="pi pi-plus"></i> Ajouter</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Assureur</th>
+                <th>N° Police</th>
+                <th>Couverture</th>
+                <th>Validité</th>
+                <th>Prime / Valeur</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of insurancePolicies">
+                <td class="font-semibold">{{ item.policy.insurerName }}</td>
+                <td class="text-secondary">{{ item.policy.policyNumber }}</td>
+                <td>{{ item.policy.coverageType }}</td>
+                <td class="text-secondary">{{ item.policy.startDate | date:'dd/MM/yy' }} → {{ item.policy.expiryDate | date:'dd/MM/yy' }}</td>
+                <td>{{ item.policy.premiumAmount }} € / {{ item.policy.insuredValue }} €</td>
+                <td>
+                  <span class="badge"
+                    [class.badge-success]="item.status === 'Valid'"
+                    [class.badge-warning]="item.status === 'ExpiringSoon'"
+                    [class.badge-danger]="item.status === 'Expired'"
+                  >{{ item.status === 'Valid' ? 'Valide' : item.status === 'ExpiringSoon' ? 'Bientôt' : 'Expiré' }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Inspections -->
+        <div *ngIf="detailsTab === 'inspections'">
+          <div class="section-header">
+            <h5 class="section-title">Contrôles techniques</h5>
+            <button (click)="openAddInspection()" class="btn-primary btn-sm"><i class="pi pi-plus"></i> Ajouter</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Expiration</th>
+                <th>Centre</th>
+                <th>Résultat</th>
+                <th>Coût</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of inspectionsList">
+                <td class="font-semibold">{{ item.inspection.inspectionDate | date:'dd/MM/yyyy' }}</td>
+                <td class="text-secondary">{{ item.inspection.expiryDate | date:'dd/MM/yyyy' }}</td>
+                <td>{{ item.inspection.centerName }}</td>
+                <td>
+                  <span class="font-semibold"
+                    [class.text-success]="item.inspection.result === 'Pass'"
+                    [class.text-danger]="item.inspection.result === 'Fail'"
+                  >{{ item.inspection.result === 'Pass' ? 'Accepté' : item.inspection.result === 'Conditional' ? 'Contre-Visite' : 'Refusé' }}</span>
+                </td>
+                <td>{{ item.inspection.cost }} €</td>
+                <td>
+                  <span class="badge"
+                    [class.badge-success]="item.status === 'Valid'"
+                    [class.badge-warning]="item.status === 'ExpiringSoon'"
+                    [class.badge-danger]="item.status === 'Expired' || item.status === 'Failed'"
+                  >{{ item.status }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Fuel -->
+        <div *ngIf="detailsTab === 'fuel'">
+          <div class="section-header">
+            <h5 class="section-title">Suivi carburant</h5>
+            <div class="section-actions">
+              <button (click)="exportFuelCsv()" class="btn-secondary btn-sm"><i class="pi pi-download"></i> CSV</button>
+              <button (click)="openAddFuel()" class="btn-primary btn-sm"><i class="pi pi-plus"></i> Plein</button>
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Compteur</th>
+                <th>Volume</th>
+                <th>Coût</th>
+                <th>Conso.</th>
+                <th>Anomalie</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let log of fuelLogsList">
+                <td class="font-semibold">{{ log.log.date | date:'dd/MM/yyyy' }}</td>
+                <td class="text-secondary">{{ log.log.kmValue }} km</td>
+                <td>{{ log.log.liters }} L ({{ log.log.costPerLiter }} €/L)</td>
+                <td class="font-semibold">{{ log.log.totalCost }} €</td>
+                <td class="text-accent">
+                  <span *ngIf="log.consumptionL100 > 0">{{ log.consumptionL100 }} L/100km</span>
+                  <span *ngIf="log.consumptionL100 === 0" class="text-muted" style="font-style:italic">—</span>
+                </td>
+                <td>
+                  <span *ngIf="log.log.isAnomaly" class="badge badge-danger">Surconso</span>
+                  <span *ngIf="!log.log.isAnomaly" class="text-muted">—</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Km History -->
+        <div *ngIf="detailsTab === 'km_history'">
+          <div class="section-header">
+            <h5 class="section-title">Historique kilométrique</h5>
+            <div class="section-actions">
+              <button (click)="exportKmCsv()" class="btn-secondary btn-sm"><i class="pi pi-download"></i> CSV</button>
+              <button (click)="openAddKm()" class="btn-primary btn-sm"><i class="pi pi-plus"></i> Relevé</button>
+            </div>
+          </div>
+          <div class="km-timeline">
+            <div *ngFor="let item of kmHistoryList" class="km-entry">
+              <span class="km-dot"
+                [class.dot-success]="item.source === 'Manual'"
+                [class.dot-accent]="item.source === 'ContractStart'"
+                [class.dot-info]="item.source === 'ContractReturn'"
+              ></span>
+              <div class="km-entry-content">
+                <span class="km-entry-date">{{ item.date | date:'dd/MM/yyyy HH:mm' }}</span>
+                <span class="km-entry-value">{{ item.kmValue }} km</span>
+                <span class="km-entry-notes">{{ item.notes }}</span>
+                <span class="km-entry-source badge badge-neutral">{{ item.source }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </p-dialog>
+
+  <!-- ADD/EDIT VEHICLE DIALOG -->
+  <p-dialog 
+    [(visible)]="showCrudDialog" 
+    [style]="{width: '48vw'}" 
+    [modal]="true" 
+    [header]="isEditMode ? 'Modifier le véhicule' : 'Nouveau véhicule'"
+    styleClass="p-fluid"
+  >
+    <form (ngSubmit)="onSubmitVehicle()" class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Matricule</label>
+        <input type="text" [(ngModel)]="vehicleForm.matricule" name="matricule" required class="form-input" placeholder="12345-120-16"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Marque</label>
+        <input type="text" [(ngModel)]="vehicleForm.brand" name="brand" required class="form-input" placeholder="Renault"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Modèle</label>
+        <input type="text" [(ngModel)]="vehicleForm.model" name="model" required class="form-input" placeholder="Clio 5"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Année</label>
+        <input type="number" [(ngModel)]="vehicleForm.year" name="year" required class="form-input"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Type</label>
+        <select [(ngModel)]="vehicleForm.type" name="type" required class="form-input">
+          <option *ngFor="let t of vehicleTypes" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Carburant</label>
+        <select [(ngModel)]="vehicleForm.fuelType" name="fuelType" required class="form-input">
+          <option *ngFor="let f of fuelTypes" [value]="f">{{ f }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Transmission</label>
+        <select [(ngModel)]="vehicleForm.transmission" name="transmission" required class="form-input">
+          <option *ngFor="let t of transmissions" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Châssis (VIN)</label>
+        <input type="text" [(ngModel)]="vehicleForm.vin" name="vin" required class="form-input" placeholder="VF123456..."/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">N° Moteur</label>
+        <input type="text" [(ngModel)]="vehicleForm.engineNumber" name="engineNumber" class="form-input"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Couleur</label>
+        <input type="text" [(ngModel)]="vehicleForm.color" name="color" class="form-input"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Sièges</label>
+        <input type="number" [(ngModel)]="vehicleForm.seatsCount" name="seatsCount" required class="form-input"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tarif/jour (€)</label>
+        <input type="number" [(ngModel)]="vehicleForm.dailyRate" name="dailyRate" required class="form-input"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Prix d'achat (€)</label>
+        <input type="number" [(ngModel)]="vehicleForm.purchasePrice" name="purchasePrice" required class="form-input"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Compteur km initial</label>
+        <input type="number" [(ngModel)]="vehicleForm.initialKm" name="initialKm" [disabled]="isEditMode" required class="form-input"/>
+      </div>
+      <div class="form-group form-full">
+        <label class="form-label">Photo</label>
+        <input type="file" (change)="onPhotoUpload($event)" class="form-input file-input"/>
+        <span *ngIf="uploadingPhoto" class="upload-status">Upload en cours...</span>
+      </div>
+      <div class="form-group form-full">
+        <label class="form-label">Remarques</label>
+        <textarea [(ngModel)]="vehicleForm.notes" name="notes" rows="3" class="form-input"></textarea>
+      </div>
+      <div class="form-actions form-full">
+        <button type="button" (click)="showCrudDialog = false" class="btn-secondary">Annuler</button>
+        <button type="submit" class="btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </p-dialog>
+
+  <!-- ADD INSURANCE DIALOG -->
+  <p-dialog [(visible)]="showAddPolicyDialog" [style]="{width: '40vw'}" [modal]="true" header="Nouveau contrat d'assurance" styleClass="p-fluid">
+    <form (ngSubmit)="submitPolicy()" class="form-stack">
+      <div class="form-group">
+        <label class="form-label">Assureur</label>
+        <input type="text" [(ngModel)]="policyForm.insurerName" name="insurerName" required class="form-input"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">N° Police</label>
+        <input type="text" [(ngModel)]="policyForm.policyNumber" name="policyNumber" required class="form-input"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Couverture</label>
+          <select [(ngModel)]="policyForm.coverageType" name="coverageType" required class="form-input">
+            <option value="Third-Party">Responsabilité Civile</option>
+            <option value="Comprehensive">Tous Risques</option>
+            <option value="Fleet">Flotte</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Prime (€)</label>
+          <input type="number" [(ngModel)]="policyForm.premiumAmount" name="premiumAmount" required class="form-input"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Date d'effet</label>
+          <p-datepicker [(ngModel)]="policyForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Expiration</label>
+          <p-datepicker [(ngModel)]="policyForm.expiryDate" name="expiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Document (PDF)</label>
+        <input type="file" (change)="onPolicyFileUpload($event)" class="form-input file-input"/>
+        <span *ngIf="uploadingPolicy" class="upload-status">Chargement...</span>
+      </div>
+      <div class="form-actions">
+        <button type="button" (click)="showAddPolicyDialog = false" class="btn-secondary">Annuler</button>
+        <button type="submit" class="btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </p-dialog>
+
+  <!-- ADD INSPECTION DIALOG -->
+  <p-dialog [(visible)]="showAddInspectionDialog" [style]="{width: '40vw'}" [modal]="true" header="Nouveau contrôle technique" styleClass="p-fluid">
+    <form (ngSubmit)="submitInspection()" class="form-stack">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Date contrôle</label>
+          <p-datepicker [(ngModel)]="inspectionForm.inspectionDate" name="inspectionDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Expiration</label>
+          <p-datepicker [(ngModel)]="inspectionForm.expiryDate" name="expiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Résultat</label>
+          <select [(ngModel)]="inspectionForm.result" name="result" required class="form-input">
+            <option value="Pass">Favorable</option>
+            <option value="Conditional">Contre-visite</option>
+            <option value="Fail">Défavorable</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Coût (€)</label>
+          <input type="number" [(ngModel)]="inspectionForm.cost" name="cost" required class="form-input"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Centre</label>
+        <input type="text" [(ngModel)]="inspectionForm.centerName" name="centerName" required class="form-input"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Adresse centre</label>
+        <input type="text" [(ngModel)]="inspectionForm.centerAddress" name="centerAddress" class="form-input"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Remarques</label>
+        <textarea [(ngModel)]="inspectionForm.remarks" name="remarks" class="form-input"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Document (PDF)</label>
+        <input type="file" (change)="onInspectionFileUpload($event)" class="form-input file-input"/>
+        <span *ngIf="uploadingInspection" class="upload-status">Chargement...</span>
+      </div>
+      <div class="form-actions">
+        <button type="button" (click)="showAddInspectionDialog = false" class="btn-secondary">Annuler</button>
+        <button type="submit" class="btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </p-dialog>
+
+  <!-- ADD FUEL DIALOG -->
+  <p-dialog [(visible)]="showAddFuelDialog" [style]="{width: '36vw'}" [modal]="true" header="Nouveau plein carburant" styleClass="p-fluid">
+    <form (ngSubmit)="submitFuel()" class="form-stack">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <p-datepicker [(ngModel)]="fuelForm.date" name="date" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Compteur (km)</label>
+          <input type="number" [(ngModel)]="fuelForm.kmValue" name="kmValue" required class="form-input"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Volume (L)</label>
+          <input type="number" [(ngModel)]="fuelForm.liters" name="liters" required class="form-input"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Prix/L (€)</label>
+          <input type="number" step="0.001" [(ngModel)]="fuelForm.costPerLiter" name="costPerLiter" required class="form-input"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Station</label>
+        <input type="text" [(ngModel)]="fuelForm.stationName" name="stationName" class="form-input"/>
+      </div>
+      <div class="form-actions">
+        <button type="button" (click)="showAddFuelDialog = false" class="btn-secondary">Annuler</button>
+        <button type="submit" class="btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </p-dialog>
+
+  <!-- ADD KM DIALOG -->
+  <p-dialog [(visible)]="showAddKmDialog" [style]="{width: '36vw'}" [modal]="true" header="Relevé kilométrique" styleClass="p-fluid">
+    <form (ngSubmit)="submitKm()" class="form-stack">
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <p-datepicker [(ngModel)]="kmForm.date" name="date" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Compteur (km)</label>
+        <input type="number" [(ngModel)]="kmForm.kmValue" name="kmValue" required class="form-input"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes</label>
+        <input type="text" [(ngModel)]="kmForm.notes" name="notes" class="form-input"/>
+      </div>
+      <div class="form-actions">
+        <button type="button" (click)="showAddKmDialog = false" class="btn-secondary">Annuler</button>
+        <button type="submit" class="btn-primary">Valider</button>
+      </div>
+    </form>
+  </p-dialog>
+</div>

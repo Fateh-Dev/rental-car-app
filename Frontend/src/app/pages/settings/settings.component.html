@@ -1,0 +1,223 @@
+<div class="page">
+  <!-- Header Banner -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-header-title" style="color: white;">Paramètres Globaux</h2>
+      <p class="page-header-desc">Configurez les règles d'alertes, le catalogue d'options supplémentaires, les devises, et modifiez vos identifiants.</p>
+    </div>
+  </div>
+
+  <!-- Notification Banner -->
+  <div *ngIf="message" 
+       [class.success]="messageType === 'success'"
+       [class.error]="messageType === 'error'"
+       class="notification-banner"
+  >
+    <i class="pi" [class.pi-check-circle]="messageType === 'success'" [class.pi-exclamation-circle]="messageType === 'error'"></i>
+    <span>{{ message }}</span>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="settings-layout">
+    <!-- Left Column: Global Alert Thresholds -->
+    <div class="settings-left">
+      
+      <!-- System thresholds configuration -->
+      <div class="card" style="padding: 24px;">
+        <h3 class="settings-section-title">
+          <i class="pi pi-sliders-h text-accent"></i> Configurations des Seuils & Alertes
+        </h3>
+
+        <div class="settings-form-grid">
+          <!-- Currency symbol -->
+          <div>
+            <label class="form-label">Symbole Devise</label>
+            <input type="text" [(ngModel)]="settings.currencySymbol" class="form-input" />
+          </div>
+
+          <!-- Date format -->
+          <div>
+            <label class="form-label">Format de Date</label>
+            <input type="text" [(ngModel)]="settings.dateFormat" class="form-input" />
+          </div>
+
+          <!-- Km Inactivity threshold -->
+          <div>
+            <label class="form-label">Inactivité Odomètre (Jours)</label>
+            <input type="number" [(ngModel)]="settings.kmInactivityDaysThreshold" class="form-input" />
+          </div>
+
+          <!-- Maintenance alert days before -->
+          <div>
+            <label class="form-label">Maintenance Préventive (Alerter N jours avant)</label>
+            <input type="number" [(ngModel)]="settings.maintenanceNotifyDaysBefore" class="form-input" />
+          </div>
+
+          <!-- Insurance thresholds -->
+          <div>
+            <label class="form-label">Seuils Assurances (Jours restants - CSV)</label>
+            <input type="text" [(ngModel)]="settings.insuranceExpiryDaysThresholds" placeholder="Ex: 30,15,7" class="form-input" />
+          </div>
+
+          <!-- Inspection thresholds -->
+          <div>
+            <label class="form-label">Seuils Contrôles Techniques (Jours - CSV)</label>
+            <input type="text" [(ngModel)]="settings.inspectionExpiryDaysThresholds" placeholder="Ex: 30,15,7" class="form-input" />
+          </div>
+
+          <!-- Consumable notify km before -->
+          <div>
+            <label class="form-label">Consommables (Alerter N kilomètres avant)</label>
+            <input type="number" [(ngModel)]="settings.consumableNotifyKmBefore" class="form-input" />
+          </div>
+
+          <!-- Consumable notify days before -->
+          <div>
+            <label class="form-label">Consommables (Alerter N jours avant)</label>
+            <input type="number" [(ngModel)]="settings.consumableNotifyDaysBefore" class="form-input" />
+          </div>
+        </div>
+
+        <div class="settings-form-actions">
+          <button (click)="saveSettings()" class="btn-primary">
+            Enregistrer les Configurations
+          </button>
+        </div>
+      </div>
+
+      <!-- Reference catalogs management -->
+      <div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 24px;">
+        <h3 class="settings-section-title" style="margin-bottom: 8px;">
+          <i class="pi pi-list text-accent"></i> Édition des Données de Référence
+        </h3>
+
+        <!-- Vehicle types -->
+        <div class="catalog-section">
+          <h4 class="catalog-title">Catégories de Véhicules</h4>
+          <div class="tag-container">
+            <span *ngFor="let type of vehicleTypes; let idx = index" class="catalog-tag">
+              {{ type }}
+              <button (click)="removeVehicleType(idx)"><i class="pi pi-times" style="font-size: 8px;"></i></button>
+            </span>
+          </div>
+          <div class="tag-add-row">
+            <input type="text" [(ngModel)]="newVehicleType" placeholder="Ajouter une catégorie" class="form-input" style="padding: 6px 10px; font-size: 12px;" />
+            <button (click)="addVehicleType()" class="btn-secondary" style="padding: 6px 12px; font-size: 12px;">Ajouter</button>
+          </div>
+        </div>
+
+        <!-- Fuel types -->
+        <div class="catalog-section">
+          <h4 class="catalog-title">Types de Carburant</h4>
+          <div class="tag-container">
+            <span *ngFor="let type of fuelTypes; let idx = index" class="catalog-tag">
+              {{ type }}
+              <button (click)="removeFuelType(idx)"><i class="pi pi-times" style="font-size: 8px;"></i></button>
+            </span>
+          </div>
+          <div class="tag-add-row">
+            <input type="text" [(ngModel)]="newFuelType" placeholder="Ajouter un carburant" class="form-input" style="padding: 6px 10px; font-size: 12px;" />
+            <button (click)="addFuelType()" class="btn-secondary" style="padding: 6px 12px; font-size: 12px;">Ajouter</button>
+          </div>
+        </div>
+
+        <!-- Maintenance types -->
+        <div class="catalog-section">
+          <h4 class="catalog-title">Types d'Interventions de Maintenance</h4>
+          <div class="tag-container">
+            <span *ngFor="let type of maintenanceTypes; let idx = index" class="catalog-tag">
+              {{ type }}
+              <button (click)="removeMaintenanceType(idx)"><i class="pi pi-times" style="font-size: 8px;"></i></button>
+            </span>
+          </div>
+          <div class="tag-add-row">
+            <input type="text" [(ngModel)]="newMaintenanceType" placeholder="Ajouter une intervention" class="form-input" style="padding: 6px 10px; font-size: 12px;" />
+            <button (click)="addMaintenanceType()" class="btn-secondary" style="padding: 6px 12px; font-size: 12px;">Ajouter</button>
+          </div>
+        </div>
+
+        <!-- Extra charges catalog -->
+        <div class="catalog-section">
+          <h4 class="catalog-title">Catalogue d'options supplémentaires</h4>
+          <div class="extras-grid">
+            <div *ngFor="let item of extras; let idx = index" class="extra-item">
+              <span class="extra-name">{{ item.Name }}</span>
+              <div class="extra-price-box">
+                <span class="extra-price">{{ item.Price }} €/jour</span>
+                <button (click)="removeExtra(idx)" class="extra-delete-btn"><i class="pi pi-trash" style="font-size: 12px;"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="extra-add-row">
+            <input type="text" [(ngModel)]="newExtra.name" placeholder="Nom de l'option (Ex: Siège Bébé)" class="form-input" style="padding: 6px 10px; font-size: 12px; flex: 2;" />
+            <input type="number" [(ngModel)]="newExtra.price" placeholder="Tarif (€/j)" class="form-input" style="padding: 6px 10px; font-size: 12px; flex: 1;" />
+            <button (click)="addExtra()" class="btn-primary" style="padding: 6px 16px; font-size: 12px;">Ajouter</button>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; border-top: 1px solid var(--color-border-light); padding-top: 16px;">
+          <button (click)="saveSettings()" class="btn-primary">
+            Enregistrer les Données Réf
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Admin Profile and Password updates -->
+    <div class="settings-right">
+      
+      <!-- Profile Information -->
+      <div class="card" style="padding: 24px;">
+        <h3 class="settings-section-title">
+          <i class="pi pi-user text-accent"></i> Profil Administrateur
+        </h3>
+        
+        <div class="profile-stack">
+          <div>
+            <label class="form-label">Nom d'utilisateur (Lecture Seule)</label>
+            <input type="text" [value]="profile.username" disabled class="form-input" style="background: var(--color-bg); color: var(--color-text-muted);" />
+          </div>
+
+          <div>
+            <label class="form-label">Nom Complet</label>
+            <input type="text" [(ngModel)]="profile.fullName" class="form-input" />
+          </div>
+
+          <button (click)="updateProfile()" class="btn-primary" style="width: 100%; margin-top: 8px;">
+            Mettre à jour le Profil
+          </button>
+        </div>
+      </div>
+
+      <!-- Security / Change Password -->
+      <div class="card" style="padding: 24px;">
+        <h3 class="settings-section-title">
+          <i class="pi pi-key text-accent"></i> Sécurité & Authentification
+        </h3>
+        
+        <div class="profile-stack">
+          <div>
+            <label class="form-label">Mot de Passe Actuel</label>
+            <input type="password" [(ngModel)]="passwordForm.currentPassword" class="form-input" />
+          </div>
+
+          <div>
+            <label class="form-label">Nouveau Mot de Passe</label>
+            <input type="password" [(ngModel)]="passwordForm.newPassword" class="form-input" />
+          </div>
+
+          <div>
+            <label class="form-label">Confirmer le Nouveau Mot de Passe</label>
+            <input type="password" [(ngModel)]="passwordForm.confirmPassword" class="form-input" />
+          </div>
+
+          <button (click)="updatePassword()" class="btn-primary" style="width: 100%; background: #1f2937; margin-top: 8px;">
+            Changer le Mot de Passe
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

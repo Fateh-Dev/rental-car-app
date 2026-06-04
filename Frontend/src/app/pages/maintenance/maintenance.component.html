@@ -1,0 +1,222 @@
+<div class="page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Suivi des Maintenances</h2>
+      <p class="page-desc">Enregistrez les interventions mécaniques (préventives ou correctives) et planifiez les prochains entretiens.</p>
+    </div>
+    <div class="header-actions">
+      <button (click)="openCalendar()" class="btn-secondary">
+        <i class="pi pi-calendar"></i>
+        <span>Calendrier d'Entretien</span>
+      </button>
+      <button (click)="openAddDialog()" class="btn-primary">
+        <i class="pi pi-plus"></i>
+        <span>Enregistrer Intervention</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Maintenance list -->
+  <div class="card table-card">
+    <div class="table-scroll" *ngIf="maintenances.length > 0">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th>Véhicule</th>
+            <th>Intervention</th>
+            <th>Dates</th>
+            <th>Km</th>
+            <th class="col-right">Coût</th>
+            <th>Atelier</th>
+            <th>Facture</th>
+            <th class="col-center">Statut</th>
+            <th class="col-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let maint of maintenances">
+            <td>
+              <div class="cell-stack">
+                <span class="cell-stack-title">{{ maint.vehicle?.brand }} {{ maint.vehicle?.model }}</span>
+                <span class="cell-stack-sub cell-mono">{{ maint.vehicle?.matricule }}</span>
+              </div>
+            </td>
+            <td><span class="cell-primary">{{ maint.maintenanceType }}</span></td>
+            <td>
+              <div class="cell-stack">
+                <span class="cell-muted">{{ maint.datePerformed | date:'dd/MM/yyyy' }}</span>
+                <span class="cell-stack-sub" *ngIf="maint.nextScheduledDate">Prochain: {{ maint.nextScheduledDate | date:'dd/MM/yyyy' }}</span>
+                <span class="cell-stack-sub" *ngIf="!maint.nextScheduledDate">—</span>
+              </div>
+            </td>
+            <td><span class="cell-muted">{{ maint.kmAtMaintenance | number }} km</span></td>
+            <td class="col-right"><span class="cell-primary">{{ maint.totalCost | currency:'EUR':'symbol':'1.0-2' }}</span></td>
+            <td><span class="cell-muted">{{ maint.workshopName }}</span></td>
+            <td>
+              <a *ngIf="maint.invoiceFilePath" [href]="'http://localhost:5222' + maint.invoiceFilePath" target="_blank" class="table-link">
+                {{ maint.invoiceNumber || 'Voir' }}
+              </a>
+              <span *ngIf="!maint.invoiceFilePath" class="cell-muted">—</span>
+            </td>
+            <td class="col-center">
+              <span
+                [class.badge-info]="maint.status === 'Scheduled'"
+                [class.badge-warning]="maint.status === 'InProgress'"
+                [class.badge-success]="maint.status === 'Completed'"
+                class="badge"
+              >
+                {{ maint.status === 'Scheduled' ? 'Planifié' : maint.status === 'InProgress' ? 'En cours' : 'Terminé' }}
+              </span>
+            </td>
+            <td>
+              <div class="cell-actions">
+                <button (click)="openEditDialog(maint)" title="Modifier" class="btn-icon"><i class="pi pi-pencil"></i></button>
+                <button (click)="deleteMaint(maint.id)" title="Supprimer" class="btn-icon danger"><i class="pi pi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="maintenances.length === 0" class="table-empty">
+      <i class="pi pi-cog"></i>
+      <span class="table-empty-title">Aucune maintenance enregistrée</span>
+      <p class="table-empty-desc">Enregistrez une intervention pour commencer le suivi.</p>
+    </div>
+
+    <div *ngIf="maintenances.length > 0" class="table-footer">
+      <span class="table-footer-info"><strong>{{ maintenances.length }}</strong> intervention(s)</span>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT MAINTENANCE DIALOG -->
+  <p-dialog 
+    [(visible)]="showCrudDialog" 
+    [style]="{width: '500px'}" 
+    [modal]="true" 
+    [header]="isEditMode ? 'Modifier la fiche de maintenance' : 'Enregistrer une intervention'"
+  >
+    <form (ngSubmit)="onSubmitMaint()" class="form-grid">
+      <div>
+        <label class="form-label">Véhicule</label>
+        <select [(ngModel)]="maintenanceForm.vehicleId" name="vehicleId" required [disabled]="isEditMode" class="form-input">
+          <option [ngValue]="null">Choisir un véhicule...</option>
+          <option *ngFor="let v of vehicles" [value]="v.id">{{ v.brand }} {{ v.model }} ({{ v.matricule }})</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="form-label">Type d'intervention</label>
+        <select [(ngModel)]="maintenanceForm.maintenanceType" name="maintenanceType" required class="form-input">
+          <option *ngFor="let t of maintenanceTypes" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="form-label">Date de l'intervention</label>
+        <p-datepicker [(ngModel)]="maintenanceForm.datePerformed" name="datePerformed" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+      </div>
+
+      <div>
+        <label class="form-label">Prochain entretien</label>
+        <p-datepicker [(ngModel)]="maintenanceForm.nextScheduledDate" name="nextScheduledDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+      </div>
+
+      <div>
+        <label class="form-label">Compteur km (Intervention)</label>
+        <input type="number" [(ngModel)]="maintenanceForm.kmAtMaintenance" name="kmAtMaintenance" required class="form-input"/>
+      </div>
+
+      <div>
+        <label class="form-label">Statut d'intervention</label>
+        <select [(ngModel)]="maintenanceForm.status" name="status" required class="form-input">
+          <option *ngFor="let s of statuses" [value]="s.value">{{ s.label }}</option>
+        </select>
+      </div>
+
+      <!-- Cost Split -->
+      <div class="cost-box">
+        <div>
+          <label class="form-label" style="color: var(--color-text-secondary);">Main d'œuvre (€)</label>
+          <input type="number" [(ngModel)]="maintenanceForm.laborCost" name="laborCost" class="form-input"/>
+        </div>
+        <div>
+          <label class="form-label" style="color: var(--color-text-secondary);">Pièces détachées (€)</label>
+          <input type="number" [(ngModel)]="maintenanceForm.partsCost" name="partsCost" class="form-input"/>
+        </div>
+      </div>
+
+      <div>
+        <label class="form-label">Nom de l'atelier / Garage</label>
+        <input type="text" [(ngModel)]="maintenanceForm.workshopName" name="workshopName" required class="form-input" placeholder="Garage Central"/>
+      </div>
+
+      <div>
+        <label class="form-label">Contact de l'atelier</label>
+        <input type="text" [(ngModel)]="maintenanceForm.workshopContact" name="workshopContact" class="form-input" placeholder="Tél ou email"/>
+      </div>
+
+      <div class="form-full">
+        <label class="form-label">Adresse de l'atelier</label>
+        <input type="text" [(ngModel)]="maintenanceForm.workshopAddress" name="workshopAddress" class="form-input" placeholder="Adresse du garage"/>
+      </div>
+
+      <div>
+        <label class="form-label">Facture N°</label>
+        <input type="text" [(ngModel)]="maintenanceForm.invoiceNumber" name="invoiceNumber" class="form-input" placeholder="N° de facture"/>
+      </div>
+
+      <div>
+        <label class="form-label">Fichier Facture (PDF/Image)</label>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <input type="file" (change)="onInvoiceUpload($event)" style="font-size: 11px; padding: 4px 0;"/>
+          <span *ngIf="uploadingInvoice" style="font-size: 11px; color: var(--color-accent);" class="animate-pulse">Chargement...</span>
+        </div>
+      </div>
+
+      <div class="form-full">
+        <label class="form-label">Description des travaux</label>
+        <textarea [(ngModel)]="maintenanceForm.description" name="description" rows="3" class="form-input" placeholder="Vidange, changement plaquettes de frein avant..."></textarea>
+      </div>
+
+      <div class="form-full form-actions">
+        <button type="button" (click)="showCrudDialog = false" class="btn-secondary">Annuler</button>
+        <button type="submit" class="btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </p-dialog>
+
+  <!-- CALENDAR DIALOG VIEW -->
+  <p-dialog 
+    [(visible)]="showCalendarDialog" 
+    [style]="{width: '500px'}" 
+    [modal]="true" 
+    header="Calendrier de maintenance"
+  >
+    <div style="max-height: 400px; overflow-y: auto; padding-right: 4px;">
+      <div *ngIf="calendarEvents.length === 0" style="text-align: center; padding: 20px; color: var(--color-text-muted);">
+        Aucun entretien programmé.
+      </div>
+      
+      <div class="event-timeline" *ngIf="calendarEvents.length > 0">
+        <div *ngFor="let item of calendarEvents" class="event-item">
+          <span class="event-dot"></span>
+          <div class="event-card">
+            <div>
+              <span class="event-date">{{ item.start | date:'yyyy-MM-dd' }}</span>
+              <h5 class="event-title">{{ item.title }}</h5>
+              <span class="event-desc">Plaque: {{ item.vehicleMatricule }}</span>
+            </div>
+            <span class="badge badge-info">{{ item.maintenanceType }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div style="display: flex; justify-content: flex-end; margin-top: 16px; border-top: 1px solid var(--color-border-light); padding-top: 12px;">
+      <button (click)="showCalendarDialog = false" class="btn-secondary">Fermer</button>
+    </div>
+  </p-dialog>
+</div>

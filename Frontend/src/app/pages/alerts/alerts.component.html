@@ -1,0 +1,174 @@
+<div class="page">
+  <!-- Page Header -->
+  <div class="page-header page-header-dark">
+    <div>
+      <h2 class="page-title">Centre d'Alertes</h2>
+      <p class="page-desc">Assurances, contrôles techniques, consommables et permis de conduire.</p>
+    </div>
+    <button (click)="loadAlerts()" class="btn-primary">
+      <i class="pi pi-refresh"></i> Actualiser
+    </button>
+  </div>
+
+  <!-- KPI Badges Row -->
+  <div class="kpi-grid">
+    <div (click)="selectedSeverity = 'ALL'; applyFilters()" 
+         [class.active]="selectedSeverity === 'ALL'"
+         class="card kpi-card"
+    >
+      <span class="kpi-label">Total Alertes</span>
+      <div class="kpi-number-row">
+        <span class="kpi-number">{{ alerts.length }}</span>
+      </div>
+    </div>
+    
+    <div (click)="selectedSeverity = 'CRITICAL'; applyFilters()" 
+         [class.active]="selectedSeverity === 'CRITICAL'"
+         class="card kpi-card critical"
+    >
+      <span class="kpi-label kpi-label-danger">Critique</span>
+      <div class="kpi-number-row">
+        <span class="kpi-number kpi-number-danger">{{ criticalCount }}</span>
+        <span *ngIf="criticalCount > 0" class="kpi-pulse kpi-pulse-danger"></span>
+      </div>
+    </div>
+
+    <div (click)="selectedSeverity = 'WARNING'; applyFilters()" 
+         [class.active]="selectedSeverity === 'WARNING'"
+         class="card kpi-card warning"
+    >
+      <span class="kpi-label kpi-label-warning">Avertissement</span>
+      <div class="kpi-number-row">
+        <span class="kpi-number kpi-number-warning">{{ warningCount }}</span>
+      </div>
+    </div>
+
+    <div (click)="selectedSeverity = 'INFO'; applyFilters()" 
+         [class.active]="selectedSeverity === 'INFO'"
+         class="card kpi-card info"
+    >
+      <span class="kpi-label kpi-label-info">Information</span>
+      <div class="kpi-number-row">
+        <span class="kpi-number kpi-number-info">{{ infoCount }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Panel -->
+  <div class="card filter-bar">
+    <div class="filter-left">
+      <!-- Search Input -->
+      <div class="filter-search">
+        <i class="pi pi-search filter-search-icon"></i>
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" 
+               placeholder="Rechercher cible, message..." 
+               class="form-input" />
+      </div>
+
+      <!-- Type Dropdown Filter -->
+      <div class="filter-select-group">
+        <span class="filter-module-label">Module</span>
+        <select [(ngModel)]="selectedType" (ngModelChange)="applyFilters()" class="form-input filter-select">
+          <option value="ALL">Tous les modules</option>
+          <option value="INSURANCE">Assurance</option>
+          <option value="INSPECTION">Contrôle Technique</option>
+          <option value="MAINTENANCE">Maintenance Planifiée</option>
+          <option value="ODOMETERINACTIVITY">Inactivité Odomètre</option>
+          <option value="DRIVERLICENSE">Permis Client</option>
+          <option value="CONSUMABLE">Consommables</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Count indicator -->
+    <div class="filter-count">
+      <strong>{{ filteredAlerts.length }}</strong> alerte(s) affichée(s)
+    </div>
+  </div>
+
+  <!-- Alerts list -->
+  <div class="card table-card">
+    <div class="table-scroll" *ngIf="displayedAlerts.length > 0">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th class="col-center">Gravité</th>
+            <th>Type</th>
+            <th>Concerne</th>
+            <th>Description</th>
+            <th>Échéance</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let alert of displayedAlerts">
+            <td class="col-center">
+              <span
+                class="badge"
+                [class.badge-danger]="alert.severity === 'Critical'"
+                [class.badge-warning]="alert.severity === 'Warning'"
+                [class.badge-info]="alert.severity === 'Info'"
+              >
+                {{ alert.severity === 'Critical' ? 'Critique' : alert.severity === 'Warning' ? 'Attention' : 'Info' }}
+              </span>
+            </td>
+            <td>
+              <div
+                class="alert-type-badge"
+                [class.bg-type-red]="alert.type === 'Insurance' || alert.type === 'TechnicalInspection'"
+                [class.bg-type-blue]="alert.type === 'OdometerInactivity'"
+                [class.bg-type-amber]="alert.type === 'Consumable' || alert.type === 'Maintenance'"
+                [class.bg-type-emerald]="alert.type === 'DriverLicense'"
+              >
+                <i class="pi"
+                  [class.pi-shield]="alert.type === 'Insurance'"
+                  [class.pi-file-pdf]="alert.type === 'TechnicalInspection'"
+                  [class.pi-history]="alert.type === 'OdometerInactivity'"
+                  [class.pi-cog]="alert.type === 'Consumable' || alert.type === 'Maintenance'"
+                  [class.pi-user]="alert.type === 'DriverLicense'"
+                ></i>
+                <span>
+                  {{ alert.type === 'OdometerInactivity' ? 'Inactivité Km' :
+                     alert.type === 'DriverLicense' ? 'Permis' :
+                     alert.type === 'TechnicalInspection' ? 'Contrôle' :
+                     alert.type === 'Insurance' ? 'Assurance' :
+                     alert.type === 'Consumable' ? 'Consommable' : alert.type }}
+                </span>
+              </div>
+            </td>
+            <td>
+              <a *ngIf="alert.vehicleId" [routerLink]="['/vehicles']" class="table-link">
+                <i class="pi pi-car"></i>{{ alert.target }}
+              </a>
+              <a *ngIf="alert.clientId" [routerLink]="['/clients']" class="table-link">
+                <i class="pi pi-user"></i>{{ alert.target }}
+              </a>
+              <span *ngIf="!alert.vehicleId && !alert.clientId" class="cell-primary">{{ alert.target }}</span>
+            </td>
+            <td><span class="cell-muted">{{ alert.message }}</span></td>
+            <td><span class="cell-primary">{{ alert.daysOrKmLeftText }}</span></td>
+            <td><span class="cell-muted">{{ alert.dateConcerned | date:'dd/MM/yyyy' }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="filteredAlerts.length === 0" class="table-empty table-empty-success">
+      <i class="pi pi-check-circle"></i>
+      <span class="table-empty-title">Aucune alerte à signaler</span>
+      <p class="table-empty-desc">Toutes les échéances et contrôles sont à jour.</p>
+    </div>
+
+    <div *ngIf="filteredAlerts.length > 0" class="table-footer">
+      <span class="table-footer-info">
+        <strong>{{ filteredAlerts.length }}</strong> alerte(s)
+        <span *ngIf="filteredAlerts.length > pageSize"> — page {{ page }} / {{ totalPages }}</span>
+      </span>
+      <div *ngIf="filteredAlerts.length > pageSize" class="pagination">
+        <button [disabled]="page === 1" (click)="onPageChange(page - 1)" class="page-btn"><i class="pi pi-chevron-left"></i></button>
+        <button *ngFor="let p of pages" (click)="onPageChange(p)" [class.active]="p === page" class="page-btn">{{ p }}</button>
+        <button [disabled]="page >= totalPages" (click)="onPageChange(page + 1)" class="page-btn"><i class="pi pi-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
