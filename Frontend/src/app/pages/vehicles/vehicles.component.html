@@ -168,7 +168,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of consumablesStatus">
-                <td class="font-semibold">{{ i18n.translateAlertMessage(item.consumableType) }}</td>
+                <td class="font-semibold">{{ i18n.translateConsumableType(item.consumableType) }}</td>
                 <td>
                   <span *ngIf="item.lastReplacementDate">{{ item.lastReplacementDate | date:'dd/MM/yyyy' }} ({{ item.lastReplacementKm }} km)</span>
                   <span *ngIf="!item.lastReplacementDate" class="text-muted" style="font-style:italic">{{ 'vehicles.noLog' | t }}</span>
@@ -185,6 +185,38 @@
               </tr>
             </tbody>
           </table>
+
+          <!-- Consumable Replacements History -->
+          <div style="margin-top: 24px;">
+            <h5 class="section-title" style="margin-bottom: 12px; font-weight: 600;">{{ 'consumables.logReplacement' | t }}</h5>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>{{ 'vehicles.consumable' | t }}</th>
+                  <th>{{ 'common.date' | t }}</th>
+                  <th>{{ 'vehicles.counter' | t }}</th>
+                  <th>{{ 'common.notes' | t }}</th>
+                  <th style="width: 80px;" class="text-center">{{ 'common.actions' | t }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let log of consumableLogs">
+                  <td class="font-semibold">{{ i18n.translateConsumableType(log.consumableType) }}</td>
+                  <td>{{ log.replacementDate | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ log.replacementKm }} km</td>
+                  <td class="text-secondary">{{ log.notes || '—' }}</td>
+                  <td class="text-center">
+                    <button (click)="deleteConsumable(log.id)" class="btn-icon danger" title="Delete replacement record">
+                      <i class="pi pi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="consumableLogs.length === 0">
+                  <td colspan="5" class="text-center text-muted" style="font-style: italic;">{{ 'vehicles.noLog' | t }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <!-- Insurance -->
@@ -202,6 +234,7 @@
                 <th>{{ 'vehicles.validity' | t }}</th>
                 <th>{{ 'vehicles.premiumValue' | t }}</th>
                 <th>{{ 'common.status' | t }}</th>
+                <th style="width: 80px;" class="text-center">{{ 'common.actions' | t }}</th>
               </tr>
             </thead>
             <tbody>
@@ -223,6 +256,11 @@
                     [class.badge-danger]="item.status === 'Expired'"
                   >{{ 'statuses.' + (item.status === 'ExpiringSoon' ? 'expiringSoon' : item.status.toLowerCase()) | t }}</span>
                 </td>
+                <td class="text-center">
+                  <button (click)="deletePolicy(item.policy.id)" class="btn-icon danger" title="Delete policy">
+                    <i class="pi pi-trash"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -243,6 +281,7 @@
                 <th>{{ 'vehicles.result' | t }}</th>
                 <th>{{ 'common.cost' | t }}</th>
                 <th>{{ 'common.status' | t }}</th>
+                <th style="width: 80px;" class="text-center">{{ 'common.actions' | t }}</th>
               </tr>
             </thead>
             <tbody>
@@ -263,6 +302,11 @@
                     [class.badge-warning]="item.status === 'ExpiringSoon'"
                     [class.badge-danger]="item.status === 'Expired' || item.status === 'Failed'"
                   >{{ 'statuses.' + (item.status === 'ExpiringSoon' ? 'expiringSoon' : item.status.toLowerCase()) | t }}</span>
+                </td>
+                <td class="text-center">
+                  <button (click)="deleteInspection(item.inspection.id)" class="btn-icon danger" title="Delete inspection">
+                    <i class="pi pi-trash"></i>
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -287,6 +331,7 @@
                 <th>{{ 'common.cost' | t }}</th>
                 <th>{{ 'vehicles.consumption' | t }}</th>
                 <th>{{ 'vehicles.anomaly' | t }}</th>
+                <th style="width: 80px;" class="text-center">{{ 'common.actions' | t }}</th>
               </tr>
             </thead>
             <tbody>
@@ -302,6 +347,11 @@
                 <td>
                   <span *ngIf="log.log.isAnomaly" class="badge badge-danger">{{ 'vehicles.overConsumption' | t }}</span>
                   <span *ngIf="!log.log.isAnomaly" class="text-muted">—</span>
+                </td>
+                <td class="text-center">
+                  <button (click)="deleteFuel(log.log.id)" class="btn-icon danger" title="Delete fuel fill-up">
+                    <i class="pi pi-trash"></i>
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -324,13 +374,18 @@
                 [class.dot-accent]="item.source === 'ContractStart'"
                 [class.dot-info]="item.source === 'ContractReturn'"
               ></span>
-              <div class="km-entry-content">
-                <span class="km-entry-date">{{ item.date | date:'dd/MM/yyyy HH:mm' }}</span>
-                <span class="km-entry-value">{{ item.kmValue }} km</span>
-                <span class="km-entry-notes">{{ item.notes }}</span>
-                <span class="km-entry-source badge badge-neutral">
-                  {{ item.source === 'Manual' ? ('fuel.sourceManual' | t) : item.source === 'FuelFillup' ? ('fuel.sourceFuel' | t) : ('fuel.sourceContract' | t) }}
-                </span>
+              <div class="km-entry-content" style="display: flex; align-items: center; width: 100%;">
+                <div style="flex: 1;">
+                  <span class="km-entry-date">{{ item.date | date:'dd/MM/yyyy HH:mm' }}</span>
+                  <span class="km-entry-value">{{ item.kmValue }} km</span>
+                  <span class="km-entry-notes">{{ item.notes }}</span>
+                  <span class="km-entry-source badge badge-neutral">
+                    {{ item.source === 'Manual' ? ('fuel.sourceManual' | t) : item.source === 'FuelFillup' ? ('fuel.sourceFuel' | t) : ('fuel.sourceContract' | t) }}
+                  </span>
+                </div>
+                <button *ngIf="item.source === 'Manual'" (click)="deleteKm(item.id)" class="btn-icon danger" style="padding: 4px 8px; font-size: 0.8rem;" title="Delete manual entry">
+                  <i class="pi pi-trash"></i>
+                </button>
               </div>
             </div>
           </div>

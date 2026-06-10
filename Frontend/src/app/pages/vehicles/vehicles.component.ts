@@ -50,6 +50,7 @@ export class VehiclesComponent implements OnInit {
 
   // Sub-detail data
   consumablesStatus: any[] = [];
+  consumableLogs: any[] = [];
   insurancePolicies: any[] = [];
   inspectionsList: any[] = [];
   fuelLogsList: any[] = [];
@@ -287,7 +288,10 @@ export class VehiclesComponent implements OnInit {
     if (!this.selectedVehicle) return;
 
     if (tab === 'consumables') {
-      this.api.getVehicleConsumablesStatus(this.selectedVehicle.id).subscribe(res => this.consumablesStatus = res.statusReport);
+      this.api.getVehicleConsumablesStatus(this.selectedVehicle.id).subscribe(res => {
+        this.consumablesStatus = res.statusReport;
+        this.consumableLogs = res.logs;
+      });
     } else if (tab === 'insurance') {
       this.api.getInsurancePolicies(this.selectedVehicle.id).subscribe(res => this.insurancePolicies = res.all);
     } else if (tab === 'inspections') {
@@ -415,5 +419,54 @@ export class VehiclesComponent implements OnInit {
 
   exportFuelCsv(): void {
     window.open(this.api.getFuelExportCsvUrl(this.selectedVehicle.id));
+  }
+
+  deletePolicy(id: number): void {
+    if (confirm(this.i18n.t('common.deleteConfirm'))) {
+      this.api.deleteInsurancePolicy(id).subscribe(() => {
+        this.switchDetailsTab('insurance');
+      });
+    }
+  }
+
+  deleteInspection(id: number): void {
+    if (confirm(this.i18n.t('common.deleteConfirm'))) {
+      this.api.deleteTechnicalInspection(id).subscribe(() => {
+        this.switchDetailsTab('inspections');
+      });
+    }
+  }
+
+  deleteFuel(id: number): void {
+    if (confirm(this.i18n.t('common.deleteConfirm'))) {
+      this.api.deleteFuelLog(id).subscribe(() => {
+        this.switchDetailsTab('fuel');
+        this.refreshVehicleCurrentKm();
+      });
+    }
+  }
+
+  deleteKm(id: number): void {
+    if (confirm(this.i18n.t('common.deleteConfirm'))) {
+      this.api.deleteKmEntry(id).subscribe(() => {
+        this.switchDetailsTab('km_history');
+        this.refreshVehicleCurrentKm();
+      });
+    }
+  }
+
+  deleteConsumable(id: number): void {
+    if (confirm(this.i18n.t('common.deleteConfirm'))) {
+      this.api.deleteConsumableLog(id).subscribe(() => {
+        this.switchDetailsTab('consumables');
+      });
+    }
+  }
+
+  refreshVehicleCurrentKm(): void {
+    this.api.getVehicleById(this.selectedVehicle.id).subscribe(res => {
+      this.selectedVehicle.currentKm = res.currentKm;
+      this.loadVehicles();
+    });
   }
 }

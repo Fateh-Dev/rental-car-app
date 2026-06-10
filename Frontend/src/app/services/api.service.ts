@@ -118,6 +118,9 @@ export class ApiService {
     const token = localStorage.getItem('parc_auto_token');
     return `${this.baseUrl}/km/export-csv?access_token=${token}${vehicleId ? `&vehicleId=${vehicleId}` : ''}`;
   }
+  deleteKmEntry(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/km/${id}`);
+  }
 
   // ================= Maintenance =================
   getMaintenances(status?: string, vehicleId?: number): Observable<any> {

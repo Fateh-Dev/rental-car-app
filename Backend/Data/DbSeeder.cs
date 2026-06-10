@@ -317,114 +317,16 @@ namespace Backend.Data
             }
 
             // Seed Insurance Policies
+            // Seed Insurance Policies (Skipped: starting clean)
             if (!context.InsurancePolicies.Any())
             {
-                var vehicle1 = context.Vehicles.FirstOrDefault(v => v.Matricule == "123-AB-45");
-                var vehicle2 = context.Vehicles.FirstOrDefault(v => v.Matricule == "456-EF-78");
-                var vehicle5 = context.Vehicles.FirstOrDefault(v => v.Matricule == "987-CD-65");
-
-                if (vehicle1 != null && vehicle2 != null && vehicle5 != null)
-                {
-                    var policies = new List<InsurancePolicy>
-                    {
-                        // Valid comprehensive policy
-                        new()
-                        {
-                            VehicleId = vehicle1.Id,
-                            InsurerName = "AXA Assurances",
-                            PolicyNumber = "POL-AXA-9018273",
-                            CoverageType = "Tous Risques",
-                            StartDate = DateTime.UtcNow.AddMonths(-6),
-                            ExpiryDate = DateTime.UtcNow.AddMonths(6),
-                            PremiumAmount = 620.00m,
-                            InsuredValue = 18000.00m,
-                            AgentContact = "axaalger@axa.dz",
-                        },
-                        // Expiring policy (5 days remaining)
-                        new()
-                        {
-                            VehicleId = vehicle2.Id,
-                            InsurerName = "Alliance Assurances",
-                            PolicyNumber = "POL-ALL-82192",
-                            CoverageType = "Tous Risques",
-                            StartDate = DateTime.UtcNow.AddYears(-1).AddDays(5),
-                            ExpiryDate = DateTime.UtcNow.AddDays(5), // EXPIRES IN 5 DAYS
-                            PremiumAmount = 580.00m,
-                            InsuredValue = 20000.00m,
-                            AgentContact = "allianceoran@alliance.dz",
-                        },
-                        // Expired policy (10 days ago)
-                        new()
-                        {
-                            VehicleId = vehicle5.Id,
-                            InsurerName = "SAA Assurances",
-                            PolicyNumber = "POL-SAA-112233",
-                            CoverageType = "Responsabilité Civile",
-                            StartDate = DateTime.UtcNow.AddYears(-1).AddDays(-10),
-                            ExpiryDate = DateTime.UtcNow.AddDays(-10), // EXPIRED 10 DAYS AGO
-                            PremiumAmount = 450.00m,
-                            InsuredValue = 40000.00m,
-                            AgentContact = "saa@saa.dz",
-                        },
-                    };
-
-                    context.InsurancePolicies.AddRange(policies);
-                    context.SaveChanges();
-                }
+                // Starting with empty history
             }
 
-            // Seed Technical Inspections
+            // Seed Technical Inspections (Skipped: starting clean)
             if (!context.TechnicalInspections.Any())
             {
-                var vehicle1 = context.Vehicles.FirstOrDefault(v => v.Matricule == "123-AB-45");
-                var vehicle4 = context.Vehicles.FirstOrDefault(v => v.Matricule == "LIV-04-DZ");
-                var vehicle5 = context.Vehicles.FirstOrDefault(v => v.Matricule == "987-CD-65");
-
-                if (vehicle1 != null && vehicle4 != null && vehicle5 != null)
-                {
-                    var inspections = new List<TechnicalInspection>
-                    {
-                        // Passed inspection
-                        new()
-                        {
-                            VehicleId = vehicle1.Id,
-                            InspectionDate = DateTime.UtcNow.AddYears(-1),
-                            ExpiryDate = DateTime.UtcNow.AddYears(1),
-                            Result = "Pass",
-                            CenterName = "Contrôle Technique Alger Centre",
-                            CenterAddress = "Rue Hassiba Ben Bouali, Alger",
-                            Cost = 2500.00m,
-                            Remarks = "Aucune défaillance majeure.",
-                        },
-                        // Failed inspection (requires contre-visite)
-                        new()
-                        {
-                            VehicleId = vehicle4.Id,
-                            InspectionDate = DateTime.UtcNow.AddDays(-3),
-                            ExpiryDate = DateTime.UtcNow.AddMonths(2), // Counter-inspection required within 2 months
-                            Result = "Fail",
-                            CenterName = "Dekra Contrôle Technique Oran",
-                            CenterAddress = "Zone Industrielle, Oran",
-                            Cost = 3000.00m,
-                            Remarks = "Défaillance critique sur injecteurs et opacité des fumées.",
-                        },
-                        // Expiring inspection (14 days remaining)
-                        new()
-                        {
-                            VehicleId = vehicle5.Id,
-                            InspectionDate = DateTime.UtcNow.AddYears(-2).AddDays(14),
-                            ExpiryDate = DateTime.UtcNow.AddDays(14), // EXPIRES IN 14 DAYS
-                            Result = "Pass",
-                            CenterName = "Centre de Contrôle Technique Constantine",
-                            CenterAddress = "Route de Batna, Constantine",
-                            Cost = 2500.00m,
-                            Remarks = "Plaquettes arrières à surveiller.",
-                        },
-                    };
-
-                    context.TechnicalInspections.AddRange(inspections);
-                    context.SaveChanges();
-                }
+                // Starting with empty history
             }
 
             // Seed Fuel Logs (Skipped: all vehicles start never rented and at 0 km)

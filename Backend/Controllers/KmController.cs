@@ -131,5 +131,30 @@ namespace Backend.Controllers
             var csvBytes = Encoding.UTF8.GetBytes(builder.ToString());
             return File(csvBytes, "text/csv", $"Suivi_Kilometrage_{(vehicleId.HasValue ? $"Vehicule_{vehicleId}" : "Total")}_{DateTime.UtcNow:yyyyMMdd}.csv");
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEntry(int id)
+        {
+            var entry = await _context.KmEntries.FindAsync(id);
+            if (entry == null) return NotFound(new { message = "Km entry not found" });
+
+            var vehicle = await _context.Vehicles.FindAsync(entry.VehicleId);
+            _context.KmEntries.Remove(entry);
+            await _context.SaveChangesAsync();
+
+            if (vehicle != null)
+            {
+                var highestRemaining = await _context.KmEntries
+                    .Where(k => k.VehicleId == vehicle.Id)
+                    .OrderByDescending(k => k.KmValue)
+                    .Select(k => k.KmValue)
+                    .FirstOrDefaultAsync();
+
+                vehicle.CurrentKm = Math.Max(vehicle.InitialKm, highestRemaining);
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok(new { message = "Km entry deleted successfully" });
+        }
     }
 }
