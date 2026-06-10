@@ -39,11 +39,18 @@ export class SettingsComponent implements OnInit {
   message = '';
   messageType = 'success';
 
+  // Accordion state for reference data sections
+  openRefSection: string | null = null;
+
   constructor(private api: ApiService, public i18n: I18nService) {}
 
   ngOnInit(): void {
     this.loadSettings();
     this.loadProfile();
+  }
+
+  toggleRefSection(section: string): void {
+    this.openRefSection = this.openRefSection === section ? null : section;
   }
 
   loadSettings(): void {

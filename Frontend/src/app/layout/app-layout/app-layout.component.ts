@@ -21,7 +21,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   showAlertsDropdown = false;
   showLangDropdown = false;
   sidebarOpen = typeof window !== 'undefined' ? window.innerWidth > 768 : true;
+  sidebarCollapsed = false;
   private routerSub?: Subscription;
+  private alertInterval?: ReturnType<typeof setInterval>;
 
   menuItems = [
     { labelKey: 'sidebar.dashboard', icon: 'pi pi-chart-bar', route: '/dashboard' },
@@ -41,6 +43,13 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
 
   constructor(private api: ApiService, private router: Router, public i18n: I18nService) {
     this.languages = this.i18n.getLanguages();
+    // Restore collapsed state from localStorage
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('parc_auto_sidebar_collapsed');
+      if (saved === 'true') {
+        this.sidebarCollapsed = true;
+      }
+    }
   }
 
   ngOnInit(): void {
@@ -51,20 +60,25 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     }
     this.loadAlerts();
     // Poll alerts every 60 seconds
-    setInterval(() => this.loadAlerts(), 60000);
+    this.alertInterval = setInterval(() => this.loadAlerts(), 60000);
 
     this.routerSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.cleanupBlockingOverlays();
       }
-      if (event instanceof NavigationEnd && window.innerWidth <= 768) {
-        setTimeout(() => (this.sidebarOpen = false));
+      if (event instanceof NavigationEnd) {
+        if (window.innerWidth <= 768) {
+          setTimeout(() => (this.sidebarOpen = false));
+        }
       }
     });
   }
 
   ngOnDestroy(): void {
     this.routerSub?.unsubscribe();
+    if (this.alertInterval) {
+      clearInterval(this.alertInterval);
+    }
   }
 
   @HostListener('document:click', ['$event'])
@@ -135,6 +149,11 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.sidebarOpen = !this.sidebarOpen;
     });
+  }
+
+  toggleCollapse(): void {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+    localStorage.setItem('parc_auto_sidebar_collapsed', String(this.sidebarCollapsed));
   }
 
   closeSidebar(): void {

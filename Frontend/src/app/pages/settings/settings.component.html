@@ -1,9 +1,9 @@
 <div class="page">
-  <!-- Header Banner -->
+  <!-- Header -->
   <div class="page-header">
     <div>
-      <h2 class="page-header-title" style="color: white;">{{ 'settings.pageTitle' | t }}</h2>
-      <p class="page-header-desc">{{ 'settings.pageDesc' | t }}</p>
+      <h2 class="page-title">{{ 'settings.pageTitle' | t }}</h2>
+      <p class="page-desc">{{ 'settings.pageDesc' | t }}</p>
     </div>
   </div>
 
@@ -19,146 +19,217 @@
 
   <!-- Content Grid -->
   <div class="settings-layout">
-    <!-- Left Column: Global Alert Thresholds -->
+    <!-- Left Column -->
     <div class="settings-left">
       
-      <!-- System thresholds configuration -->
-      <div class="card" style="padding: 24px;">
-        <h3 class="settings-section-title">
-          <i class="pi pi-sliders-h text-accent"></i> {{ 'settings.thresholdsConfig' | t }}
-        </h3>
-
-        <div class="settings-form-grid">
-          <!-- Currency symbol -->
-          <div>
-            <label class="form-label">{{ 'settings.currencySymbol' | t }}</label>
-            <input type="text" [(ngModel)]="settings.currencySymbol" class="form-input" />
+      <!-- System Thresholds -->
+      <div class="card settings-card">
+        <div class="settings-card-header">
+          <div class="settings-card-icon icon-accent">
+            <i class="pi pi-sliders-h"></i>
           </div>
-
-          <!-- Date format -->
           <div>
-            <label class="form-label">{{ 'settings.dateFormat' | t }}</label>
-            <input type="text" [(ngModel)]="settings.dateFormat" class="form-input" />
-          </div>
-
-          <!-- Km Inactivity threshold -->
-          <div>
-            <label class="form-label">{{ 'settings.kmInactivity' | t }}</label>
-            <input type="number" [(ngModel)]="settings.kmInactivityDaysThreshold" class="form-input" />
-          </div>
-
-          <!-- Maintenance alert days before -->
-          <div>
-            <label class="form-label">{{ 'settings.maintenanceAlert' | t }}</label>
-            <input type="number" [(ngModel)]="settings.maintenanceNotifyDaysBefore" class="form-input" />
-          </div>
-
-          <!-- Insurance thresholds -->
-          <div>
-            <label class="form-label">{{ 'settings.insuranceThresholds' | t }}</label>
-            <input type="text" [(ngModel)]="settings.insuranceExpiryDaysThresholds" placeholder="Ex: 30,15,7" class="form-input" />
-          </div>
-
-          <!-- Inspection thresholds -->
-          <div>
-            <label class="form-label">{{ 'settings.inspectionThresholds' | t }}</label>
-            <input type="text" [(ngModel)]="settings.inspectionExpiryDaysThresholds" placeholder="Ex: 30,15,7" class="form-input" />
-          </div>
-
-          <!-- Consumable notify km before -->
-          <div>
-            <label class="form-label">{{ 'settings.consumableAlertKm' | t }}</label>
-            <input type="number" [(ngModel)]="settings.consumableNotifyKmBefore" class="form-input" />
-          </div>
-
-          <!-- Consumable notify days before -->
-          <div>
-            <label class="form-label">{{ 'settings.consumableAlertDays' | t }}</label>
-            <input type="number" [(ngModel)]="settings.consumableNotifyDaysBefore" class="form-input" />
+            <h3 class="settings-card-title">{{ 'settings.thresholdsConfig' | t }}</h3>
+            <p class="settings-card-desc">{{ 'settings.thresholdsDesc' | t }}</p>
           </div>
         </div>
 
-        <div class="settings-form-actions">
-          <button (click)="saveSettings()" class="btn-primary">
-            {{ 'settings.saveConfig' | t }}
-          </button>
+        <div class="settings-card-body">
+          <div class="settings-form-grid">
+            <div class="form-group">
+              <label class="form-label">{{ 'settings.currencySymbol' | t }}</label>
+              <input type="text" [(ngModel)]="settings.currencySymbol" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'settings.dateFormat' | t }}</label>
+              <input type="text" [(ngModel)]="settings.dateFormat" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'settings.kmInactivity' | t }}</label>
+              <input type="number" [(ngModel)]="settings.kmInactivityDaysThreshold" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'settings.maintenanceAlert' | t }}</label>
+              <input type="number" [(ngModel)]="settings.maintenanceNotifyDaysBefore" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'settings.insuranceThresholds' | t }}</label>
+              <input type="text" [(ngModel)]="settings.insuranceExpiryDaysThresholds" placeholder="30,15,7" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'settings.inspectionThresholds' | t }}</label>
+              <input type="text" [(ngModel)]="settings.inspectionExpiryDaysThresholds" placeholder="30,15,7" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'settings.consumableAlertKm' | t }}</label>
+              <input type="number" [(ngModel)]="settings.consumableNotifyKmBefore" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'settings.consumableAlertDays' | t }}</label>
+              <input type="number" [(ngModel)]="settings.consumableNotifyDaysBefore" class="form-input" />
+            </div>
+          </div>
+
+          <div class="settings-form-actions">
+            <button (click)="saveSettings()" class="btn-primary">
+              <i class="pi pi-check"></i>
+              {{ 'settings.saveConfig' | t }}
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Reference catalogs management -->
-      <div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 24px;">
-        <h3 class="settings-section-title" style="margin-bottom: 8px;">
-          <i class="pi pi-list text-accent"></i> {{ 'settings.referenceData' | t }}
-        </h3>
-
-        <!-- Vehicle types -->
-        <div class="catalog-section">
-          <h4 class="catalog-title">{{ 'settings.vehicleCategories' | t }}</h4>
-          <div class="tag-container">
-            <span *ngFor="let type of vehicleTypes; let idx = index" class="catalog-tag">
-              {{ type }}
-              <button (click)="removeVehicleType(idx)"><i class="pi pi-times" style="font-size: 8px;"></i></button>
-            </span>
+      <!-- Reference Data Management — Accordion Style -->
+      <div class="card settings-card">
+        <div class="settings-card-header">
+          <div class="settings-card-icon icon-teal">
+            <i class="pi pi-list"></i>
           </div>
-          <div class="tag-add-row">
-            <input type="text" [(ngModel)]="newVehicleType" [placeholder]="'settings.addCategory' | t" class="form-input" style="padding: 6px 10px; font-size: 12px;" />
-            <button (click)="addVehicleType()" class="btn-secondary" style="padding: 6px 12px; font-size: 12px;">{{ 'common.add' | t }}</button>
+          <div>
+            <h3 class="settings-card-title">{{ 'settings.referenceData' | t }}</h3>
+            <p class="settings-card-desc">{{ 'settings.referenceDataDesc' | t }}</p>
           </div>
         </div>
 
-        <!-- Fuel types -->
-        <div class="catalog-section">
-          <h4 class="catalog-title">{{ 'settings.fuelTypes' | t }}</h4>
-          <div class="tag-container">
-            <span *ngFor="let type of fuelTypes; let idx = index" class="catalog-tag">
-              {{ type }}
-              <button (click)="removeFuelType(idx)"><i class="pi pi-times" style="font-size: 8px;"></i></button>
-            </span>
-          </div>
-          <div class="tag-add-row">
-            <input type="text" [(ngModel)]="newFuelType" [placeholder]="'settings.addFuel' | t" class="form-input" style="padding: 6px 10px; font-size: 12px;" />
-            <button (click)="addFuelType()" class="btn-secondary" style="padding: 6px 12px; font-size: 12px;">{{ 'common.add' | t }}</button>
-          </div>
-        </div>
-
-        <!-- Maintenance types -->
-        <div class="catalog-section">
-          <h4 class="catalog-title">{{ 'settings.maintenanceTypes' | t }}</h4>
-          <div class="tag-container">
-            <span *ngFor="let type of maintenanceTypes; let idx = index" class="catalog-tag">
-              {{ i18n.translateMaintenanceType(type) }}
-              <button (click)="removeMaintenanceType(idx)"><i class="pi pi-times" style="font-size: 8px;"></i></button>
-            </span>
-          </div>
-          <div class="tag-add-row">
-            <input type="text" [(ngModel)]="newMaintenanceType" [placeholder]="'settings.addIntervention' | t" class="form-input" style="padding: 6px 10px; font-size: 12px;" />
-            <button (click)="addMaintenanceType()" class="btn-secondary" style="padding: 6px 12px; font-size: 12px;">{{ 'common.add' | t }}</button>
-          </div>
-        </div>
-
-        <!-- Extra charges catalog -->
-        <div class="catalog-section">
-          <h4 class="catalog-title">{{ 'settings.extrasCatalog' | t }}</h4>
-          <div class="extras-grid">
-            <div *ngFor="let item of extras; let idx = index" class="extra-item">
-              <span class="extra-name">{{ item.Name }}</span>
-              <div class="extra-price-box">
-                <span class="extra-price">{{ item.Price }} €{{ 'common.perDay' | t }}</span>
-                <button (click)="removeExtra(idx)" class="extra-delete-btn"><i class="pi pi-trash" style="font-size: 12px;"></i></button>
+        <div class="settings-card-body ref-body">
+          <!-- Vehicle Categories -->
+          <div class="ref-section" [class.ref-open]="openRefSection === 'vehicles'">
+            <button class="ref-section-header" (click)="toggleRefSection('vehicles')">
+              <div class="ref-section-left">
+                <i class="pi pi-car ref-section-icon"></i>
+                <div>
+                  <span class="ref-section-title">{{ 'settings.vehicleCategories' | t }}</span>
+                  <span class="ref-section-count">{{ vehicleTypes.length }} {{ 'settings.itemsConfigured' | t }}</span>
+                </div>
+              </div>
+              <i class="pi pi-chevron-down ref-chevron"></i>
+            </button>
+            <div class="ref-section-body" *ngIf="openRefSection === 'vehicles'">
+              <p class="ref-section-desc">{{ 'settings.vehicleCategoriesDesc' | t }}</p>
+              <div class="tag-container">
+                <span *ngFor="let type of vehicleTypes; let idx = index" class="catalog-tag">
+                  {{ type }}
+                  <button (click)="removeVehicleType(idx)" class="tag-remove-btn" title="Remove">
+                    <i class="pi pi-times"></i>
+                  </button>
+                </span>
+                <span *ngIf="vehicleTypes.length === 0" class="ref-empty">{{ 'settings.noItems' | t }}</span>
+              </div>
+              <div class="tag-add-row">
+                <input type="text" [(ngModel)]="newVehicleType" [placeholder]="'settings.addCategory' | t" class="form-input" (keyup.enter)="addVehicleType()" />
+                <button (click)="addVehicleType()" class="btn-primary btn-sm">
+                  <i class="pi pi-plus"></i> {{ 'common.add' | t }}
+                </button>
               </div>
             </div>
           </div>
-          <div class="extra-add-row">
-            <input type="text" [(ngModel)]="newExtra.name" [placeholder]="'settings.optionName' | t" class="form-input" style="padding: 6px 10px; font-size: 12px; flex: 2;" />
-            <input type="number" [(ngModel)]="newExtra.price" [placeholder]="'settings.optionRate' | t" class="form-input" style="padding: 6px 10px; font-size: 12px; flex: 1;" />
-            <button (click)="addExtra()" class="btn-primary" style="padding: 6px 16px; font-size: 12px;">{{ 'common.add' | t }}</button>
-          </div>
-        </div>
 
-        <div style="display: flex; justify-content: flex-end; border-top: 1px solid var(--color-border-light); padding-top: 16px;">
-          <button (click)="saveSettings()" class="btn-primary">
-            {{ 'settings.saveRefData' | t }}
-          </button>
+          <!-- Fuel Types -->
+          <div class="ref-section" [class.ref-open]="openRefSection === 'fuel'">
+            <button class="ref-section-header" (click)="toggleRefSection('fuel')">
+              <div class="ref-section-left">
+                <i class="pi pi-bolt ref-section-icon"></i>
+                <div>
+                  <span class="ref-section-title">{{ 'settings.fuelTypes' | t }}</span>
+                  <span class="ref-section-count">{{ fuelTypes.length }} {{ 'settings.itemsConfigured' | t }}</span>
+                </div>
+              </div>
+              <i class="pi pi-chevron-down ref-chevron"></i>
+            </button>
+            <div class="ref-section-body" *ngIf="openRefSection === 'fuel'">
+              <p class="ref-section-desc">{{ 'settings.fuelTypesDesc' | t }}</p>
+              <div class="tag-container">
+                <span *ngFor="let type of fuelTypes; let idx = index" class="catalog-tag">
+                  {{ type }}
+                  <button (click)="removeFuelType(idx)" class="tag-remove-btn" title="Remove">
+                    <i class="pi pi-times"></i>
+                  </button>
+                </span>
+                <span *ngIf="fuelTypes.length === 0" class="ref-empty">{{ 'settings.noItems' | t }}</span>
+              </div>
+              <div class="tag-add-row">
+                <input type="text" [(ngModel)]="newFuelType" [placeholder]="'settings.addFuel' | t" class="form-input" (keyup.enter)="addFuelType()" />
+                <button (click)="addFuelType()" class="btn-primary btn-sm">
+                  <i class="pi pi-plus"></i> {{ 'common.add' | t }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Maintenance Types -->
+          <div class="ref-section" [class.ref-open]="openRefSection === 'maintenance'">
+            <button class="ref-section-header" (click)="toggleRefSection('maintenance')">
+              <div class="ref-section-left">
+                <i class="pi pi-wrench ref-section-icon"></i>
+                <div>
+                  <span class="ref-section-title">{{ 'settings.maintenanceTypes' | t }}</span>
+                  <span class="ref-section-count">{{ maintenanceTypes.length }} {{ 'settings.itemsConfigured' | t }}</span>
+                </div>
+              </div>
+              <i class="pi pi-chevron-down ref-chevron"></i>
+            </button>
+            <div class="ref-section-body" *ngIf="openRefSection === 'maintenance'">
+              <p class="ref-section-desc">{{ 'settings.maintenanceTypesDesc' | t }}</p>
+              <div class="tag-container">
+                <span *ngFor="let type of maintenanceTypes; let idx = index" class="catalog-tag">
+                  {{ i18n.translateMaintenanceType(type) }}
+                  <button (click)="removeMaintenanceType(idx)" class="tag-remove-btn" title="Remove">
+                    <i class="pi pi-times"></i>
+                  </button>
+                </span>
+                <span *ngIf="maintenanceTypes.length === 0" class="ref-empty">{{ 'settings.noItems' | t }}</span>
+              </div>
+              <div class="tag-add-row">
+                <input type="text" [(ngModel)]="newMaintenanceType" [placeholder]="'settings.addIntervention' | t" class="form-input" (keyup.enter)="addMaintenanceType()" />
+                <button (click)="addMaintenanceType()" class="btn-primary btn-sm">
+                  <i class="pi pi-plus"></i> {{ 'common.add' | t }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Extras Catalog -->
+          <div class="ref-section" [class.ref-open]="openRefSection === 'extras'">
+            <button class="ref-section-header" (click)="toggleRefSection('extras')">
+              <div class="ref-section-left">
+                <i class="pi pi-box ref-section-icon"></i>
+                <div>
+                  <span class="ref-section-title">{{ 'settings.extrasCatalog' | t }}</span>
+                  <span class="ref-section-count">{{ extras.length }} {{ 'settings.itemsConfigured' | t }}</span>
+                </div>
+              </div>
+              <i class="pi pi-chevron-down ref-chevron"></i>
+            </button>
+            <div class="ref-section-body" *ngIf="openRefSection === 'extras'">
+              <p class="ref-section-desc">{{ 'settings.extrasCatalogDesc' | t }}</p>
+              <div class="extras-grid">
+                <div *ngFor="let item of extras; let idx = index" class="extra-item">
+                  <span class="extra-name">{{ item.Name }}</span>
+                  <div class="extra-price-box">
+                    <span class="extra-price">{{ item.Price }} €{{ 'common.perDay' | t }}</span>
+                    <button (click)="removeExtra(idx)" class="tag-remove-btn" title="Remove">
+                      <i class="pi pi-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                <span *ngIf="extras.length === 0" class="ref-empty">{{ 'settings.noItems' | t }}</span>
+              </div>
+              <div class="extra-add-row">
+                <input type="text" [(ngModel)]="newExtra.name" [placeholder]="'settings.optionName' | t" class="form-input" />
+                <input type="number" [(ngModel)]="newExtra.price" [placeholder]="'settings.optionRate' | t" class="form-input" style="max-width: 120px;" />
+                <button (click)="addExtra()" class="btn-primary btn-sm">
+                  <i class="pi pi-plus"></i> {{ 'common.add' | t }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ref-save-row">
+            <button (click)="saveSettings()" class="btn-primary">
+              <i class="pi pi-check"></i>
+              {{ 'settings.saveRefData' | t }}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -168,53 +239,66 @@
     <div class="settings-right">
       
       <!-- Profile Information -->
-      <div class="card" style="padding: 24px;">
-        <h3 class="settings-section-title">
-          <i class="pi pi-user text-accent"></i> {{ 'settings.adminProfile' | t }}
-        </h3>
+      <div class="card settings-card">
+        <div class="settings-card-header">
+          <div class="settings-card-icon icon-emerald">
+            <i class="pi pi-user"></i>
+          </div>
+          <div>
+            <h3 class="settings-card-title">{{ 'settings.adminProfile' | t }}</h3>
+            <p class="settings-card-desc">{{ 'settings.adminProfileDesc' | t }}</p>
+          </div>
+        </div>
         
-        <div class="profile-stack">
-          <div>
-            <label class="form-label">{{ 'settings.usernameReadOnly' | t }}</label>
-            <input type="text" [value]="profile.username" disabled class="form-input" style="background: var(--color-bg); color: var(--color-text-muted);" />
+        <div class="settings-card-body">
+          <div class="profile-stack">
+            <div class="form-group">
+              <label class="form-label">{{ 'settings.usernameReadOnly' | t }}</label>
+              <input type="text" [value]="profile.username" disabled class="form-input disabled-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'settings.fullName' | t }}</label>
+              <input type="text" [(ngModel)]="profile.fullName" class="form-input" />
+            </div>
+            <button (click)="updateProfile()" class="btn-primary full-width">
+              <i class="pi pi-check"></i>
+              {{ 'settings.updateProfile' | t }}
+            </button>
           </div>
-
-          <div>
-            <label class="form-label">{{ 'settings.fullName' | t }}</label>
-            <input type="text" [(ngModel)]="profile.fullName" class="form-input" />
-          </div>
-
-          <button (click)="updateProfile()" class="btn-primary" style="width: 100%; margin-top: 8px;">
-            {{ 'settings.updateProfile' | t }}
-          </button>
         </div>
       </div>
 
       <!-- Security / Change Password -->
-      <div class="card" style="padding: 24px;">
-        <h3 class="settings-section-title">
-          <i class="pi pi-key text-accent"></i> {{ 'settings.security' | t }}
-        </h3>
+      <div class="card settings-card">
+        <div class="settings-card-header">
+          <div class="settings-card-icon icon-amber">
+            <i class="pi pi-key"></i>
+          </div>
+          <div>
+            <h3 class="settings-card-title">{{ 'settings.security' | t }}</h3>
+            <p class="settings-card-desc">{{ 'settings.securityDesc' | t }}</p>
+          </div>
+        </div>
         
-        <div class="profile-stack">
-          <div>
-            <label class="form-label">{{ 'settings.currentPassword' | t }}</label>
-            <input type="password" [(ngModel)]="passwordForm.currentPassword" class="form-input" />
+        <div class="settings-card-body">
+          <div class="profile-stack">
+            <div class="form-group">
+              <label class="form-label">{{ 'settings.currentPassword' | t }}</label>
+              <input type="password" [(ngModel)]="passwordForm.currentPassword" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'settings.newPassword' | t }}</label>
+              <input type="password" [(ngModel)]="passwordForm.newPassword" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'settings.confirmPassword' | t }}</label>
+              <input type="password" [(ngModel)]="passwordForm.confirmPassword" class="form-input" />
+            </div>
+            <button (click)="updatePassword()" class="btn-secondary full-width">
+              <i class="pi pi-lock"></i>
+              {{ 'settings.changePassword' | t }}
+            </button>
           </div>
-
-          <div>
-            <label class="form-label">{{ 'settings.newPassword' | t }}</label>
-            <input type="password" [(ngModel)]="passwordForm.newPassword" class="form-input" />
-          </div>
-
-          <div>
-            <label class="form-label">{{ 'settings.confirmPassword' | t }}</label>
-            <input type="password" [(ngModel)]="passwordForm.confirmPassword" class="form-input" />
-          </div>
-
-          <button (click)="updatePassword()" class="btn-primary" style="width: 100%; background: #1f2937; margin-top: 8px;">
-            {{ 'settings.changePassword' | t }}
-          </button>
         </div>
       </div>
 
