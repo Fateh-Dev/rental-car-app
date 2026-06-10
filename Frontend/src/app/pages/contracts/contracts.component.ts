@@ -9,6 +9,9 @@ import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { AppCurrencyPipe } from '../../pipes/app-currency.pipe';
 
+// @ts-ignore
+import html2pdf from 'html2pdf.js';
+
 @Component({
   selector: 'app-contracts',
   standalone: true,
@@ -284,5 +287,20 @@ export class ContractsComponent implements OnInit {
 
   printInvoice(): void {
     window.print();
+  }
+
+  generatePdf(): void {
+    const element = document.getElementById('invoice-print-area');
+    if (!element) return;
+    
+    const opt: any = {
+      margin:       0.5,
+      filename:     `Contrat_${this.printContract.contractNumber}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().from(element).set(opt).save();
   }
 }
