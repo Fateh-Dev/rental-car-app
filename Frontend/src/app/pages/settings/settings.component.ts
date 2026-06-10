@@ -57,6 +57,9 @@ export class SettingsComponent implements OnInit {
     this.api.getSettings().subscribe({
       next: (res) => {
         this.settings = res;
+        if (this.settings.currencySymbol) {
+          localStorage.setItem('parc_auto_currency', this.settings.currencySymbol);
+        }
         this.parseReferenceData();
       },
       error: (err) => console.error('Failed to load settings', err)
@@ -91,6 +94,9 @@ export class SettingsComponent implements OnInit {
     this.api.updateSettings(this.settings).subscribe({
       next: (res) => {
         this.settings = res;
+        if (this.settings.currencySymbol) {
+          localStorage.setItem('parc_auto_currency', this.settings.currencySymbol);
+        }
         this.parseReferenceData();
         this.showFeedback(this.getFeedbackMsg('saveSuccess'), 'success');
       },

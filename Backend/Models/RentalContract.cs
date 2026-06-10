@@ -58,6 +58,7 @@ namespace Backend.Models
         public decimal FinalAmountDue { get; set; } // TotalAmount + Additional - Discount
 
         public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Unpaid;
+        public decimal AmountPaid { get; set; } = 0;
 
         [MaxLength(50)]
         public string PaymentMethod { get; set; } = "Cash"; // Cash, Card, BankTransfer, Cheque

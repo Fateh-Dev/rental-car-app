@@ -210,7 +210,7 @@
                 <td style="font-weight: 600;">{{ item.vehicleBrand }} {{ item.vehicleModel }}</td>
                 <td style="color: var(--color-text-secondary);">{{ item.vehicleMatricule }}</td>
                 <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.startDate | date:'yyyy-MM-dd' }} {{ 'common.to' | t | lowercase }} {{ (item.actualReturnDate || item.expectedReturnDate) | date:'yyyy-MM-dd' }}</td>
-                <td style="font-weight: 600;">{{ item.finalAmountDue | currency:'EUR':'symbol':'1.0' }}</td>
+                <td style="font-weight: 600;">{{ item.finalAmountDue | appCurrency }}</td>
                 <td>
                   <span 
                     [class.badge-success]="item.contractStatus === 'Completed'"

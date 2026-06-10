@@ -6,11 +6,12 @@ import { DialogModule } from 'primeng/dialog';
 import { DatePickerModule } from 'primeng/datepicker';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { AppCurrencyPipe } from '../../pipes/app-currency.pipe';
 
 @Component({
   selector: 'app-maintenance',
   standalone: true,
-  imports: [CommonModule, FormsModule, DialogModule, DatePickerModule, TranslatePipe],
+  imports: [CommonModule, FormsModule, DialogModule, DatePickerModule, TranslatePipe, AppCurrencyPipe],
   templateUrl: './maintenance.component.html',
   styleUrls: ['./maintenance.component.css']
 })

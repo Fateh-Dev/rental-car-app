@@ -51,7 +51,7 @@
               </div>
             </td>
             <td><span class="cell-muted">{{ maint.kmAtMaintenance | number }} km</span></td>
-            <td class="col-right"><span class="cell-primary">{{ maint.totalCost | currency:'EUR':'symbol':'1.0-2' }}</span></td>
+            <td class="col-right"><span class="cell-primary">{{ maint.totalCost | appCurrency }}</span></td>
             <td><span class="cell-muted">{{ maint.workshopName }}</span></td>
             <td>
               <a *ngIf="maint.invoiceFilePath" [href]="'http://localhost:5222' + maint.invoiceFilePath" target="_blank" class="table-link">

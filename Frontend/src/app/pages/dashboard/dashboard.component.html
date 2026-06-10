@@ -31,8 +31,8 @@
     <div class="card kpi-card">
       <div class="kpi-content">
         <span class="kpi-label">{{ 'dashboard.revenue' | t }}</span>
-        <span class="kpi-value">{{ revenue.totalRevenue | currency:'EUR':'symbol':'1.0-0' }}</span>
-        <span class="kpi-sub">{{ revenue.paidRevenue | currency:'EUR':'symbol':'1.0-0' }} {{ 'dashboard.paid' | t }}</span>
+        <span class="kpi-value">{{ revenue.totalRevenue | appCurrency }}</span>
+        <span class="kpi-sub">{{ revenue.paidRevenue | appCurrency }} {{ 'dashboard.paid' | t }}</span>
       </div>
       <div class="kpi-icon kpi-icon-info"><i class="pi pi-money-bill"></i></div>
     </div>
@@ -127,7 +127,7 @@
             <td>{{ contract.client?.fullName }}</td>
             <td>{{ contract.vehicle?.brand }} {{ contract.vehicle?.model }} ({{ contract.vehicle?.matricule }})</td>
             <td>{{ contract.startDate | date:'dd/MM/yyyy' }}</td>
-            <td class="font-semibold">{{ contract.finalAmountDue | currency:'EUR':'symbol':'1.0-2' }}</td>
+            <td class="font-semibold">{{ contract.finalAmountDue | appCurrency }}</td>
             <td>
               <span class="badge"
                 [class.badge-danger]="contract.paymentStatus === 'Unpaid'"

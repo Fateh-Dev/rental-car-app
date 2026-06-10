@@ -79,7 +79,7 @@
               <span class="cell-muted">{{ contract.startDate | date:'dd/MM/yyyy' }}</span>
               <span class="cell-muted"> → {{ (contract.actualReturnDate || contract.expectedReturnDate) | date:'dd/MM/yyyy' }}</span>
             </td>
-            <td class="col-right"><span class="cell-primary">{{ contract.finalAmountDue | currency:'EUR':'symbol':'1.0-2' }}</span></td>
+            <td class="col-right"><span class="cell-primary">{{ contract.finalAmountDue | appCurrency }}</span></td>
             <td>
               <div class="cell-stack" style="gap: 6px;">
                 <span
@@ -112,7 +112,8 @@
                   <i class="pi pi-key"></i> {{ 'contracts.returnBtn' | t }}
                 </button>
                 <button (click)="openInvoice(contract)" [title]="'common.print' | t" class="btn-icon"><i class="pi pi-print"></i></button>
-                <button *ngIf="contract.contractStatus === 'Draft'" (click)="openEditDialog(contract)" [title]="'common.edit' | t" class="btn-icon"><i class="pi pi-pencil"></i></button>
+                <button (click)="openEditDialog(contract)" [title]="'common.edit' | t" class="btn-icon"><i class="pi pi-pencil"></i></button>
+                <button (click)="deleteContract(contract)" [title]="'common.delete' | t" class="btn-icon text-danger" style="color: var(--color-danger);"><i class="pi pi-trash"></i></button>
               </div>
             </td>
           </tr>
@@ -139,7 +140,7 @@
   <!-- ADD / EDIT CONTRACT DIALOG -->
   <p-dialog 
     [(visible)]="showCrudDialog" 
-    [style]="{width: '600px'}" 
+    [style]="{width: '900px'}" 
     [modal]="true" 
     [header]="isEditMode ? ('contracts.editContract' | t) : ('contracts.newContractDialog' | t)"
     [draggable]="false"
@@ -151,129 +152,147 @@
       <span>{{ licenseWarning }}</span>
     </div>
 
-    <form (ngSubmit)="onSubmitContract()" class="form-grid">
-      <!-- Client Selector -->
-      <div>
-        <label class="form-label">{{ 'contracts.selectClient' | t }}</label>
-        <select 
-          [(ngModel)]="contractForm.clientId" 
-          name="clientId" 
-          (change)="onClientSelect()"
-          required 
-          [disabled]="isEditMode"
-          class="form-input"
-        >
-          <option [ngValue]="null">{{ 'contracts.chooseClient' | t }}</option>
-          <option *ngFor="let c of activeClients" [value]="c.id">{{ c.fullName }} ({{ c.nationalId }})</option>
-        </select>
-      </div>
-
-      <!-- Vehicle Selector -->
-      <div>
-        <label class="form-label">{{ 'contracts.selectVehicle' | t }}</label>
-        <select 
-          [(ngModel)]="contractForm.vehicleId" 
-          name="vehicleId" 
-          (change)="onVehicleSelect()"
-          required 
-          [disabled]="isEditMode"
-          class="form-input"
-        >
-          <option [ngValue]="null">{{ 'contracts.chooseVehicle' | t }}</option>
-          <option *ngFor="let v of availableVehicles" [value]="v.id">{{ v.brand }} {{ v.model }} - Plaque: {{ v.matricule }}</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="form-label">{{ 'contracts.contractType' | t }}</label>
-        <select [(ngModel)]="contractForm.contractType" name="contractType" required class="form-input">
-          <option *ngFor="let ct of contractTypes" [value]="ct">{{ ct }}</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="form-label">{{ 'contracts.dailyRate' | t }}</label>
-        <input type="number" [(ngModel)]="contractForm.dailyRate" name="dailyRate" (change)="calculateTotals()" required class="form-input"/>
-      </div>
-
-      <div>
-        <label class="form-label">{{ 'contracts.startDateTime' | t }}</label>
-        <p-datepicker [(ngModel)]="contractForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
-      </div>
-
-      <div>
-        <label class="form-label">{{ 'contracts.expectedReturn' | t }}</label>
-        <p-datepicker [(ngModel)]="contractForm.expectedReturnDate" name="expectedReturnDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
-      </div>
-
-      <!-- Summary Grid -->
-      <div class="summary-grid">
-        <div class="summary-item">
-          <span class="summary-label">{{ 'contracts.calculatedDays' | t }}</span>
-          <span class="summary-value">{{ contractForm.rentalDays }} {{ 'common.days' | t }}</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">{{ 'contracts.rentalAmount' | t }}</span>
-          <span class="summary-value">{{ contractForm.totalAmount | currency:'EUR':'symbol':'1.0-2' }}</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">{{ 'contracts.extraFees' | t }}</span>
-          <input type="number" [(ngModel)]="contractForm.extrasCharges" name="extrasCharges" (change)="calculateTotals()" class="form-input" style="padding: 4px 6px; font-size: 11px;"/>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">{{ 'contracts.discount' | t }}</span>
-          <input type="number" [(ngModel)]="contractForm.discountAmount" name="discountAmount" (change)="calculateTotals()" class="form-input" style="padding: 4px 6px; font-size: 11px;"/>
-        </div>
-      </div>
-
-      <!-- Totals Row -->
-      <div class="totals-row">
-        <div class="amount-due-block">
-          <span class="amount-due-label">{{ 'contracts.totalNetDue' | t }}</span>
-          <span class="amount-due-value">{{ contractForm.finalAmountDue | currency:'EUR':'symbol':'1.0-2' }}</span>
-        </div>
+    <form (ngSubmit)="onSubmitContract()" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px;">
+      <!-- LEFT COLUMN -->
+      <div style="display: flex; flex-direction: column; gap: 16px;">
         
-        <div class="payment-details">
-          <!-- Deposit -->
-          <div class="payment-control">
-            <label class="form-label">{{ 'contracts.deposit' | t }}</label>
-            <input type="number" [(ngModel)]="contractForm.depositAmount" name="depositAmount" class="form-input"/>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <!-- Client Selector -->
+          <div>
+            <label class="form-label">{{ 'contracts.selectClient' | t }}</label>
+            <select *ngIf="!isEditMode" [(ngModel)]="contractForm.clientId" name="clientId" (change)="onClientSelect()" required class="form-input">
+              <option [ngValue]="null">{{ 'contracts.chooseClient' | t }}</option>
+              <option *ngFor="let c of activeClients" [ngValue]="c.id">{{ c.fullName }} ({{ c.nationalId }})</option>
+            </select>
+            <input *ngIf="isEditMode" type="text" disabled [value]="contractForm.client?.fullName + ' (' + contractForm.client?.nationalId + ')'" class="form-input disabled-input"/>
           </div>
-          <!-- Payment Method -->
-          <div class="payment-control">
-            <label class="form-label">{{ 'contracts.paymentMethod' | t }}</label>
-            <select [(ngModel)]="contractForm.paymentMethod" name="paymentMethod" class="form-input">
-              <option *ngFor="let m of paymentMethods" [value]="m">{{ m }}</option>
+
+          <!-- Vehicle Selector -->
+          <div>
+            <label class="form-label">{{ 'contracts.selectVehicle' | t }}</label>
+            <select *ngIf="!isEditMode" [(ngModel)]="contractForm.vehicleId" name="vehicleId" (change)="onVehicleSelect()" required class="form-input">
+              <option [ngValue]="null">{{ 'contracts.chooseVehicle' | t }}</option>
+              <option *ngFor="let v of availableVehicles" [ngValue]="v.id">{{ v.brand }} {{ v.model }} - Plaque: {{ v.matricule }}</option>
+            </select>
+            <input *ngIf="isEditMode" type="text" disabled [value]="contractForm.vehicle?.brand + ' ' + contractForm.vehicle?.model + ' - ' + contractForm.vehicle?.matricule" class="form-input disabled-input"/>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label class="form-label">{{ 'contracts.startDateTime' | t }}</label>
+            <p-datepicker [(ngModel)]="contractForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
+          </div>
+          <div>
+            <label class="form-label">{{ 'contracts.expectedReturn' | t }}</label>
+            <p-datepicker [(ngModel)]="contractForm.expectedReturnDate" name="expectedReturnDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label class="form-label">{{ 'contracts.contractType' | t }}</label>
+            <select [(ngModel)]="contractForm.contractType" name="contractType" required class="form-input">
+              <option *ngFor="let ct of contractTypes" [value]="ct">{{ ct }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">{{ 'contracts.dailyRate' | t }}</label>
+            <input type="number" [(ngModel)]="contractForm.dailyRate" name="dailyRate" (change)="calculateTotals()" required class="form-input"/>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <!-- Status Selection -->
+          <div>
+            <label class="form-label">{{ 'contracts.initialStatus' | t }}</label>
+            <select *ngIf="!isEditMode || contractForm.contractStatus === 'Draft'" [(ngModel)]="contractForm.contractStatus" name="contractStatus" class="form-input">
+              <option value="Draft">{{ 'contracts.draftReservation' | t }}</option>
+              <option value="Active">{{ 'contracts.activateNow' | t }}</option>
+            </select>
+            <input *ngIf="isEditMode && contractForm.contractStatus !== 'Draft'" type="text" disabled [value]="'statuses.' + contractForm.contractStatus.toLowerCase() | t" class="form-input disabled-input"/>
+          </div>
+          <div>
+            <label class="form-label">{{ 'contracts.initialBilling' | t }}</label>
+            <select [(ngModel)]="contractForm.paymentStatus" (change)="onPaymentStatusChange()" name="paymentStatus" class="form-input">
+              <option value="Unpaid">{{ 'contracts.unpaidPending' | t }}</option>
+              <option value="PartiallyPaid">{{ 'contracts.depositPaid' | t }}</option>
+              <option value="Paid">{{ 'contracts.fullyPaid' | t }}</option>
             </select>
           </div>
         </div>
+
+        <div style="margin-top: 8px;">
+          <label class="form-label">{{ 'contracts.adminNotes' | t }}</label>
+          <input type="text" [(ngModel)]="contractForm.notes" name="notes" class="form-input" placeholder="Notes additionnelles..."/>
+        </div>
       </div>
 
-      <!-- Status Selection -->
-      <div>
-        <label class="form-label">{{ 'contracts.initialStatus' | t }}</label>
-        <select [(ngModel)]="contractForm.contractStatus" name="contractStatus" class="form-input">
-          <option value="Draft">{{ 'contracts.draftReservation' | t }}</option>
-          <option value="Active">{{ 'contracts.activateNow' | t }}</option>
-        </select>
-      </div>
-      <div>
-        <label class="form-label">{{ 'contracts.initialBilling' | t }}</label>
-        <select [(ngModel)]="contractForm.paymentStatus" name="paymentStatus" class="form-input">
-          <option value="Unpaid">{{ 'contracts.unpaidPending' | t }}</option>
-          <option value="PartiallyPaid">{{ 'contracts.depositPaid' | t }}</option>
-          <option value="Paid">{{ 'contracts.fullyPaid' | t }}</option>
-        </select>
-      </div>
+      <!-- RIGHT COLUMN -->
+      <div style="display: flex; flex-direction: column; gap: 16px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid var(--color-border-light);">
+        
+        <!-- Summary Grid (2x2) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="summary-item">
+            <span class="summary-label">{{ 'contracts.calculatedDays' | t }}</span>
+            <span class="summary-value">{{ contractForm.rentalDays }} {{ 'common.days' | t }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">{{ 'contracts.rentalAmount' | t }}</span>
+            <span class="summary-value">{{ contractForm.totalAmount | appCurrency }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">{{ 'contracts.extraFees' | t }}</span>
+            <input type="number" [(ngModel)]="contractForm.extrasCharges" name="extrasCharges" (change)="calculateTotals()" class="form-input" style="padding: 4px 6px; font-size: 12px;"/>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">{{ 'contracts.discount' | t }}</span>
+            <input type="number" [(ngModel)]="contractForm.discountAmount" name="discountAmount" (change)="calculateTotals()" class="form-input" style="padding: 4px 6px; font-size: 12px;"/>
+          </div>
+        </div>
 
-      <div class="form-full">
-        <label class="form-label">{{ 'contracts.adminNotes' | t }}</label>
-        <input type="text" [(ngModel)]="contractForm.notes" name="notes" class="form-input" placeholder="Notes additionnelles..."/>
+        <!-- Payment Row -->
+        <div style="border-top: 1px solid var(--color-border-light); padding-top: 16px; margin-top: 8px;">
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- Payment Method -->
+            <div>
+              <label class="form-label">{{ 'contracts.paymentMethod' | t }}</label>
+              <select [(ngModel)]="contractForm.paymentMethod" name="paymentMethod" class="form-input">
+                <option *ngFor="let m of paymentMethods" [value]="m">{{ m }}</option>
+              </select>
+            </div>
+            <!-- Amount Paid & Deposit -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div>
+                <label class="form-label">{{ 'contracts.amountPaid' | t }}</label>
+                <input type="number" [(ngModel)]="contractForm.amountPaid" name="amountPaid" class="form-input" placeholder="0"/>
+              </div>
+              <div>
+                <label class="form-label">{{ 'contracts.deposit' | t }}</label>
+                <input type="number" [(ngModel)]="contractForm.depositAmount" name="depositAmount" class="form-input"/>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="form-full form-actions">
-        <button type="button" (click)="showCrudDialog = false" class="btn-secondary">{{ 'common.cancel' | t }}</button>
-        <button type="submit" class="btn-primary">{{ 'contracts.saveContract' | t }}</button>
+      
+      <!-- FORM ACTIONS & TOTALS -->
+      <div style="grid-column: 1 / -1; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--color-border-light); display: flex; justify-content: space-between; align-items: flex-end;">
+        <div style="display: flex; gap: 32px; align-items: baseline;">
+          <div class="amount-due-block">
+            <span class="amount-due-label">{{ 'contracts.totalNetDue' | t }}</span>
+            <span class="amount-due-value">{{ contractForm.finalAmountDue | appCurrency }}</span>
+          </div>
+          
+          <div *ngIf="contractForm.paymentStatus !== 'Paid'" class="amount-due-block">
+            <span class="amount-due-label" style="color: var(--color-danger);">{{ 'contracts.remainingDue' | t }}</span>
+            <span class="amount-due-value" style="font-size: 18px; color: var(--color-danger);">{{ (contractForm.finalAmountDue - contractForm.amountPaid) | appCurrency }}</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" (click)="showCrudDialog = false" class="btn-secondary">{{ 'common.cancel' | t }}</button>
+          <button type="submit" class="btn-primary" style="height: 42px; padding: 0 24px; font-size: 14px;">{{ 'contracts.saveContract' | t }}</button>
+        </div>
       </div>
     </form>
   </p-dialog>
@@ -389,16 +408,16 @@
         <tbody>
           <tr>
             <td style="font-weight: 600;">{{ 'contracts.vehicleRental' | t }} ({{ printContract.vehicle?.brand }} {{ printContract.vehicle?.model }})</td>
-            <td style="text-align: right;">{{ printContract.dailyRate | currency:'EUR':'symbol':'1.0-2' }}</td>
+            <td style="text-align: right;">{{ printContract.dailyRate | appCurrency }}</td>
             <td style="text-align: right;">{{ printContract.rentalDays }} {{ 'common.days' | t }}</td>
-            <td style="text-align: right; font-weight: 600;">{{ printContract.totalAmount | currency:'EUR':'symbol':'1.0-2' }}</td>
+            <td style="text-align: right; font-weight: 600;">{{ printContract.totalAmount | appCurrency }}</td>
           </tr>
           <!-- Extras -->
           <tr *ngIf="printContract.extrasCharges > 0">
             <td style="color: var(--color-text-secondary);">{{ 'contracts.extrasAccessories' | t }}</td>
             <td style="text-align: right;">-</td>
             <td style="text-align: right;">-</td>
-            <td style="text-align: right; font-weight: 600;">{{ printContract.extrasCharges | currency:'EUR':'symbol':'1.0-2' }}</td>
+            <td style="text-align: right; font-weight: 600;">{{ printContract.extrasCharges | appCurrency }}</td>
           </tr>
           <!-- Penalties -->
           <tr *ngIf="printContract.lateReturnFee > 0 || printContract.damageFees > 0 || printContract.fuelPenalty > 0">
@@ -406,7 +425,7 @@
             <td style="text-align: right;">-</td>
             <td style="text-align: right;">-</td>
             <td style="text-align: right; font-weight: 600; color: var(--color-danger);">
-              {{ printContract.lateReturnFee + printContract.damageFees + printContract.fuelPenalty | currency:'EUR':'symbol':'1.0-2' }}
+              {{ printContract.lateReturnFee + printContract.damageFees + printContract.fuelPenalty | appCurrency }}
             </td>
           </tr>
         </tbody>
@@ -422,15 +441,23 @@
         <div class="totals-details">
           <div class="totals-line">
             <span style="color: var(--color-text-secondary);">{{ 'contracts.subtotal' | t }}</span>
-            <span style="font-weight: 600;">{{ printContract.totalAmount + printContract.extrasCharges | currency:'EUR':'symbol':'1.0-2' }}</span>
+            <span style="font-weight: 600;">{{ printContract.totalAmount + printContract.extrasCharges | appCurrency }}</span>
           </div>
           <div *ngIf="printContract.discountAmount > 0" class="totals-line" style="color: var(--color-success); font-weight: 600;">
             <span>{{ 'contracts.reduction' | t }}</span>
-            <span>-{{ printContract.discountAmount | currency:'EUR':'symbol':'1.0-2' }}</span>
+            <span>-{{ printContract.discountAmount | appCurrency }}</span>
           </div>
           <div class="totals-line totals-line-grand">
             <span>{{ 'contracts.netAmountDue' | t }}</span>
-            <span>{{ printContract.finalAmountDue | currency:'EUR':'symbol':'1.0-2' }}</span>
+            <span>{{ printContract.finalAmountDue | appCurrency }}</span>
+          </div>
+          <div *ngIf="printContract.paymentStatus === 'PartiallyPaid'" class="totals-line" style="color: var(--color-text-secondary);">
+            <span>{{ 'contracts.amountPaid' | t }}</span>
+            <span>-{{ printContract.amountPaid | appCurrency }}</span>
+          </div>
+          <div *ngIf="printContract.paymentStatus === 'PartiallyPaid'" class="totals-line" style="color: var(--color-danger); font-weight: 700; border-top: 1px dashed var(--color-border-light); padding-top: 4px; margin-top: 4px;">
+            <span>{{ 'contracts.remainingDue' | t }}</span>
+            <span>{{ (printContract.finalAmountDue - printContract.amountPaid) | appCurrency }}</span>
           </div>
         </div>
       </div>

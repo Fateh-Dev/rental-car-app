@@ -100,6 +100,10 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/contract/${id}/return`, dto);
   }
 
+  deleteContract(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/contract/${id}`);
+  }
+
   // ================= Km Suivi =================
   getKmHistory(vehicleId: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/km/vehicle/${vehicleId}`);

@@ -7,11 +7,12 @@ import { DialogModule } from 'primeng/dialog';
 import { DatePickerModule } from 'primeng/datepicker';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { AppCurrencyPipe } from '../../pipes/app-currency.pipe';
 
 @Component({
   selector: 'app-contracts',
   standalone: true,
-  imports: [CommonModule, FormsModule, DialogModule, DatePickerModule, TranslatePipe],
+  imports: [CommonModule, FormsModule, DialogModule, DatePickerModule, TranslatePipe, AppCurrencyPipe],
   templateUrl: './contracts.component.html',
   styleUrls: ['./contracts.component.css']
 })
@@ -130,6 +131,7 @@ export class ContractsComponent implements OnInit {
       discountAmount: 0,
       finalAmountDue: 0,
       paymentStatus: 'Unpaid',
+      amountPaid: 0,
       paymentMethod: 'Cash',
       depositAmount: 150,
       depositStatus: 'Collected',
@@ -203,6 +205,16 @@ export class ContractsComponent implements OnInit {
         Number(this.contractForm.additionalCharges) + 
         Number(this.contractForm.extrasCharges) - 
         Number(this.contractForm.discountAmount);
+        
+      if (this.contractForm.paymentStatus === 'Paid') {
+        this.contractForm.amountPaid = this.contractForm.finalAmountDue;
+      }
+    }
+  }
+
+  onPaymentStatusChange(): void {
+    if (this.contractForm.paymentStatus === 'Paid') {
+      this.contractForm.amountPaid = this.contractForm.finalAmountDue;
     }
   }
 
@@ -256,6 +268,15 @@ export class ContractsComponent implements OnInit {
   }
 
   // ================= Invoice Print Layout =================
+  deleteContract(contract: any): void {
+    if (confirm(this.i18n.t('common.deleteConfirm'))) {
+      this.api.deleteContract(contract.id).subscribe({
+        next: () => this.loadContracts(),
+        error: (err) => console.error('Failed to delete contract', err)
+      });
+    }
+  }
+
   openInvoice(contract: any): void {
     this.printContract = contract;
     this.showPrintDialog = true;

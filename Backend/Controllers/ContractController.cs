@@ -125,6 +125,11 @@ namespace Backend.Controllers
             contract.TotalAmount = contract.RentalDays * contract.DailyRate;
             contract.FinalAmountDue = contract.TotalAmount + contract.AdditionalCharges + contract.ExtrasCharges - contract.DiscountAmount;
 
+            if (contract.PaymentStatus == PaymentStatus.Paid)
+            {
+                contract.AmountPaid = contract.FinalAmountDue;
+            }
+
             if (contract.ContractStatus == ContractStatus.Active)
             {
                 vehicle.Status = VehicleStatus.Rented;
@@ -200,10 +205,16 @@ namespace Backend.Controllers
             contract.FinalAmountDue = (contract.RentalDays * contract.DailyRate) + contract.AdditionalCharges + contract.ExtrasCharges - contract.DiscountAmount;
             contract.PaymentStatus = updated.PaymentStatus;
             contract.PaymentMethod = updated.PaymentMethod;
+            contract.AmountPaid = updated.AmountPaid;
             contract.DepositAmount = updated.DepositAmount;
             contract.DepositStatus = updated.DepositStatus;
             contract.ContractStatus = updated.ContractStatus;
             contract.Notes = updated.Notes;
+
+            if (contract.PaymentStatus == PaymentStatus.Paid)
+            {
+                contract.AmountPaid = contract.FinalAmountDue;
+            }
 
             await _context.SaveChangesAsync();
             return Ok(contract);
@@ -290,6 +301,29 @@ namespace Backend.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Vehicle returned successfully", contract });
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var contract = await _context.RentalContracts
+                .Include(c => c.Vehicle)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (contract == null) return NotFound(new { message = "Contract not found" });
+
+            if (contract.ContractStatus == ContractStatus.Active || contract.ContractStatus == ContractStatus.Draft)
+            {
+                if (contract.Vehicle != null)
+                {
+                    contract.Vehicle.Status = VehicleStatus.Available;
+                }
+            }
+
+            _context.RentalContracts.Remove(contract);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Contract deleted successfully" });
         }
     }
 }

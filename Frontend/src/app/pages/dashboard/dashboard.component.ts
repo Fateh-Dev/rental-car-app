@@ -4,13 +4,14 @@ import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { AppCurrencyPipe } from '../../pipes/app-currency.pipe';
 import { ChartModule } from 'primeng/chart';
 import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, ChartModule, TableModule, TranslatePipe],
+  imports: [CommonModule, RouterLink, ChartModule, TableModule, TranslatePipe, AppCurrencyPipe],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })

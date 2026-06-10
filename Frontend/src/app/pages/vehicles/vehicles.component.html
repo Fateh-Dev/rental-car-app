@@ -64,7 +64,7 @@
              vehicle.status === 'InMaintenance' ? ('vehicles.statusMaintenance' | t) : 
              vehicle.status === 'Reserved' ? ('vehicles.statusReserved' | t) : ('vehicles.statusImmobilized' | t) }}
         </span>
-        <span class="vehicle-rate">{{ vehicle.dailyRate | currency:'EUR':'symbol':'1.0' }}{{ 'common.perDay' | t }}</span>
+        <span class="vehicle-rate">{{ vehicle.dailyRate | appCurrency }}{{ 'common.perDay' | t }}</span>
       </div>
 
       <!-- Details -->
@@ -337,89 +337,145 @@
   <!-- ADD/EDIT VEHICLE DIALOG -->
   <p-dialog 
     [(visible)]="showCrudDialog" 
-    [style]="{width: '48vw'}" 
+    [style]="{width: '900px'}" 
     [modal]="true" 
     [header]="isEditMode ? ('vehicles.editVehicle' | t) : ('vehicles.newVehicle' | t)"
     styleClass="p-fluid"
     [draggable]="false"
     [resizable]="false"
   >
-    <form (ngSubmit)="onSubmitVehicle()" class="form-grid">
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.matricule' | t }}</label>
-        <input type="text" [(ngModel)]="vehicleForm.matricule" name="matricule" required class="form-input" placeholder="12345-120-16"/>
+    <form (ngSubmit)="onSubmitVehicle()" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+      
+      <!-- LEFT COLUMN -->
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">{{ 'vehicles.brand' | t }}</label>
+            <input type="text" [(ngModel)]="vehicleForm.brand" name="brand" required class="form-input" placeholder="Renault"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'vehicles.model' | t }}</label>
+            <input type="text" [(ngModel)]="vehicleForm.model" name="model" required class="form-input" placeholder="Clio 5"/>
+          </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">{{ 'vehicles.matricule' | t }}</label>
+            <input type="text" [(ngModel)]="vehicleForm.matricule" name="matricule" required class="form-input" placeholder="12345-120-16"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'vehicles.vin' | t }}</label>
+            <input type="text" [(ngModel)]="vehicleForm.vin" name="vin" required class="form-input" placeholder="VF123456..."/>
+          </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">{{ 'vehicles.year' | t }}</label>
+            <input type="number" [(ngModel)]="vehicleForm.year" name="year" required class="form-input"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'vehicles.color' | t }}</label>
+            <input type="text" [(ngModel)]="vehicleForm.color" name="color" class="form-input"/>
+          </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">{{ 'common.type' | t }}</label>
+            <select [(ngModel)]="vehicleForm.type" name="type" required class="form-input">
+              <option *ngFor="let t of vehicleTypes" [value]="t">{{ t }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'vehicles.seats' | t }}</label>
+            <input type="number" [(ngModel)]="vehicleForm.seatsCount" name="seatsCount" required class="form-input"/>
+          </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">{{ 'vehicles.fuelType' | t }}</label>
+            <select [(ngModel)]="vehicleForm.fuelType" name="fuelType" required class="form-input">
+              <option *ngFor="let f of fuelTypes" [value]="f">{{ f }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'vehicles.transmission' | t }}</label>
+            <select [(ngModel)]="vehicleForm.transmission" name="transmission" required class="form-input">
+              <option *ngFor="let t of transmissions" [value]="t">{{ t }}</option>
+            </select>
+          </div>
+        </div>
+
       </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.brand' | t }}</label>
-        <input type="text" [(ngModel)]="vehicleForm.brand" name="brand" required class="form-input" placeholder="Renault"/>
+
+      <!-- RIGHT COLUMN -->
+      <div style="display: flex; flex-direction: column; gap: 16px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid var(--color-border-light);">
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">{{ 'vehicles.dailyRate' | t }}</label>
+            <input type="number" [(ngModel)]="vehicleForm.dailyRate" name="dailyRate" required class="form-input"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'vehicles.purchasePrice' | t }}</label>
+            <input type="number" [(ngModel)]="vehicleForm.purchasePrice" name="purchasePrice" required class="form-input"/>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">{{ 'vehicles.engineNumber' | t }}</label>
+            <input type="text" [(ngModel)]="vehicleForm.engineNumber" name="engineNumber" class="form-input"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'vehicles.initialKm' | t }}</label>
+            <input type="number" [(ngModel)]="vehicleForm.initialKm" name="initialKm" [disabled]="isEditMode" required class="form-input"/>
+          </div>
+        </div>
+
+        <div class="form-group photo-upload-group">
+          <label class="form-label">{{ 'common.photo' | t }}</label>
+          <label class="photo-dropzone" [class.has-image]="!!vehicleForm.photoPath">
+            <input type="file" (change)="onPhotoUpload($event)" class="photo-input" accept="image/*"/>
+            
+            <div *ngIf="vehicleForm.photoPath && !uploadingPhoto" class="photo-preview-container">
+              <img [src]="'http://localhost:5222' + vehicleForm.photoPath" alt="Preview" class="photo-preview-img" />
+              <div class="photo-preview-overlay">
+                <i class="pi pi-camera" style="font-size: 24px;"></i>
+                <span>{{ 'common.edit' | t }}</span>
+              </div>
+            </div>
+
+            <div *ngIf="!vehicleForm.photoPath && !uploadingPhoto" class="photo-empty-state">
+              <i class="pi pi-cloud-upload upload-icon"></i>
+              <span class="upload-text">Cliquez pour ajouter</span>
+              <span class="upload-hint">PNG, JPG (Max 5MB)</span>
+            </div>
+
+            <div *ngIf="uploadingPhoto" class="photo-uploading-state">
+              <i class="pi pi-spin pi-spinner spinner-icon"></i>
+              <span>{{ 'common.uploadInProgress' | t }}</span>
+            </div>
+          </label>
+        </div>
+
       </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.model' | t }}</label>
-        <input type="text" [(ngModel)]="vehicleForm.model" name="model" required class="form-input" placeholder="Clio 5"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.year' | t }}</label>
-        <input type="number" [(ngModel)]="vehicleForm.year" name="year" required class="form-input"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'common.type' | t }}</label>
-        <select [(ngModel)]="vehicleForm.type" name="type" required class="form-input">
-          <option *ngFor="let t of vehicleTypes" [value]="t">{{ t }}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.fuelType' | t }}</label>
-        <select [(ngModel)]="vehicleForm.fuelType" name="fuelType" required class="form-input">
-          <option *ngFor="let f of fuelTypes" [value]="f">{{ f }}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.transmission' | t }}</label>
-        <select [(ngModel)]="vehicleForm.transmission" name="transmission" required class="form-input">
-          <option *ngFor="let t of transmissions" [value]="t">{{ t }}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.vin' | t }}</label>
-        <input type="text" [(ngModel)]="vehicleForm.vin" name="vin" required class="form-input" placeholder="VF123456..."/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.engineNumber' | t }}</label>
-        <input type="text" [(ngModel)]="vehicleForm.engineNumber" name="engineNumber" class="form-input"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.color' | t }}</label>
-        <input type="text" [(ngModel)]="vehicleForm.color" name="color" class="form-input"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.seats' | t }}</label>
-        <input type="number" [(ngModel)]="vehicleForm.seatsCount" name="seatsCount" required class="form-input"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.dailyRate' | t }}</label>
-        <input type="number" [(ngModel)]="vehicleForm.dailyRate" name="dailyRate" required class="form-input"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.purchasePrice' | t }}</label>
-        <input type="number" [(ngModel)]="vehicleForm.purchasePrice" name="purchasePrice" required class="form-input"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.initialKm' | t }}</label>
-        <input type="number" [(ngModel)]="vehicleForm.initialKm" name="initialKm" [disabled]="isEditMode" required class="form-input"/>
-      </div>
-      <div class="form-group form-full">
-        <label class="form-label">{{ 'common.photo' | t }}</label>
-        <input type="file" (change)="onPhotoUpload($event)" class="form-input file-input"/>
-        <span *ngIf="uploadingPhoto" class="upload-status">{{ 'common.uploadInProgress' | t }}</span>
-      </div>
-      <div class="form-group form-full">
+
+      <!-- REMARKS (FULL WIDTH) -->
+      <div class="form-group" style="grid-column: 1 / -1;">
         <label class="form-label">{{ 'vehicles.remarks' | t }}</label>
-        <textarea [(ngModel)]="vehicleForm.notes" name="notes" rows="3" class="form-input"></textarea>
+        <textarea [(ngModel)]="vehicleForm.notes" name="notes" class="form-input" style="min-height: 80px; resize: vertical;"></textarea>
       </div>
-      <div class="form-actions form-full">
+
+      <!-- FORM ACTIONS -->
+      <div style="grid-column: 1 / -1; margin-top: 8px; border-top: 1px solid var(--color-border-light); padding-top: 16px; display: flex; justify-content: flex-end; gap: 8px;">
         <button type="button" (click)="showCrudDialog = false" class="btn-secondary">{{ 'common.cancel' | t }}</button>
-        <button type="submit" class="btn-primary">{{ 'common.save' | t }}</button>
+        <button type="submit" class="btn-primary" style="height: 42px; padding: 0 24px; font-size: 14px;">{{ 'common.save' | t }}</button>
       </div>
+
     </form>
   </p-dialog>
 
