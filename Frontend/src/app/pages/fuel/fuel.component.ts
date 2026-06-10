@@ -8,11 +8,12 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ChartModule } from 'primeng/chart';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { AppCurrencyPipe } from '../../pipes/app-currency.pipe';
 
 @Component({
   selector: 'app-fuel',
   standalone: true,
-  imports: [CommonModule, FormsModule, TableModule, DialogModule, DatePickerModule, ChartModule, TranslatePipe],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, DatePickerModule, ChartModule, TranslatePipe, AppCurrencyPipe],
   templateUrl: './fuel.component.html',
   styleUrls: ['./fuel.component.css']
 })

@@ -33,6 +33,7 @@ export class VehiclesComponent implements OnInit {
   // Options
   vehicleTypes: string[] = ['Car', 'SUV', 'Van', 'Truck', 'Motorcycle'];
   fuelTypes: string[] = ['Gasoline', 'Diesel', 'Electric', 'Hybrid', 'LPG'];
+  coverageTypes: string[] = ['Third-Party', 'Comprehensive', 'Fleet'];
   transmissions: string[] = ['Manual', 'Automatic'];
   statuses = [
     { label: 'Disponible', value: 'Available' },
@@ -90,6 +91,12 @@ export class VehiclesComponent implements OnInit {
         }
         if (res.fuelTypesJson) {
           this.fuelTypes = JSON.parse(res.fuelTypesJson);
+        }
+        if (res.coverageTypesJson) {
+          this.coverageTypes = JSON.parse(res.coverageTypesJson);
+          if (this.policyForm && !this.isEditMode) {
+            this.policyForm.coverageType = this.coverageTypes[0] || '';
+          }
         }
       }
     });

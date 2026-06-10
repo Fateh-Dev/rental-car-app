@@ -95,37 +95,37 @@
   >
     <form (ngSubmit)="onSubmitClient()" class="form-grid">
       <div class="form-full">
-        <label class="form-label">{{ 'clients.fullName' | t }}</label>
+        <label class="form-label required">{{ 'clients.fullName' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.fullName" name="fullName" required class="form-input" placeholder="Jean Dupont"/>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.nationalId' | t }}</label>
+        <label class="form-label required">{{ 'clients.nationalId' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.nationalId" name="nationalId" required class="form-input" placeholder="N° identité unique"/>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.dateOfBirth' | t }}</label>
+        <label class="form-label required">{{ 'clients.dateOfBirth' | t }}</label>
         <p-datepicker [(ngModel)]="clientForm.dateOfBirth" name="dateOfBirth" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.licenseNumber' | t }}</label>
+        <label class="form-label required">{{ 'clients.licenseNumber' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.licenseNumber" name="licenseNumber" required class="form-input" placeholder="Permis N°"/>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.licenseCategory' | t }}</label>
+        <label class="form-label required">{{ 'clients.licenseCategory' | t }}</label>
         <select [(ngModel)]="clientForm.licenseCategory" name="licenseCategory" required class="form-input">
           <option *ngFor="let cat of licenseCategories" [value]="cat">{{ 'clients.category' | t }} {{ cat }}</option>
         </select>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.licenseIssueDate' | t }}</label>
+        <label class="form-label required">{{ 'clients.licenseIssueDate' | t }}</label>
         <p-datepicker [(ngModel)]="clientForm.licenseIssueDate" name="licenseIssueDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.licenseExpiryDate' | t }}</label>
+        <label class="form-label required">{{ 'clients.licenseExpiryDate' | t }}</label>
         <p-datepicker [(ngModel)]="clientForm.licenseExpiryDate" name="licenseExpiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.phone' | t }}</label>
+        <label class="form-label required">{{ 'clients.phone' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.phone" name="phone" required class="form-input" placeholder="+33 6 12 34 56 78"/>
       </div>
       <div>

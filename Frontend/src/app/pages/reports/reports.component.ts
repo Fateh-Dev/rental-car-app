@@ -7,11 +7,12 @@ import { ChartModule } from 'primeng/chart';
 import { DatePickerModule } from 'primeng/datepicker';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { AppCurrencyPipe } from '../../pipes/app-currency.pipe';
 
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [CommonModule, FormsModule, TableModule, ChartModule, DatePickerModule, TranslatePipe],
+  imports: [CommonModule, FormsModule, TableModule, ChartModule, DatePickerModule, TranslatePipe, AppCurrencyPipe],
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })

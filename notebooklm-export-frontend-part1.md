@@ -668,7 +668,7 @@ export const AR: Record<string, any> = {
     registerFuelFillup: 'ØªØ³Ø¬ÙŠÙ„ ØªØ¹Ø¨Ø¦Ø© ÙˆÙ‚ÙˆØ¯',
     kmIndex: 'ÙÙ‡Ø±Ø³ ÙƒÙ… (Ø§Ù„Ø¹Ø¯Ø§Ø¯)',
     volumeLiters: 'Ø§Ù„Ø­Ø¬Ù… (Ù„ØªØ±Ø§Øª)',
-    pricePerLiter: 'Ø³Ø¹Ø± Ø§Ù„Ù„ØªØ± (â‚¬/Ù„ØªØ±)',
+    pricePerLiter: 'Ø³Ø¹Ø± Ø§Ù„Ù„ØªØ± (DZD/Ù„ØªØ±)',
     stationName: 'Ø§Ø³Ù… Ù…Ø­Ø·Ø© Ø§Ù„ÙˆÙ‚ÙˆØ¯',
     fuelType: 'Ù†ÙˆØ¹ Ø§Ù„ÙˆÙ‚ÙˆØ¯',
     gasoline: 'Ø¨Ù†Ø²ÙŠÙ† (Ø®Ø§Ù„ÙŠ Ù…Ù† Ø§Ù„Ø±ØµØ§Øµ)',
@@ -784,7 +784,7 @@ export const AR: Record<string, any> = {
     extrasCatalog: 'ÙƒØªØ§Ù„ÙˆØ¬ Ø§Ù„Ø®ÙŠØ§Ø±Ø§Øª ÙˆØ§Ù„Ù…Ù„Ø­Ù‚Ø§Øª',
     extrasCatalogDesc: 'Ø®ÙŠØ§Ø±Ø§Øª Ø¥Ø¶Ø§ÙÙŠØ© Ù…ØªØ§Ø­Ø© Ø¹Ù†Ø¯ Ø¥Ù†Ø´Ø§Ø¡ Ø¹Ù‚ÙˆØ¯ Ø§Ù„Ø¥ÙŠØ¬Ø§Ø± (Ù…Ø«Ù„: GPSØŒ Ù…Ù‚Ø¹Ø¯ Ø£Ø·ÙØ§Ù„).',
     optionName: 'Ø§Ø³Ù… Ø§Ù„Ø®ÙŠØ§Ø±',
-    optionRate: 'Ø§Ù„ØªØ¹Ø±ÙØ© (â‚¬/ÙŠÙˆÙ…)',
+    optionRate: 'Ø§Ù„ØªØ¹Ø±ÙØ© (DZD/ÙŠÙˆÙ…)',
     saveRefData: 'Ø­ÙØ¸ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø±Ø¬Ø¹ÙŠØ©',
     itemsConfigured: 'Ø¹Ù†Ø§ØµØ± Ù…ÙƒÙˆÙ‘Ù†Ø©',
     noItems: 'Ù„Ù… ÙŠØªÙ… ØªÙƒÙˆÙŠÙ† Ø£ÙŠ Ø¹Ù†Ø§ØµØ± Ø¨Ø¹Ø¯.',
@@ -1012,7 +1012,7 @@ export const EN: Record<string, any> = {
     policyNo: 'Policy #',
     coverage: 'Coverage',
     validity: 'Validity',
-    premiumValue: 'Premium / Value',
+    premiumValue: 'Premium Amount / Value',
     statusValid: 'Valid',
     statusExpiringSoon: 'Soon',
     statusExpired: 'Expired',
@@ -1035,7 +1035,7 @@ export const EN: Record<string, any> = {
     coverageThirdParty: 'Third Party',
     coverageComprehensive: 'Comprehensive',
     coverageFleet: 'Fleet',
-    premium: 'Premium',
+    premium: 'Premium Amount',
     effectiveDate: 'Effective Date',
     documentPdf: 'Document (PDF)',
     newInspection: 'New Technical Inspection',
@@ -1352,7 +1352,7 @@ export const EN: Record<string, any> = {
     registerFuelFillup: 'Record Fuel Fill-up',
     kmIndex: 'Km Index (Odometer)',
     volumeLiters: 'Volume (Liters)',
-    pricePerLiter: 'Price per Liter (â‚¬/L)',
+    pricePerLiter: 'Price per Liter (DZD/L)',
     stationName: 'Station Name',
     fuelType: 'Fuel Type',
     gasoline: 'Gasoline (Unleaded)',
@@ -1468,7 +1468,10 @@ export const EN: Record<string, any> = {
     extrasCatalog: 'Extras & Accessories Catalog',
     extrasCatalogDesc: 'Optional add-ons available when creating rental contracts (e.g. GPS, Child Seat).',
     optionName: 'Option name',
-    optionRate: 'Rate (â‚¬/day)',
+    optionRate: 'Rate (DZD/day)',
+    coverageTypes: 'Insurance Coverage Types',
+    coverageTypesDesc: 'Manage coverage types selectable for insurance policies (e.g. Comprehensive, Third Party).',
+    addCoverage: 'Add a coverage...',
     saveRefData: 'Save Reference Data',
     itemsConfigured: 'items configured',
     noItems: 'No items configured yet.',
@@ -1694,10 +1697,10 @@ export const FR: Record<string, any> = {
     noLog: 'Aucun log',
     insuranceHistory: 'Historique des assurances',
     insurer: 'Assureur',
-    policyNo: 'NÂ° Police',
+    policyNo: 'NÂ° Contrat d\'assurance',
     coverage: 'Couverture',
     validity: 'ValiditÃ©',
-    premiumValue: 'Prime / Valeur',
+    premiumValue: 'Cotisation / Valeur',
     statusValid: 'Valide',
     statusExpiringSoon: 'BientÃ´t',
     statusExpired: 'ExpirÃ©',
@@ -1721,7 +1724,7 @@ export const FR: Record<string, any> = {
     coverageThirdParty: 'ResponsabilitÃ© Civile',
     coverageComprehensive: 'Tous Risques',
     coverageFleet: 'Flotte',
-    premium: 'Prime',
+    premium: 'Montant de la cotisation',
     effectiveDate: "Date d'effet",
     documentPdf: 'Document (PDF)',
     // Inspection add dialog
@@ -2046,7 +2049,7 @@ export const FR: Record<string, any> = {
     registerFuelFillup: 'Enregistrer un Plein de Carburant',
     kmIndex: 'Index Km (OdomÃ¨tre)',
     volumeLiters: 'Volume (Litres)',
-    pricePerLiter: 'Prix par Litre (â‚¬/L)',
+    pricePerLiter: 'Prix par Litre (DZD/L)',
     stationName: 'Nom de la Station Service',
     fuelType: 'Type de Carburant',
     gasoline: 'Essence (Sans Plomb)',
@@ -2162,7 +2165,10 @@ export const FR: Record<string, any> = {
     extrasCatalog: "Catalogue d'Options & Accessoires",
     extrasCatalogDesc: 'Options supplÃ©mentaires disponibles lors de la crÃ©ation de contrats de location (ex: GPS, SiÃ¨ge enfant).',
     optionName: "Nom de l'option",
-    optionRate: 'Tarif (â‚¬/j)',
+    optionRate: 'Tarif (DZD/j)',
+    coverageTypes: "Types de Couverture d'Assurance",
+    coverageTypesDesc: "GÃ©rez les types de couverture sÃ©lectionnables pour vos contrats d'assurance (ex: Tous Risques, ResponsabilitÃ© Civile).",
+    addCoverage: 'Ajouter une couverture...',
     saveRefData: 'Enregistrer les DonnÃ©es RÃ©f',
     itemsConfigured: 'Ã©lÃ©ments configurÃ©s',
     noItems: 'Aucun Ã©lÃ©ment configurÃ©.',
@@ -3383,11 +3389,12 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ChartModule } from 'primeng/chart';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { AppCurrencyPipe } from '../../pipes/app-currency.pipe';
 
 @Component({
   selector: 'app-fuel',
   standalone: true,
-  imports: [CommonModule, FormsModule, TableModule, DialogModule, DatePickerModule, ChartModule, TranslatePipe],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, DatePickerModule, ChartModule, TranslatePipe, AppCurrencyPipe],
   templateUrl: './fuel.component.html',
   styleUrls: ['./fuel.component.css']
 })
@@ -3941,11 +3948,12 @@ import { ChartModule } from 'primeng/chart';
 import { DatePickerModule } from 'primeng/datepicker';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { AppCurrencyPipe } from '../../pipes/app-currency.pipe';
 
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [CommonModule, FormsModule, TableModule, ChartModule, DatePickerModule, TranslatePipe],
+  imports: [CommonModule, FormsModule, TableModule, ChartModule, DatePickerModule, TranslatePipe, AppCurrencyPipe],
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })
@@ -4148,12 +4156,14 @@ export class SettingsComponent implements OnInit {
   vehicleTypes: string[] = [];
   fuelTypes: string[] = [];
   maintenanceTypes: string[] = [];
+  coverageTypes: string[] = [];
   extras: any[] = [];
 
   // Local additions variables
   newVehicleType = '';
   newFuelType = '';
   newMaintenanceType = '';
+  newCoverageType = '';
   newExtra = { name: '', price: 0 };
 
   // Profile management
@@ -4206,6 +4216,7 @@ export class SettingsComponent implements OnInit {
       this.vehicleTypes = JSON.parse(this.settings.vehicleTypesJson || '[]');
       this.fuelTypes = JSON.parse(this.settings.fuelTypesJson || '[]');
       this.maintenanceTypes = JSON.parse(this.settings.maintenanceTypesJson || '[]');
+      this.coverageTypes = JSON.parse(this.settings.coverageTypesJson || '[]');
       this.extras = JSON.parse(this.settings.extrasJson || '[]');
     } catch (e) {
       console.error('Failed to parse settings reference lists', e);
@@ -4217,6 +4228,7 @@ export class SettingsComponent implements OnInit {
     this.settings.vehicleTypesJson = JSON.stringify(this.vehicleTypes);
     this.settings.fuelTypesJson = JSON.stringify(this.fuelTypes);
     this.settings.maintenanceTypesJson = JSON.stringify(this.maintenanceTypes);
+    this.settings.coverageTypesJson = JSON.stringify(this.coverageTypes);
     this.settings.extrasJson = JSON.stringify(this.extras);
 
     this.api.updateSettings(this.settings).subscribe({
@@ -4294,6 +4306,17 @@ export class SettingsComponent implements OnInit {
   }
   removeMaintenanceType(index: number): void {
     this.maintenanceTypes.splice(index, 1);
+  }
+
+  addCoverageType(): void {
+    const val = this.newCoverageType.trim();
+    if (val && !this.coverageTypes.includes(val)) {
+      this.coverageTypes.push(val);
+      this.newCoverageType = '';
+    }
+  }
+  removeCoverageType(index: number): void {
+    this.coverageTypes.splice(index, 1);
   }
 
   addExtra(): void {

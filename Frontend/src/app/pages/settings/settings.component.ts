@@ -20,12 +20,14 @@ export class SettingsComponent implements OnInit {
   vehicleTypes: string[] = [];
   fuelTypes: string[] = [];
   maintenanceTypes: string[] = [];
+  coverageTypes: string[] = [];
   extras: any[] = [];
 
   // Local additions variables
   newVehicleType = '';
   newFuelType = '';
   newMaintenanceType = '';
+  newCoverageType = '';
   newExtra = { name: '', price: 0 };
 
   // Profile management
@@ -78,6 +80,7 @@ export class SettingsComponent implements OnInit {
       this.vehicleTypes = JSON.parse(this.settings.vehicleTypesJson || '[]');
       this.fuelTypes = JSON.parse(this.settings.fuelTypesJson || '[]');
       this.maintenanceTypes = JSON.parse(this.settings.maintenanceTypesJson || '[]');
+      this.coverageTypes = JSON.parse(this.settings.coverageTypesJson || '[]');
       this.extras = JSON.parse(this.settings.extrasJson || '[]');
     } catch (e) {
       console.error('Failed to parse settings reference lists', e);
@@ -89,6 +92,7 @@ export class SettingsComponent implements OnInit {
     this.settings.vehicleTypesJson = JSON.stringify(this.vehicleTypes);
     this.settings.fuelTypesJson = JSON.stringify(this.fuelTypes);
     this.settings.maintenanceTypesJson = JSON.stringify(this.maintenanceTypes);
+    this.settings.coverageTypesJson = JSON.stringify(this.coverageTypes);
     this.settings.extrasJson = JSON.stringify(this.extras);
 
     this.api.updateSettings(this.settings).subscribe({
@@ -166,6 +170,17 @@ export class SettingsComponent implements OnInit {
   }
   removeMaintenanceType(index: number): void {
     this.maintenanceTypes.splice(index, 1);
+  }
+
+  addCoverageType(): void {
+    const val = this.newCoverageType.trim();
+    if (val && !this.coverageTypes.includes(val)) {
+      this.coverageTypes.push(val);
+      this.newCoverageType = '';
+    }
+  }
+  removeCoverageType(index: number): void {
+    this.coverageTypes.splice(index, 1);
   }
 
   addExtra(): void {

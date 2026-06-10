@@ -18,10 +18,10 @@
     <div class="card kpi-card">
       <div class="kpi-left">
         <span class="kpi-label">{{ 'reports.grossRevenue' | t }}</span>
-        <h2 class="kpi-number">{{ revenue.totalRevenue | number:'1.2-2' }} €</h2>
+        <h2 class="kpi-number">{{ revenue.totalRevenue | appCurrency }}</h2>
         <div class="kpi-sub-row">
-          <span style="color: var(--color-success); font-weight: 600;"><i class="pi pi-check" style="font-size: 9px;"></i> {{ 'reports.paidLabel' | t }}: {{ revenue.paidRevenue | number:'1.0-0' }} €</span>
-          <span style="color: var(--color-danger); font-weight: 600;"><i class="pi pi-exclamation-circle" style="font-size: 9px;"></i> {{ 'reports.dueLabel' | t }}: {{ revenue.unpaidRevenue | number:'1.0-0' }} €</span>
+          <span style="color: var(--color-success); font-weight: 600;"><i class="pi pi-check" style="font-size: 9px;"></i> {{ 'reports.paidLabel' | t }}: {{ revenue.paidRevenue | appCurrency }}</span>
+          <span style="color: var(--color-danger); font-weight: 600;"><i class="pi pi-exclamation-circle" style="font-size: 9px;"></i> {{ 'reports.dueLabel' | t }}: {{ revenue.unpaidRevenue | appCurrency }}</span>
         </div>
       </div>
       <div class="kpi-icon-box indigo">
@@ -114,13 +114,13 @@
             <td style="font-weight: 600; color: var(--color-text);">{{ item.brand }} {{ item.model }}</td>
             <td style="font-family: monospace; font-size: 12px; color: var(--color-text-secondary);">{{ item.matricule }}</td>
             <td style="text-align: center; font-weight: 700; color: var(--color-text-secondary);">{{ item.utilizationRate }}%</td>
-            <td style="color: var(--color-success); font-weight: 600;">{{ item.revenue | number:'1.2-2' }} €</td>
-            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.maintenanceCost | number:'1.2-2' }} €</td>
-            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.fuelCost | number:'1.2-2' }} €</td>
-            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.insuranceCost | number:'1.2-2' }} €</td>
-            <td style="color: var(--color-warning); font-weight: 600;">{{ item.totalCost | number:'1.2-2' }} €</td>
+            <td style="color: var(--color-success); font-weight: 600;">{{ item.revenue | appCurrency }}</td>
+            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.maintenanceCost | appCurrency }}</td>
+            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.fuelCost | appCurrency }}</td>
+            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.insuranceCost | appCurrency }}</td>
+            <td style="color: var(--color-warning); font-weight: 600;">{{ item.totalCost | appCurrency }}</td>
             <td style="font-weight: 800; font-size: 14px;" [class.text-success]="item.profitability >= 0" [class.text-danger]="item.profitability < 0">
-              {{ item.profitability | number:'1.2-2' }} €
+              {{ item.profitability | appCurrency }}
             </td>
           </tr>
         </ng-template>
@@ -157,7 +157,7 @@
             <tr>
               <td style="font-weight: 600; color: var(--color-text);">{{ client.name }}</td>
               <td style="text-align: center; font-weight: 700; color: var(--color-text-secondary);">{{ client.rentalsCount }}</td>
-              <td style="text-align: right; font-weight: 800; color: var(--color-accent);">{{ client.totalRevenue | number:'1.2-2' }} €</td>
+              <td style="text-align: right; font-weight: 800; color: var(--color-accent);">{{ client.totalRevenue | appCurrency }}</td>
             </tr>
           </ng-template>
           <ng-template pTemplate="emptymessage">
@@ -193,7 +193,7 @@
               <td style="font-family: monospace; font-weight: 600; color: var(--color-text);">{{ c.contractNumber }}</td>
               <td style="font-size: 12px; color: var(--color-text-secondary);">{{ c.client?.fullName }}</td>
               <td style="font-size: 12px; color: var(--color-text-secondary);">{{ c.vehicle?.brand }} {{ c.vehicle?.model }}</td>
-              <td style="text-align: right; font-weight: 700; color: var(--color-danger);">{{ c.finalAmountDue | number:'1.2-2' }} €</td>
+              <td style="text-align: right; font-weight: 700; color: var(--color-danger);">{{ c.finalAmountDue | appCurrency }}</td>
               <td style="text-align: center;">
                 <span class="badge"
                       [class.badge-danger]="c.paymentStatus === 'Unpaid'"

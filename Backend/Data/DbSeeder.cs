@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Backend.Models;
 using Backend.Helpers;
+using Backend.Models;
 
 namespace Backend.Data
 {
@@ -35,7 +35,7 @@ namespace Backend.Data
                         Model = "X3 Pro",
                         Year = 2023,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VF31LIVAN11111111",
                         EngineNumber = "ENG-LIVAN-01",
@@ -45,9 +45,9 @@ namespace Backend.Data
                         Status = VehicleStatus.Available,
                         PurchaseDate = DateTime.UtcNow.AddMonths(-10),
                         PurchasePrice = 22000.00m,
-                        InitialKm = 1000,
-                        CurrentKm = 15000,
-                        Notes = "Véhicule n°1"
+                        InitialKm = 0,
+                        CurrentKm = 0,
+                        Notes = "Véhicule n°1",
                     },
                     new()
                     {
@@ -56,19 +56,19 @@ namespace Backend.Data
                         Model = "X3 Pro",
                         Year = 2023,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VF31LIVAN22222222",
                         EngineNumber = "ENG-LIVAN-02",
                         Color = "Grey",
                         SeatsCount = 5,
                         DailyRate = 60.00m,
-                        Status = VehicleStatus.Reserved,
+                        Status = VehicleStatus.Available,
                         PurchaseDate = DateTime.UtcNow.AddMonths(-10),
                         PurchasePrice = 22000.00m,
-                        InitialKm = 1000,
-                        CurrentKm = 14500,
-                        Notes = "Véhicule n°2"
+                        InitialKm = 0,
+                        CurrentKm = 0,
+                        Notes = "Véhicule n°2",
                     },
                     new()
                     {
@@ -77,7 +77,7 @@ namespace Backend.Data
                         Model = "X3 Pro",
                         Year = 2023,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VF31LIVAN33333333",
                         EngineNumber = "ENG-LIVAN-03",
@@ -88,8 +88,8 @@ namespace Backend.Data
                         PurchaseDate = DateTime.UtcNow.AddMonths(-8),
                         PurchasePrice = 22000.00m,
                         InitialKm = 0,
-                        CurrentKm = 12000,
-                        Notes = "Véhicule n°3"
+                        CurrentKm = 0,
+                        Notes = "Véhicule n°3",
                     },
                     new()
                     {
@@ -98,7 +98,7 @@ namespace Backend.Data
                         Model = "X3 Pro",
                         Year = 2023,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VF31LIVAN44444444",
                         EngineNumber = "ENG-LIVAN-04",
@@ -109,10 +109,9 @@ namespace Backend.Data
                         PurchaseDate = DateTime.UtcNow.AddMonths(-8),
                         PurchasePrice = 22000.00m,
                         InitialKm = 0,
-                        CurrentKm = 11000,
-                        Notes = "Véhicule n°4"
+                        CurrentKm = 0,
+                        Notes = "Véhicule n°4",
                     },
-
                     // --- 4x VOLKSWAGEN THARU ---
                     new()
                     {
@@ -121,19 +120,19 @@ namespace Backend.Data
                         Model = "Tharu",
                         Year = 2022,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VW1THARU11111111",
                         EngineNumber = "ENG-THARU-01",
                         Color = "Black",
                         SeatsCount = 5,
                         DailyRate = 85.00m,
-                        Status = VehicleStatus.Rented,
+                        Status = VehicleStatus.Available,
                         PurchaseDate = DateTime.UtcNow.AddYears(-2),
                         PurchasePrice = 35000.00m,
-                        InitialKm = 2000,
-                        CurrentKm = 42000,
-                        Notes = "Véhicule n°1"
+                        InitialKm = 0,
+                        CurrentKm = 0,
+                        Notes = "Véhicule n°1",
                     },
                     new()
                     {
@@ -142,7 +141,7 @@ namespace Backend.Data
                         Model = "Tharu",
                         Year = 2022,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VW1THARU22222222",
                         EngineNumber = "ENG-THARU-02",
@@ -152,9 +151,9 @@ namespace Backend.Data
                         Status = VehicleStatus.Available,
                         PurchaseDate = DateTime.UtcNow.AddYears(-2),
                         PurchasePrice = 35000.00m,
-                        InitialKm = 2000,
-                        CurrentKm = 38000,
-                        Notes = "Véhicule n°2"
+                        InitialKm = 0,
+                        CurrentKm = 0,
+                        Notes = "Véhicule n°2",
                     },
                     new()
                     {
@@ -163,7 +162,7 @@ namespace Backend.Data
                         Model = "Tharu",
                         Year = 2023,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VW1THARU33333333",
                         EngineNumber = "ENG-THARU-03",
@@ -174,8 +173,8 @@ namespace Backend.Data
                         PurchaseDate = DateTime.UtcNow.AddMonths(-6),
                         PurchasePrice = 36000.00m,
                         InitialKm = 0,
-                        CurrentKm = 15000,
-                        Notes = "Véhicule n°3"
+                        CurrentKm = 0,
+                        Notes = "Véhicule n°3",
                     },
                     new()
                     {
@@ -184,7 +183,7 @@ namespace Backend.Data
                         Model = "Tharu",
                         Year = 2023,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VW1THARU44444444",
                         EngineNumber = "ENG-THARU-04",
@@ -195,10 +194,9 @@ namespace Backend.Data
                         PurchaseDate = DateTime.UtcNow.AddMonths(-6),
                         PurchasePrice = 36000.00m,
                         InitialKm = 0,
-                        CurrentKm = 14000,
-                        Notes = "Véhicule n°4"
+                        CurrentKm = 0,
+                        Notes = "Véhicule n°4",
                     },
-
                     // --- 1x FIAT DOBLO VITRÉ ---
                     new()
                     {
@@ -206,7 +204,7 @@ namespace Backend.Data
                         Brand = "Fiat",
                         Model = "Doblo Vitré",
                         Year = 2021,
-                        Type = "Van",
+                        Type = "Fourgonnette",
                         FuelType = "Diesel",
                         Transmission = "Automatic",
                         VIN = "WDB6543210987JKL4",
@@ -214,13 +212,13 @@ namespace Backend.Data
                         Color = "White",
                         SeatsCount = 5,
                         DailyRate = 70.00m,
-                        Status = VehicleStatus.InMaintenance,
+                        Status = VehicleStatus.Available,
                         PurchaseDate = DateTime.UtcNow.AddYears(-3),
                         PurchasePrice = 25000.00m,
-                        InitialKm = 5000,
-                        CurrentKm = 85000,
-                        Notes = "Véhicule utilitaire n°1"
-                    }
+                        InitialKm = 0,
+                        CurrentKm = 0,
+                        Notes = "Véhicule utilitaire n°1",
+                    },
                 };
 
                 context.Vehicles.AddRange(vehicles);
@@ -234,296 +232,96 @@ namespace Backend.Data
                 {
                     new()
                     {
-                        FullName = "Jean Dupont",
+                        FullName = "Yacine Benmansour",
                         NationalId = "NID-892718",
                         DateOfBirth = new DateTime(1985, 5, 12),
-                        LicenseNumber = "PERMIS-JD-1985",
+                        LicenseNumber = "PERMIS-YB-1985",
                         LicenseCategory = "B",
                         LicenseIssueDate = new DateTime(2005, 6, 20),
                         LicenseExpiryDate = DateTime.UtcNow.AddYears(2),
-                        Phone = "+33 6 12 34 56 78",
-                        Email = "jean.dupont@mail.com",
-                        Address = "12 Rue de la Paix, 75002 Paris",
-                        Notes = "Client régulier, aucun problème signalé."
+                        Phone = "+213 555 12 34 56",
+                        Email = "yacine.benmansour@mail.com",
+                        Address = "12 Rue Didouche Mourad, Alger",
+                        Notes = "Client régulier, aucun problème signalé.",
                     },
                     new()
                     {
-                        FullName = "Marie Laurent",
+                        FullName = "Amira Belkacem",
                         NationalId = "NID-198273",
                         DateOfBirth = new DateTime(1990, 8, 25),
-                        LicenseNumber = "PERMIS-ML-1990",
+                        LicenseNumber = "PERMIS-AB-1990",
                         LicenseCategory = "B",
                         LicenseIssueDate = new DateTime(2010, 9, 15),
                         LicenseExpiryDate = DateTime.UtcNow.AddDays(-5), // EXPIRED!
-                        Phone = "+33 6 98 76 54 32",
-                        Email = "marie.laurent@mail.com",
-                        Address = "45 Avenue de la République, 69002 Lyon",
-                        Notes = "Alerte : permis de conduire expiré !"
+                        Phone = "+213 661 98 76 54",
+                        Email = "amira.belkacem@mail.com",
+                        Address = "45 Boulevard de la Soummam, Oran",
+                        Notes = "Alerte : permis de conduire expiré !",
                     },
                     new()
                     {
-                        FullName = "Alice Martin",
+                        FullName = "Fatima Zohra Khelifi",
                         NationalId = "NID-561928",
                         DateOfBirth = new DateTime(1992, 11, 3),
-                        LicenseNumber = "PERMIS-AM-1992",
+                        LicenseNumber = "PERMIS-FK-1992",
                         LicenseCategory = "B",
                         LicenseIssueDate = new DateTime(2012, 12, 10),
                         LicenseExpiryDate = DateTime.UtcNow.AddDays(20), // EXPIRING SOON!
-                        Phone = "+33 6 11 12 22 33",
-                        Email = "alice.martin@mail.com",
-                        Address = "8 Boulevard Victor Hugo, 13001 Marseille",
-                        Notes = "Permis expire bientôt."
+                        Phone = "+213 770 11 12 22",
+                        Email = "fatima.khelifi@mail.com",
+                        Address = "8 Avenue de l'ALN, Constantine",
+                        Notes = "Permis expire bientôt.",
                     },
                     new()
                     {
-                        FullName = "Thomas Bernard",
+                        FullName = "Sofiane Madani",
                         NationalId = "NID-901827",
                         DateOfBirth = new DateTime(1978, 2, 18),
-                        LicenseNumber = "PERMIS-TB-1978",
+                        LicenseNumber = "PERMIS-SM-1978",
                         LicenseCategory = "B",
                         LicenseIssueDate = new DateTime(1998, 3, 22),
                         LicenseExpiryDate = DateTime.UtcNow.AddYears(5),
-                        Phone = "+33 6 44 45 55 66",
-                        Email = "thomas.bernard@mail.com",
-                        Address = "23 Avenue Jean Jaurès, 33000 Bordeaux",
-                        Notes = "Paiement toujours en règle."
-                    }
+                        Phone = "+213 550 44 45 55",
+                        Email = "sofiane.madani@mail.com",
+                        Address = "23 Rue Larbi Ben M'hidi, Alger",
+                        Notes = "Paiement toujours en règle.",
+                    },
                 };
 
                 context.Clients.AddRange(clients);
                 context.SaveChanges();
             }
 
-            // Seed Rental Contracts
+            // Seed Rental Contracts (Skipped: all vehicles start never rented)
             if (!context.RentalContracts.Any())
             {
-                var vehicle1 = context.Vehicles.FirstOrDefault(v => v.Matricule == "123-AB-45");
-                var vehicle2 = context.Vehicles.FirstOrDefault(v => v.Matricule == "987-CD-65");
-                var vehicle3 = context.Vehicles.FirstOrDefault(v => v.Matricule == "456-EF-78");
-
-                var client1 = context.Clients.FirstOrDefault(c => c.FullName == "Jean Dupont");
-                var client3 = context.Clients.FirstOrDefault(c => c.FullName == "Alice Martin");
-                var client4 = context.Clients.FirstOrDefault(c => c.FullName == "Thomas Bernard");
-
-                if (vehicle1 != null && vehicle2 != null && vehicle3 != null && client1 != null && client3 != null && client4 != null)
-                {
-                    var contracts = new List<RentalContract>
-                    {
-                        // 1. Completed Contract
-                        new()
-                        {
-                            ContractNumber = "CTR-20260501-001",
-                            ClientId = client1.Id,
-                            VehicleId = vehicle1.Id,
-                            ContractType = "Daily",
-                            StartDate = DateTime.UtcNow.AddDays(-30),
-                            ExpectedReturnDate = DateTime.UtcNow.AddDays(-25),
-                            ActualReturnDate = DateTime.UtcNow.AddDays(-25),
-                            KmDeparture = 44000,
-                            KmReturn = 44500,
-                            KmDriven = 500,
-                            DailyRate = 40.00m,
-                            RentalDays = 5,
-                            TotalAmount = 200.00m,
-                            ExtrasCharges = 20.00m, // e.g. Baby seat
-                            DiscountAmount = 10.00m,
-                            FinalAmountDue = 210.00m,
-                            PaymentStatus = PaymentStatus.Paid,
-                            PaymentMethod = "Cash",
-                            DepositAmount = 500.00m,
-                            DepositStatus = "Returned",
-                            ContractStatus = ContractStatus.Completed,
-                            Notes = "Retour en parfait état, nettoyé."
-                        },
-                        // 2. Active Contract
-                        new()
-                        {
-                            ContractNumber = "CTR-20260601-002",
-                            ClientId = client4.Id,
-                            VehicleId = vehicle2.Id,
-                            ContractType = "Daily",
-                            StartDate = DateTime.UtcNow.AddDays(-2),
-                            ExpectedReturnDate = DateTime.UtcNow.AddDays(5),
-                            KmDeparture = 85000,
-                            DailyRate = 45.00m,
-                            RentalDays = 7,
-                            TotalAmount = 315.00m,
-                            ExtrasCharges = 0.00m,
-                            DiscountAmount = 0.00m,
-                            FinalAmountDue = 315.00m,
-                            PaymentStatus = PaymentStatus.Unpaid,
-                            PaymentMethod = "Card",
-                            DepositAmount = 500.00m,
-                            DepositStatus = "Collected",
-                            ContractStatus = ContractStatus.Active,
-                            Notes = "Véhicule loué pour déplacement professionnel."
-                        },
-                        // 3. Draft/Reserved Contract
-                        new()
-                        {
-                            ContractNumber = "CTR-20260603-003",
-                            ClientId = client3.Id,
-                            VehicleId = vehicle3.Id,
-                            ContractType = "Daily",
-                            StartDate = DateTime.UtcNow.AddDays(3),
-                            ExpectedReturnDate = DateTime.UtcNow.AddDays(13),
-                            KmDeparture = 62000,
-                            DailyRate = 75.00m,
-                            RentalDays = 10,
-                            TotalAmount = 750.00m,
-                            ExtrasCharges = 50.00m, // GPS + child seat
-                            DiscountAmount = 50.00m,
-                            FinalAmountDue = 750.00m,
-                            PaymentStatus = PaymentStatus.Unpaid,
-                            PaymentMethod = "BankTransfer",
-                            DepositAmount = 800.00m,
-                            DepositStatus = "Collected",
-                            ContractStatus = ContractStatus.Draft,
-                            Notes = "Réservation pour vacances familiales."
-                        }
-                    };
-
-                    context.RentalContracts.AddRange(contracts);
-                    context.SaveChanges();
-                }
+                // Starting with empty history
             }
 
-            // Seed Km Entries
+            // Seed Km Entries (Skipped: all vehicles start at 0 km)
             if (!context.KmEntries.Any())
             {
-                var vehicle1 = context.Vehicles.FirstOrDefault(v => v.Matricule == "123-AB-45");
-                var vehicle2 = context.Vehicles.FirstOrDefault(v => v.Matricule == "987-CD-65");
-
-                if (vehicle1 != null && vehicle2 != null)
-                {
-                    var kmEntries = new List<KmEntry>
-                    {
-                        // Peugeot 208 history
-                        new() { VehicleId = vehicle1.Id, Date = DateTime.UtcNow.AddDays(-30), KmValue = 44000, Source = "ContractStart", Notes = "Départ contrat CTR-20260501-001" },
-                        new() { VehicleId = vehicle1.Id, Date = DateTime.UtcNow.AddDays(-25), KmValue = 44500, Source = "ContractReturn", Notes = "Retour contrat CTR-20260501-001" },
-                        new() { VehicleId = vehicle1.Id, Date = DateTime.UtcNow.AddDays(-15), KmValue = 45000, Source = "Manual", Notes = "Relevé mensuel interne" },
-
-                        // Renault Clio 5 history
-                        new() { VehicleId = vehicle2.Id, Date = DateTime.UtcNow.AddDays(-60), KmValue = 78000, Source = "Manual", Notes = "Contrôle entretien vidange" },
-                        new() { VehicleId = vehicle2.Id, Date = DateTime.UtcNow.AddDays(-2), KmValue = 85000, Source = "ContractStart", Notes = "Départ contrat CTR-20260601-002" }
-                    };
-
-                    context.KmEntries.AddRange(kmEntries);
-                    context.SaveChanges();
-                }
+                // Starting with empty history
             }
 
-            // Seed Maintenance
+            // Seed Maintenance (Skipped: all vehicles start clean)
             if (!context.Maintenances.Any())
             {
-                var vehicle4 = context.Vehicles.FirstOrDefault(v => v.Matricule == "654-GH-98");
-                var vehicle1 = context.Vehicles.FirstOrDefault(v => v.Matricule == "123-AB-45");
-
-                if (vehicle4 != null && vehicle1 != null)
-                {
-                    var maintenances = new List<Maintenance>
-                    {
-                        // Active Corrective maintenance
-                        new()
-                        {
-                            VehicleId = vehicle4.Id,
-                            MaintenanceType = "Corrective",
-                            DatePerformed = DateTime.UtcNow.AddDays(-1),
-                            NextScheduledDate = null,
-                            KmAtMaintenance = 145000,
-                            WorkshopName = "Garage Central",
-                            WorkshopAddress = "24 Avenue des Garages, 75018 Paris",
-                            WorkshopContact = "+33 1 45 67 89 10",
-                            Description = "Problème d'injecteurs de carburant. Perte de puissance moteur.",
-                            LaborCost = 0.00m,
-                            PartsCost = 0.00m,
-                            TotalCost = 0.00m,
-                            Status = MaintenanceStatus.InProgress
-                        },
-                        // Completed preventive maintenance
-                        new()
-                        {
-                            VehicleId = vehicle1.Id,
-                            MaintenanceType = "Preventive",
-                            DatePerformed = DateTime.UtcNow.AddDays(-15),
-                            NextScheduledDate = DateTime.UtcNow.AddMonths(12),
-                            KmAtMaintenance = 44500,
-                            WorkshopName = "Speedy Paris 12",
-                            WorkshopAddress = "98 Boulevard de Bercy, 75012 Paris",
-                            WorkshopContact = "+33 1 23 45 67 89",
-                            Description = "Entretien régulier avec changement des plaquettes de frein avant.",
-                            LaborCost = 80.00m,
-                            PartsCost = 170.00m,
-                            TotalCost = 250.00m,
-                            InvoiceNumber = "FAC-2026-9817",
-                            Status = MaintenanceStatus.Completed
-                        }
-                    };
-
-                    context.Maintenances.AddRange(maintenances);
-                    context.SaveChanges();
-                }
+                // Starting with empty history
             }
 
-            // Seed Consumable Logs
+            // Seed Consumable Logs (Skipped: all vehicles start clean)
             if (!context.ConsumableLogs.Any())
             {
-                var vehicle1 = context.Vehicles.FirstOrDefault(v => v.Matricule == "123-AB-45");
-                var vehicle2 = context.Vehicles.FirstOrDefault(v => v.Matricule == "987-CD-65");
-
-                if (vehicle1 != null && vehicle2 != null)
-                {
-                    var logs = new List<ConsumableLog>
-                    {
-                        // Peugeot 208 oil change 15 days ago
-                        new()
-                        {
-                            VehicleId = vehicle1.Id,
-                            ConsumableType = "OilChange",
-                            ReplacementDate = DateTime.UtcNow.AddDays(-15),
-                            ReplacementKm = 44500,
-                            OilType = "Synthetic",
-                            Viscosity = "5W-30",
-                            Brand = "Castrol",
-                            Notes = "Vidange standard et changement filtre à huile."
-                        },
-                        // Peugeot 208 Front Brakes replaced 15 days ago
-                        new()
-                        {
-                            VehicleId = vehicle1.Id,
-                            ConsumableType = "FrontBrakes",
-                            ReplacementDate = DateTime.UtcNow.AddDays(-15),
-                            ReplacementKm = 44500,
-                            Brand = "Brembo",
-                            Axle = "Front",
-                            Notes = "Plaquettes changées lors de la maintenance périodique."
-                        },
-                        // Renault Clio 5 Front tires replaced at 78000 km
-                        new()
-                        {
-                            VehicleId = vehicle2.Id,
-                            ConsumableType = "FrontTires",
-                            ReplacementDate = DateTime.UtcNow.AddDays(-60),
-                            ReplacementKm = 78000,
-                            Brand = "Michelin",
-                            Size = "195/55 R16",
-                            TypeDetail = "4 Saisons",
-                            Axle = "Front",
-                            Notes = "Remplacement pneu usé."
-                        }
-                    };
-
-                    context.ConsumableLogs.AddRange(logs);
-                    context.SaveChanges();
-                }
+                // Starting with empty history
             }
 
             // Seed Insurance Policies
             if (!context.InsurancePolicies.Any())
             {
                 var vehicle1 = context.Vehicles.FirstOrDefault(v => v.Matricule == "123-AB-45");
-                var vehicle2 = context.Vehicles.FirstOrDefault(v => v.Matricule == "987-CD-65");
-                var vehicle5 = context.Vehicles.FirstOrDefault(v => v.Matricule == "789-IJ-01");
+                var vehicle2 = context.Vehicles.FirstOrDefault(v => v.Matricule == "456-EF-78");
+                var vehicle5 = context.Vehicles.FirstOrDefault(v => v.Matricule == "987-CD-65");
 
                 if (vehicle1 != null && vehicle2 != null && vehicle5 != null)
                 {
@@ -535,39 +333,39 @@ namespace Backend.Data
                             VehicleId = vehicle1.Id,
                             InsurerName = "AXA Assurances",
                             PolicyNumber = "POL-AXA-9018273",
-                            CoverageType = "Comprehensive",
+                            CoverageType = "Tous Risques",
                             StartDate = DateTime.UtcNow.AddMonths(-6),
                             ExpiryDate = DateTime.UtcNow.AddMonths(6),
                             PremiumAmount = 620.00m,
                             InsuredValue = 18000.00m,
-                            AgentContact = "axaparis@axa.fr"
+                            AgentContact = "axaalger@axa.dz",
                         },
                         // Expiring policy (5 days remaining)
                         new()
                         {
                             VehicleId = vehicle2.Id,
-                            InsurerName = "Allianz France",
+                            InsurerName = "Alliance Assurances",
                             PolicyNumber = "POL-ALL-82192",
-                            CoverageType = "Comprehensive",
+                            CoverageType = "Tous Risques",
                             StartDate = DateTime.UtcNow.AddYears(-1).AddDays(5),
                             ExpiryDate = DateTime.UtcNow.AddDays(5), // EXPIRES IN 5 DAYS
                             PremiumAmount = 580.00m,
                             InsuredValue = 20000.00m,
-                            AgentContact = "allianzlyon@allianz.fr"
+                            AgentContact = "allianceoran@alliance.dz",
                         },
                         // Expired policy (10 days ago)
                         new()
                         {
                             VehicleId = vehicle5.Id,
-                            InsurerName = "GMF Assurances",
-                            PolicyNumber = "POL-GMF-112233",
-                            CoverageType = "Third-Party",
+                            InsurerName = "SAA Assurances",
+                            PolicyNumber = "POL-SAA-112233",
+                            CoverageType = "Responsabilité Civile",
                             StartDate = DateTime.UtcNow.AddYears(-1).AddDays(-10),
                             ExpiryDate = DateTime.UtcNow.AddDays(-10), // EXPIRED 10 DAYS AGO
                             PremiumAmount = 450.00m,
                             InsuredValue = 40000.00m,
-                            AgentContact = "gmf@gmf.fr"
-                        }
+                            AgentContact = "saa@saa.dz",
+                        },
                     };
 
                     context.InsurancePolicies.AddRange(policies);
@@ -579,8 +377,8 @@ namespace Backend.Data
             if (!context.TechnicalInspections.Any())
             {
                 var vehicle1 = context.Vehicles.FirstOrDefault(v => v.Matricule == "123-AB-45");
-                var vehicle4 = context.Vehicles.FirstOrDefault(v => v.Matricule == "654-GH-98");
-                var vehicle5 = context.Vehicles.FirstOrDefault(v => v.Matricule == "789-IJ-01");
+                var vehicle4 = context.Vehicles.FirstOrDefault(v => v.Matricule == "LIV-04-DZ");
+                var vehicle5 = context.Vehicles.FirstOrDefault(v => v.Matricule == "987-CD-65");
 
                 if (vehicle1 != null && vehicle4 != null && vehicle5 != null)
                 {
@@ -593,10 +391,10 @@ namespace Backend.Data
                             InspectionDate = DateTime.UtcNow.AddYears(-1),
                             ExpiryDate = DateTime.UtcNow.AddYears(1),
                             Result = "Pass",
-                            CenterName = "Securitest Paris 12",
-                            CenterAddress = "112 Rue de Charenton, 75012 Paris",
-                            Cost = 75.00m,
-                            Remarks = "Aucune défaillance majeure."
+                            CenterName = "Contrôle Technique Alger Centre",
+                            CenterAddress = "Rue Hassiba Ben Bouali, Alger",
+                            Cost = 2500.00m,
+                            Remarks = "Aucune défaillance majeure.",
                         },
                         // Failed inspection (requires contre-visite)
                         new()
@@ -605,10 +403,10 @@ namespace Backend.Data
                             InspectionDate = DateTime.UtcNow.AddDays(-3),
                             ExpiryDate = DateTime.UtcNow.AddMonths(2), // Counter-inspection required within 2 months
                             Result = "Fail",
-                            CenterName = "Dekra Paris Nord",
-                            CenterAddress = "45 Avenue de Saint-Ouen, 75017 Paris",
-                            Cost = 85.00m,
-                            Remarks = "Défaillance critique sur injecteurs et opacité des fumées."
+                            CenterName = "Dekra Contrôle Technique Oran",
+                            CenterAddress = "Zone Industrielle, Oran",
+                            Cost = 3000.00m,
+                            Remarks = "Défaillance critique sur injecteurs et opacité des fumées.",
                         },
                         // Expiring inspection (14 days remaining)
                         new()
@@ -617,11 +415,11 @@ namespace Backend.Data
                             InspectionDate = DateTime.UtcNow.AddYears(-2).AddDays(14),
                             ExpiryDate = DateTime.UtcNow.AddDays(14), // EXPIRES IN 14 DAYS
                             Result = "Pass",
-                            CenterName = "Autovision Paris Sud",
-                            CenterAddress = "6 Boulevard Jourdan, 75014 Paris",
-                            Cost = 79.00m,
-                            Remarks = "Plaquettes arrières à surveiller."
-                        }
+                            CenterName = "Centre de Contrôle Technique Constantine",
+                            CenterAddress = "Route de Batna, Constantine",
+                            Cost = 2500.00m,
+                            Remarks = "Plaquettes arrières à surveiller.",
+                        },
                     };
 
                     context.TechnicalInspections.AddRange(inspections);
@@ -629,30 +427,10 @@ namespace Backend.Data
                 }
             }
 
-            // Seed Fuel Logs
+            // Seed Fuel Logs (Skipped: all vehicles start never rented and at 0 km)
             if (!context.FuelLogs.Any())
             {
-                var vehicle1 = context.Vehicles.FirstOrDefault(v => v.Matricule == "123-AB-45");
-                var vehicle2 = context.Vehicles.FirstOrDefault(v => v.Matricule == "987-CD-65");
-
-                if (vehicle1 != null && vehicle2 != null)
-                {
-                    var fuelLogs = new List<FuelLog>
-                    {
-                        // Peugeot 208 logs
-                        new() { VehicleId = vehicle1.Id, Date = DateTime.UtcNow.AddDays(-28), KmValue = 44100, Liters = 40.00m, CostPerLiter = 1.85m, TotalCost = 74.00m, StationName = "Shell Paris", FuelType = "Gasoline", IsAnomaly = false },
-                        new() { VehicleId = vehicle1.Id, Date = DateTime.UtcNow.AddDays(-20), KmValue = 44700, Liters = 38.00m, CostPerLiter = 1.87m, TotalCost = 71.06m, StationName = "Total Paris", FuelType = "Gasoline", IsAnomaly = false },
-                        new() { VehicleId = vehicle1.Id, Date = DateTime.UtcNow.AddDays(-10), KmValue = 45000, Liters = 18.00m, CostPerLiter = 1.89m, TotalCost = 34.02m, StationName = "Esso Paris", FuelType = "Gasoline", IsAnomaly = false },
-
-                        // Renault Clio 5 logs
-                        new() { VehicleId = vehicle2.Id, Date = DateTime.UtcNow.AddDays(-15), KmValue = 82000, Liters = 45.00m, CostPerLiter = 1.75m, TotalCost = 78.75m, StationName = "Total Lyon", FuelType = "Diesel", IsAnomaly = false },
-                        // Anomaly Log: high fuel consumption
-                        new() { VehicleId = vehicle2.Id, Date = DateTime.UtcNow.AddDays(-2), KmValue = 85000, Liters = 48.00m, CostPerLiter = 1.76m, TotalCost = 84.48m, StationName = "Shell Lyon", FuelType = "Diesel", IsAnomaly = true }
-                    };
-
-                    context.FuelLogs.AddRange(fuelLogs);
-                    context.SaveChanges();
-                }
+                // Starting with empty history
             }
         }
     }

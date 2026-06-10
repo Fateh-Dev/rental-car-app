@@ -206,7 +206,7 @@
                 <div *ngFor="let item of extras; let idx = index" class="extra-item">
                   <span class="extra-name">{{ item.Name }}</span>
                   <div class="extra-price-box">
-                    <span class="extra-price">{{ item.Price }} €{{ 'common.perDay' | t }}</span>
+                    <span class="extra-price">{{ item.Price }} {{ settings.currencySymbol }}{{ 'common.perDay' | t }}</span>
                     <button (click)="removeExtra(idx)" class="tag-remove-btn" title="Remove">
                       <i class="pi pi-trash"></i>
                     </button>
@@ -218,6 +218,38 @@
                 <input type="text" [(ngModel)]="newExtra.name" [placeholder]="'settings.optionName' | t" class="form-input" />
                 <input type="number" [(ngModel)]="newExtra.price" [placeholder]="'settings.optionRate' | t" class="form-input" style="max-width: 120px;" />
                 <button (click)="addExtra()" class="btn-primary btn-sm">
+                  <i class="pi pi-plus"></i> {{ 'common.add' | t }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coverage Types -->
+          <div class="ref-section" [class.ref-open]="openRefSection === 'coverage'">
+            <button class="ref-section-header" (click)="toggleRefSection('coverage')">
+              <div class="ref-section-left">
+                <i class="pi pi-shield ref-section-icon"></i>
+                <div>
+                  <span class="ref-section-title">{{ 'settings.coverageTypes' | t }}</span>
+                  <span class="ref-section-count">{{ coverageTypes.length }} {{ 'settings.itemsConfigured' | t }}</span>
+                </div>
+              </div>
+              <i class="pi pi-chevron-down ref-chevron"></i>
+            </button>
+            <div class="ref-section-body" *ngIf="openRefSection === 'coverage'">
+              <p class="ref-section-desc">{{ 'settings.coverageTypesDesc' | t }}</p>
+              <div class="tag-container">
+                <span *ngFor="let type of coverageTypes; let idx = index" class="catalog-tag">
+                  {{ type }}
+                  <button (click)="removeCoverageType(idx)" class="tag-remove-btn" title="Remove">
+                    <i class="pi pi-times"></i>
+                  </button>
+                </span>
+                <span *ngIf="coverageTypes.length === 0" class="ref-empty">{{ 'settings.noItems' | t }}</span>
+              </div>
+              <div class="tag-add-row">
+                <input type="text" [(ngModel)]="newCoverageType" [placeholder]="'settings.addCoverage' | t" class="form-input" (keyup.enter)="addCoverageType()" />
+                <button (click)="addCoverageType()" class="btn-primary btn-sm">
                   <i class="pi pi-plus"></i> {{ 'common.add' | t }}
                 </button>
               </div>

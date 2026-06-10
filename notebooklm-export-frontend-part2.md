@@ -431,37 +431,37 @@
   >
     <form (ngSubmit)="onSubmitClient()" class="form-grid">
       <div class="form-full">
-        <label class="form-label">{{ 'clients.fullName' | t }}</label>
+        <label class="form-label required">{{ 'clients.fullName' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.fullName" name="fullName" required class="form-input" placeholder="Jean Dupont"/>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.nationalId' | t }}</label>
+        <label class="form-label required">{{ 'clients.nationalId' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.nationalId" name="nationalId" required class="form-input" placeholder="NÂ° identitÃ© unique"/>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.dateOfBirth' | t }}</label>
+        <label class="form-label required">{{ 'clients.dateOfBirth' | t }}</label>
         <p-datepicker [(ngModel)]="clientForm.dateOfBirth" name="dateOfBirth" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.licenseNumber' | t }}</label>
+        <label class="form-label required">{{ 'clients.licenseNumber' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.licenseNumber" name="licenseNumber" required class="form-input" placeholder="Permis NÂ°"/>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.licenseCategory' | t }}</label>
+        <label class="form-label required">{{ 'clients.licenseCategory' | t }}</label>
         <select [(ngModel)]="clientForm.licenseCategory" name="licenseCategory" required class="form-input">
           <option *ngFor="let cat of licenseCategories" [value]="cat">{{ 'clients.category' | t }} {{ cat }}</option>
         </select>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.licenseIssueDate' | t }}</label>
+        <label class="form-label required">{{ 'clients.licenseIssueDate' | t }}</label>
         <p-datepicker [(ngModel)]="clientForm.licenseIssueDate" name="licenseIssueDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.licenseExpiryDate' | t }}</label>
+        <label class="form-label required">{{ 'clients.licenseExpiryDate' | t }}</label>
         <p-datepicker [(ngModel)]="clientForm.licenseExpiryDate" name="licenseExpiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.phone' | t }}</label>
+        <label class="form-label required">{{ 'clients.phone' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.phone" name="phone" required class="form-input" placeholder="+33 6 12 34 56 78"/>
       </div>
       <div>
@@ -726,18 +726,18 @@
   >
     <form (ngSubmit)="onSubmitLog()" class="form-grid">
       <div class="form-full">
-        <label class="form-label">{{ 'consumables.consumableType' | t }}</label>
+        <label class="form-label required">{{ 'consumables.consumableType' | t }}</label>
         <select [(ngModel)]="logForm.consumableType" name="consumableType" required class="form-input">
           <option *ngFor="let type of consumableTypes" [value]="type">{{ i18n.translateConsumableType(type) }}</option>
         </select>
       </div>
 
       <div>
-        <label class="form-label">{{ 'consumables.replacementDate' | t }}</label>
+        <label class="form-label required">{{ 'consumables.replacementDate' | t }}</label>
         <p-datepicker [(ngModel)]="logForm.replacementDate" name="replacementDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">{{ 'consumables.replacementKm' | t }}</label>
+        <label class="form-label required">{{ 'consumables.replacementKm' | t }}</label>
         <input type="number" [(ngModel)]="logForm.replacementKm" name="replacementKm" required class="form-input"/>
       </div>
 
@@ -1052,7 +1052,7 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <!-- Client Selector -->
           <div>
-            <label class="form-label">{{ 'contracts.selectClient' | t }}</label>
+            <label class="form-label required">{{ 'contracts.selectClient' | t }}</label>
             <select *ngIf="!isEditMode" [(ngModel)]="contractForm.clientId" name="clientId" (change)="onClientSelect()" required class="form-input">
               <option [ngValue]="null">{{ 'contracts.chooseClient' | t }}</option>
               <option *ngFor="let c of activeClients" [ngValue]="c.id">{{ c.fullName }} ({{ c.nationalId }})</option>
@@ -1062,7 +1062,7 @@
 
           <!-- Vehicle Selector -->
           <div>
-            <label class="form-label">{{ 'contracts.selectVehicle' | t }}</label>
+            <label class="form-label required">{{ 'contracts.selectVehicle' | t }}</label>
             <select *ngIf="!isEditMode" [(ngModel)]="contractForm.vehicleId" name="vehicleId" (change)="onVehicleSelect()" required class="form-input">
               <option [ngValue]="null">{{ 'contracts.chooseVehicle' | t }}</option>
               <option *ngFor="let v of availableVehicles" [ngValue]="v.id">{{ v.brand }} {{ v.model }} - Plaque: {{ v.matricule }}</option>
@@ -1073,24 +1073,24 @@
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div>
-            <label class="form-label">{{ 'contracts.startDateTime' | t }}</label>
+            <label class="form-label required">{{ 'contracts.startDateTime' | t }}</label>
             <p-datepicker [(ngModel)]="contractForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
           </div>
           <div>
-            <label class="form-label">{{ 'contracts.expectedReturn' | t }}</label>
+            <label class="form-label required">{{ 'contracts.expectedReturn' | t }}</label>
             <p-datepicker [(ngModel)]="contractForm.expectedReturnDate" name="expectedReturnDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div>
-            <label class="form-label">{{ 'contracts.contractType' | t }}</label>
+            <label class="form-label required">{{ 'contracts.contractType' | t }}</label>
             <select [(ngModel)]="contractForm.contractType" name="contractType" required class="form-input">
               <option *ngFor="let ct of contractTypes" [value]="ct">{{ ct }}</option>
             </select>
           </div>
           <div>
-            <label class="form-label">{{ 'contracts.dailyRate' | t }}</label>
+            <label class="form-label required">{{ 'contracts.dailyRate' | t }}</label>
             <input type="number" [(ngModel)]="contractForm.dailyRate" name="dailyRate" (change)="calculateTotals()" required class="form-input"/>
           </div>
         </div>
@@ -1212,11 +1212,11 @@
       </div>
 
       <div>
-        <label class="form-label">{{ 'contracts.returnIndex' | t }}</label>
+        <label class="form-label required">{{ 'contracts.returnIndex' | t }}</label>
         <input type="number" [(ngModel)]="returnForm.kmReturn" name="kmReturn" required class="form-input"/>
       </div>
       <div>
-        <label class="form-label">{{ 'contracts.actualReturnDate' | t }}</label>
+        <label class="form-label required">{{ 'contracts.actualReturnDate' | t }}</label>
         <p-datepicker [(ngModel)]="returnForm.returnDate" name="returnDate" dateFormat="yy-mm-dd" [showTime]="true" styleClass="w-full"></p-datepicker>
       </div>
 
@@ -1722,8 +1722,8 @@
                   <td>{{ entry.log.date | date:'dd/MM/yyyy' }}</td>
                   <td style="font-weight: 600;">{{ entry.log.kmValue | number }} km</td>
                   <td>{{ entry.log.liters }} L</td>
-                  <td>{{ entry.log.costPerLiter | number:'1.2-2' }} â‚¬</td>
-                  <td style="font-weight: 600;">{{ entry.log.totalCost | number:'1.2-2' }} â‚¬</td>
+                  <td>{{ entry.log.costPerLiter | appCurrency }}/L</td>
+                  <td style="font-weight: 600;">{{ entry.log.totalCost | appCurrency }}</td>
                   <td>
                     <div style="display: flex; align-items: center; gap: 4px;">
                       <span *ngIf="entry.kmDrivenSinceLastFill > 0" style="font-weight: 700; color: var(--color-accent);">
@@ -1870,7 +1870,7 @@
     <!-- Calculated Info Hint -->
     <div class="calc-hint-box">
       <span>{{ 'fuel.estimatedTotal' | t }}</span>
-      <strong style="font-size: 13px;">{{ (fuelForm.liters * fuelForm.costPerLiter) | number:'1.2-2' }} â‚¬</strong>
+      <strong style="font-size: 13px;">{{ (fuelForm.liters * fuelForm.costPerLiter) | appCurrency }}</strong>
     </div>
   </div>
 
@@ -2027,7 +2027,7 @@
       <!-- Form -->
       <form (ngSubmit)="onSubmit()" class="login-form">
         <div class="form-group">
-          <label class="form-label">{{ 'login.username' | t }}</label>
+          <label class="form-label required">{{ 'login.username' | t }}</label>
           <div class="input-wrapper">
             <i class="pi pi-user input-icon"></i>
             <input 
@@ -2042,7 +2042,7 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">{{ 'login.password' | t }}</label>
+          <label class="form-label required">{{ 'login.password' | t }}</label>
           <div class="input-wrapper">
             <i class="pi pi-lock input-icon"></i>
             <input 
@@ -2182,7 +2182,7 @@
   >
     <form (ngSubmit)="onSubmitMaint()" class="form-grid">
       <div>
-        <label class="form-label">{{ 'common.vehicle' | t }}</label>
+        <label class="form-label required">{{ 'common.vehicle' | t }}</label>
         <select [(ngModel)]="maintenanceForm.vehicleId" name="vehicleId" required [disabled]="isEditMode" class="form-input">
           <option [ngValue]="null">{{ 'contracts.chooseVehicle' | t }}</option>
           <option *ngFor="let v of vehicles" [value]="v.id">{{ v.brand }} {{ v.model }} ({{ v.matricule }})</option>
@@ -2190,14 +2190,14 @@
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.interventionType' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.interventionType' | t }}</label>
         <select [(ngModel)]="maintenanceForm.maintenanceType" name="maintenanceType" required class="form-input">
           <option *ngFor="let t of maintenanceTypes" [value]="t">{{ i18n.translateMaintenanceType(t) }}</option>
         </select>
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.interventionDate' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.interventionDate' | t }}</label>
         <p-datepicker [(ngModel)]="maintenanceForm.datePerformed" name="datePerformed" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
 
@@ -2207,12 +2207,12 @@
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.counterKm' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.counterKm' | t }}</label>
         <input type="number" [(ngModel)]="maintenanceForm.kmAtMaintenance" name="kmAtMaintenance" required class="form-input"/>
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.interventionStatus' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.interventionStatus' | t }}</label>
         <select [(ngModel)]="maintenanceForm.status" name="status" required class="form-input">
           <option *ngFor="let s of statuses" [value]="s.value">{{ 'statuses.' + (s.value === 'InProgress' ? 'inProgress' : s.value.toLowerCase()) | t }}</option>
         </select>
@@ -2231,7 +2231,7 @@
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.workshopName' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.workshopName' | t }}</label>
         <input type="text" [(ngModel)]="maintenanceForm.workshopName" name="workshopName" required class="form-input" placeholder="Garage Central"/>
       </div>
 
@@ -2330,10 +2330,10 @@
     <div class="card kpi-card">
       <div class="kpi-left">
         <span class="kpi-label">{{ 'reports.grossRevenue' | t }}</span>
-        <h2 class="kpi-number">{{ revenue.totalRevenue | number:'1.2-2' }} â‚¬</h2>
+        <h2 class="kpi-number">{{ revenue.totalRevenue | appCurrency }}</h2>
         <div class="kpi-sub-row">
-          <span style="color: var(--color-success); font-weight: 600;"><i class="pi pi-check" style="font-size: 9px;"></i> {{ 'reports.paidLabel' | t }}: {{ revenue.paidRevenue | number:'1.0-0' }} â‚¬</span>
-          <span style="color: var(--color-danger); font-weight: 600;"><i class="pi pi-exclamation-circle" style="font-size: 9px;"></i> {{ 'reports.dueLabel' | t }}: {{ revenue.unpaidRevenue | number:'1.0-0' }} â‚¬</span>
+          <span style="color: var(--color-success); font-weight: 600;"><i class="pi pi-check" style="font-size: 9px;"></i> {{ 'reports.paidLabel' | t }}: {{ revenue.paidRevenue | appCurrency }}</span>
+          <span style="color: var(--color-danger); font-weight: 600;"><i class="pi pi-exclamation-circle" style="font-size: 9px;"></i> {{ 'reports.dueLabel' | t }}: {{ revenue.unpaidRevenue | appCurrency }}</span>
         </div>
       </div>
       <div class="kpi-icon-box indigo">
@@ -2426,13 +2426,13 @@
             <td style="font-weight: 600; color: var(--color-text);">{{ item.brand }} {{ item.model }}</td>
             <td style="font-family: monospace; font-size: 12px; color: var(--color-text-secondary);">{{ item.matricule }}</td>
             <td style="text-align: center; font-weight: 700; color: var(--color-text-secondary);">{{ item.utilizationRate }}%</td>
-            <td style="color: var(--color-success); font-weight: 600;">{{ item.revenue | number:'1.2-2' }} â‚¬</td>
-            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.maintenanceCost | number:'1.2-2' }} â‚¬</td>
-            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.fuelCost | number:'1.2-2' }} â‚¬</td>
-            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.insuranceCost | number:'1.2-2' }} â‚¬</td>
-            <td style="color: var(--color-warning); font-weight: 600;">{{ item.totalCost | number:'1.2-2' }} â‚¬</td>
+            <td style="color: var(--color-success); font-weight: 600;">{{ item.revenue | appCurrency }}</td>
+            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.maintenanceCost | appCurrency }}</td>
+            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.fuelCost | appCurrency }}</td>
+            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.insuranceCost | appCurrency }}</td>
+            <td style="color: var(--color-warning); font-weight: 600;">{{ item.totalCost | appCurrency }}</td>
             <td style="font-weight: 800; font-size: 14px;" [class.text-success]="item.profitability >= 0" [class.text-danger]="item.profitability < 0">
-              {{ item.profitability | number:'1.2-2' }} â‚¬
+              {{ item.profitability | appCurrency }}
             </td>
           </tr>
         </ng-template>
@@ -2469,7 +2469,7 @@
             <tr>
               <td style="font-weight: 600; color: var(--color-text);">{{ client.name }}</td>
               <td style="text-align: center; font-weight: 700; color: var(--color-text-secondary);">{{ client.rentalsCount }}</td>
-              <td style="text-align: right; font-weight: 800; color: var(--color-accent);">{{ client.totalRevenue | number:'1.2-2' }} â‚¬</td>
+              <td style="text-align: right; font-weight: 800; color: var(--color-accent);">{{ client.totalRevenue | appCurrency }}</td>
             </tr>
           </ng-template>
           <ng-template pTemplate="emptymessage">
@@ -2505,7 +2505,7 @@
               <td style="font-family: monospace; font-weight: 600; color: var(--color-text);">{{ c.contractNumber }}</td>
               <td style="font-size: 12px; color: var(--color-text-secondary);">{{ c.client?.fullName }}</td>
               <td style="font-size: 12px; color: var(--color-text-secondary);">{{ c.vehicle?.brand }} {{ c.vehicle?.model }}</td>
-              <td style="text-align: right; font-weight: 700; color: var(--color-danger);">{{ c.finalAmountDue | number:'1.2-2' }} â‚¬</td>
+              <td style="text-align: right; font-weight: 700; color: var(--color-danger);">{{ c.finalAmountDue | appCurrency }}</td>
               <td style="text-align: center;">
                 <span class="badge"
                       [class.badge-danger]="c.paymentStatus === 'Unpaid'"
@@ -3060,7 +3060,7 @@
                 <td class="text-secondary">{{ item.policy.policyNumber }}</td>
                 <td>{{ 'vehicles.coverage' + item.policy.coverageType.replace('-', '') | t }}</td>
                 <td class="text-secondary">{{ item.policy.startDate | date:'dd/MM/yy' }} â†’ {{ item.policy.expiryDate | date:'dd/MM/yy' }}</td>
-                <td>{{ item.policy.premiumAmount }} â‚¬ / {{ item.policy.insuredValue }} â‚¬</td>
+                <td>{{ item.policy.premiumAmount | appCurrency }} / {{ item.policy.insuredValue | appCurrency }}</td>
                 <td>
                   <span class="badge"
                     [class.badge-success]="item.status === 'Valid'"
@@ -3101,7 +3101,7 @@
                     [class.text-danger]="item.inspection.result === 'Fail'"
                   >{{ 'vehicles.result' + item.inspection.result | t }}</span>
                 </td>
-                <td>{{ item.inspection.cost }} â‚¬</td>
+                <td>{{ item.inspection.cost | appCurrency }}</td>
                 <td>
                   <span class="badge"
                     [class.badge-success]="item.status === 'Valid'"
@@ -3138,8 +3138,8 @@
               <tr *ngFor="let log of fuelLogsList">
                 <td class="font-semibold">{{ log.log.date | date:'dd/MM/yyyy' }}</td>
                 <td class="text-secondary">{{ log.log.kmValue }} km</td>
-                <td>{{ log.log.liters }} L ({{ log.log.costPerLiter }} â‚¬/L)</td>
-                <td class="font-semibold">{{ log.log.totalCost }} â‚¬</td>
+                <td>{{ log.log.liters }} L ({{ log.log.costPerLiter }} {{ i18n.currentLang() === 'ar' ? 'Ø¯.Ø¬' : 'DZD' }}/L)</td>
+                <td class="font-semibold">{{ log.log.totalCost | appCurrency }}</td>
                 <td class="text-accent">
                   <span *ngIf="log.consumptionL100 > 0">{{ log.consumptionL100 }} L/100km</span>
                   <span *ngIf="log.consumptionL100 === 0" class="text-muted" style="font-style:italic">â€”</span>
@@ -3200,29 +3200,29 @@
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.brand' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.brand' | t }}</label>
             <input type="text" [(ngModel)]="vehicleForm.brand" name="brand" required class="form-input" placeholder="Renault"/>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.model' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.model' | t }}</label>
             <input type="text" [(ngModel)]="vehicleForm.model" name="model" required class="form-input" placeholder="Clio 5"/>
           </div>
         </div>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.matricule' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.matricule' | t }}</label>
             <input type="text" [(ngModel)]="vehicleForm.matricule" name="matricule" required class="form-input" placeholder="12345-120-16"/>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.vin' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.vin' | t }}</label>
             <input type="text" [(ngModel)]="vehicleForm.vin" name="vin" required class="form-input" placeholder="VF123456..."/>
           </div>
         </div>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.year' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.year' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.year" name="year" required class="form-input"/>
           </div>
           <div class="form-group">
@@ -3233,26 +3233,26 @@
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'common.type' | t }}</label>
+            <label class="form-label required">{{ 'common.type' | t }}</label>
             <select [(ngModel)]="vehicleForm.type" name="type" required class="form-input">
               <option *ngFor="let t of vehicleTypes" [value]="t">{{ t }}</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.seats' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.seats' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.seatsCount" name="seatsCount" required class="form-input"/>
           </div>
         </div>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.fuelType' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.fuelType' | t }}</label>
             <select [(ngModel)]="vehicleForm.fuelType" name="fuelType" required class="form-input">
               <option *ngFor="let f of fuelTypes" [value]="f">{{ f }}</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.transmission' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.transmission' | t }}</label>
             <select [(ngModel)]="vehicleForm.transmission" name="transmission" required class="form-input">
               <option *ngFor="let t of transmissions" [value]="t">{{ t }}</option>
             </select>
@@ -3266,11 +3266,11 @@
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.dailyRate' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.dailyRate' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.dailyRate" name="dailyRate" required class="form-input"/>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.purchasePrice' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.purchasePrice' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.purchasePrice" name="purchasePrice" required class="form-input"/>
           </div>
         </div>
@@ -3281,7 +3281,7 @@
             <input type="text" [(ngModel)]="vehicleForm.engineNumber" name="engineNumber" class="form-input"/>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.initialKm' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.initialKm' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.initialKm" name="initialKm" [disabled]="isEditMode" required class="form-input"/>
           </div>
         </div>
@@ -3333,16 +3333,16 @@
   <p-dialog [(visible)]="showAddPolicyDialog" [style]="{width: '40vw'}" [modal]="true" [header]="'vehicles.newInsurancePolicy' | t" styleClass="p-fluid" [draggable]="false" [resizable]="false">
     <form (ngSubmit)="submitPolicy()" class="form-stack">
       <div class="form-group">
-        <label class="form-label">{{ 'vehicles.insurer' | t }}</label>
+        <label class="form-label required">{{ 'vehicles.insurer' | t }}</label>
         <input type="text" [(ngModel)]="policyForm.insurerName" name="insurerName" required class="form-input"/>
       </div>
       <div class="form-group">
-        <label class="form-label">{{ 'vehicles.policyNo' | t }}</label>
+        <label class="form-label required">{{ 'vehicles.policyNo' | t }}</label>
         <input type="text" [(ngModel)]="policyForm.policyNumber" name="policyNumber" required class="form-input"/>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.coverage' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.coverage' | t }}</label>
           <select [(ngModel)]="policyForm.coverageType" name="coverageType" required class="form-input">
             <option value="Third-Party">{{ 'vehicles.coverageThirdParty' | t }}</option>
             <option value="Comprehensive">{{ 'vehicles.coverageComprehensive' | t }}</option>
@@ -3350,17 +3350,17 @@
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.premium' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.premium' | t }}</label>
           <input type="number" [(ngModel)]="policyForm.premiumAmount" name="premiumAmount" required class="form-input"/>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.effectiveDate' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.effectiveDate' | t }}</label>
           <p-datepicker [(ngModel)]="policyForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.expiration' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.expiration' | t }}</label>
           <p-datepicker [(ngModel)]="policyForm.expiryDate" name="expiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
       </div>
@@ -3381,17 +3381,17 @@
     <form (ngSubmit)="submitInspection()" class="form-stack">
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.inspectionDate' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.inspectionDate' | t }}</label>
           <p-datepicker [(ngModel)]="inspectionForm.inspectionDate" name="inspectionDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.expiration' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.expiration' | t }}</label>
           <p-datepicker [(ngModel)]="inspectionForm.expiryDate" name="expiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.result' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.result' | t }}</label>
           <select [(ngModel)]="inspectionForm.result" name="result" required class="form-input">
             <option value="Pass">{{ 'vehicles.resultFavorable' | t }}</option>
             <option value="Conditional">{{ 'vehicles.resultCounterVisit' | t }}</option>
@@ -3399,12 +3399,12 @@
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'common.cost' | t }} (â‚¬)</label>
+          <label class="form-label required">{{ 'common.cost' | t }} (DZD)</label>
           <input type="number" [(ngModel)]="inspectionForm.cost" name="cost" required class="form-input"/>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">{{ 'vehicles.center' | t }}</label>
+        <label class="form-label required">{{ 'vehicles.center' | t }}</label>
         <input type="text" [(ngModel)]="inspectionForm.centerName" name="centerName" required class="form-input"/>
       </div>
       <div class="form-group">
@@ -3432,21 +3432,21 @@
     <form (ngSubmit)="submitFuel()" class="form-stack">
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'common.date' | t }}</label>
+          <label class="form-label required">{{ 'common.date' | t }}</label>
           <p-datepicker [(ngModel)]="fuelForm.date" name="date" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.counterKm' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.counterKm' | t }}</label>
           <input type="number" [(ngModel)]="fuelForm.kmValue" name="kmValue" required class="form-input"/>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.volumeL' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.volumeL' | t }}</label>
           <input type="number" [(ngModel)]="fuelForm.liters" name="liters" required class="form-input"/>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.pricePerL' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.pricePerL' | t }}</label>
           <input type="number" step="0.001" [(ngModel)]="fuelForm.costPerLiter" name="costPerLiter" required class="form-input"/>
         </div>
       </div>
@@ -3465,11 +3465,11 @@
   <p-dialog [(visible)]="showAddKmDialog" [style]="{width: '36vw'}" [modal]="true" [header]="'vehicles.kmReading' | t" styleClass="p-fluid" [draggable]="false" [resizable]="false">
     <form (ngSubmit)="submitKm()" class="form-stack">
       <div class="form-group">
-        <label class="form-label">{{ 'common.date' | t }}</label>
+        <label class="form-label required">{{ 'common.date' | t }}</label>
         <p-datepicker [(ngModel)]="kmForm.date" name="date" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div class="form-group">
-        <label class="form-label">{{ 'vehicles.counterKm' | t }}</label>
+        <label class="form-label required">{{ 'vehicles.counterKm' | t }}</label>
         <input type="number" [(ngModel)]="kmForm.kmValue" name="kmValue" required class="form-input"/>
       </div>
       <div class="form-group">
@@ -3665,6 +3665,11 @@ body {
   color: var(--color-text-secondary);
   margin-bottom: 5px;
   letter-spacing: 0.01em;
+}
+.form-label.required::after {
+  content: " *";
+  color: var(--color-danger);
+  font-weight: bold;
 }
 
 select.form-input {
@@ -4165,593 +4170,6 @@ textarea.form-input {
 ---
 ### C:\Users\Djawed\Desktop\Parc Auto\Frontend\src\app\app.css
 ```css
-
-```
-
----
-### C:\Users\Djawed\Desktop\Parc Auto\Frontend\src\app\layout\app-layout\app-layout.component.css
-```css
-/* â”€â”€ App Shell â”€â”€ */
-.app-shell {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* â”€â”€ Sidebar (White, Expandable) â”€â”€ */
-.sidebar {
-  width: 240px;
-  background: var(--color-surface);
-  color: var(--color-text-secondary);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  border-right: 1px solid var(--color-border);
-  transition: width 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 20;
-  overflow: hidden;
-  will-change: width;
-}
-
-.sidebar.collapsed {
-  width: 68px;
-}
-
-.sidebar-header {
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  border-bottom: 1px solid var(--color-border-light);
-  flex-shrink: 0;
-}
-
-.sidebar-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.sidebar-logo {
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-md);
-  background: var(--color-accent-light);
-  color: var(--color-accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px;
-  flex-shrink: 0;
-}
-
-.sidebar-brand-text {
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--color-text);
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.sidebar-close-btn {
-  display: none;
-  background: none;
-  border: none;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.sidebar-nav {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 10px 8px;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 12px;
-  border-radius: var(--radius-md);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  transition: all 0.12s ease;
-  margin-bottom: 2px;
-  touch-action: manipulation;
-  cursor: pointer;
-  user-select: none;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-@media (hover: hover) {
-  .nav-item:hover {
-    background: var(--color-border-light);
-    color: var(--color-text);
-  }
-}
-
-.nav-item.active {
-  background: var(--color-accent-light);
-  color: var(--color-accent);
-  font-weight: 600;
-}
-
-.nav-item i {
-  font-size: 15px;
-  width: 20px;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.nav-label {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Collapsed state nav items â€” center icons */
-.sidebar.collapsed .nav-item {
-  justify-content: center;
-  padding: 10px;
-}
-
-.sidebar.collapsed .sidebar-header {
-  justify-content: center;
-  padding: 0 8px;
-}
-
-.sidebar-footer {
-  padding: 10px 8px;
-  border-top: 1px solid var(--color-border-light);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
-.sidebar.collapsed .sidebar-footer {
-  flex-direction: column;
-  gap: 6px;
-  padding: 8px 6px;
-}
-
-.collapse-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: all 0.15s;
-  flex-shrink: 0;
-}
-.collapse-btn:hover {
-  background: var(--color-border-light);
-  color: var(--color-text);
-}
-
-.sidebar-user {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  overflow: hidden;
-  flex: 1;
-  min-width: 0;
-}
-
-.user-avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: var(--radius-md);
-  background: var(--color-accent);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
-  flex-shrink: 0;
-  text-decoration: none;
-}
-
-.user-name {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.sidebar-logout {
-  color: var(--color-text-muted) !important;
-  flex-shrink: 0;
-}
-.sidebar-logout:hover {
-  background: var(--color-danger-light) !important;
-  color: var(--color-danger) !important;
-}
-
-/* â”€â”€ Main Wrapper â”€â”€ */
-.main-wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-width: 0;
-}
-
-/* â”€â”€ Topbar â”€â”€ */
-.topbar {
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border-light);
-  flex-shrink: 0;
-}
-
-.topbar-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.topbar-menu-btn {
-  display: none;
-}
-
-.topbar-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--color-text);
-  margin: 0;
-}
-
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.topbar-divider {
-  width: 1px;
-  height: 20px;
-  background: var(--color-border);
-  margin: 0 4px;
-}
-
-.topbar-user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.topbar-user-info {
-  text-align: right;
-}
-
-.topbar-user-name {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--color-text);
-  line-height: 1.2;
-}
-
-.topbar-user-role {
-  display: block;
-  font-size: 11px;
-  color: var(--color-text-muted);
-}
-
-.topbar-avatar {
-  width: 34px;
-  height: 34px;
-}
-
-/* â”€â”€ Alerts â”€â”€ */
-.alerts-wrapper {
-  position: relative;
-}
-
-.alerts-btn {
-  position: relative;
-}
-
-.alerts-dot {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--color-warning);
-}
-
-.alerts-dot.critical {
-  background: var(--color-danger);
-}
-
-.alerts-dropdown {
-  position: absolute;
-  right: 0;
-  top: 42px;
-  width: 320px;
-  z-index: 30;
-}
-
-.alerts-dropdown-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--color-border-light);
-}
-
-.alerts-dropdown-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--color-text);
-}
-
-.alerts-view-all {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-accent);
-  text-decoration: none;
-}
-.alerts-view-all:hover {
-  text-decoration: underline;
-}
-
-.alerts-dropdown-body {
-  max-height: 260px;
-  overflow-y: auto;
-}
-
-.alerts-empty {
-  padding: 24px;
-  text-align: center;
-  font-size: 12px;
-  color: var(--color-text-muted);
-}
-
-.alert-item {
-  display: flex;
-  gap: 10px;
-  padding: 10px 16px;
-  text-decoration: none;
-  border-bottom: 1px solid var(--color-border-light);
-  transition: background 0.1s;
-}
-.alert-item:hover {
-  background: var(--color-bg);
-}
-.alert-item:last-child {
-  border-bottom: none;
-}
-
-.alert-icon {
-  margin-top: 2px;
-  font-size: 13px;
-}
-
-.alert-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.alert-target {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text);
-}
-
-.alert-message {
-  font-size: 11px;
-  color: var(--color-text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* â”€â”€ Page Content â”€â”€ */
-.page-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 28px;
-  background: var(--color-bg);
-}
-
-.sidebar-backdrop {
-  display: none;
-}
-
-/* â”€â”€ Language Switcher â”€â”€ */
-.lang-wrapper {
-  position: relative;
-}
-
-.lang-btn {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 8px !important;
-  border-radius: var(--radius-md);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.lang-flag {
-  font-size: 16px;
-  line-height: 1;
-}
-
-.lang-code {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--color-text-secondary);
-  letter-spacing: 0.5px;
-}
-
-.lang-dropdown {
-  position: absolute;
-  right: 0;
-  top: 42px;
-  width: 180px;
-  z-index: 30;
-  padding: 4px;
-  border-radius: var(--radius-lg);
-}
-
-.lang-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 8px 12px;
-  border: none;
-  background: none;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--color-text);
-  transition: background 0.12s;
-}
-
-.lang-option:hover {
-  background: var(--color-bg);
-}
-
-.lang-option.active {
-  background: var(--color-accent-muted);
-  color: var(--color-accent);
-  font-weight: 600;
-}
-
-.lang-option-flag {
-  font-size: 18px;
-  line-height: 1;
-}
-
-.lang-option-label {
-  flex: 1;
-  text-align: start;
-}
-
-.lang-option-check {
-  font-size: 11px;
-  color: var(--color-accent);
-}
-
-/* â”€â”€ RTL Overrides â”€â”€ */
-:host-context([dir="rtl"]) .topbar-user-info {
-  text-align: left;
-}
-
-:host-context([dir="rtl"]) .alerts-dropdown {
-  right: auto;
-  left: 0;
-}
-
-:host-context([dir="rtl"]) .lang-dropdown {
-  right: auto;
-  left: 0;
-}
-
-:host-context([dir="rtl"]) .alerts-dot {
-  right: auto;
-  left: 6px;
-}
-
-:host-context([dir="rtl"]) .sidebar {
-  border-right: none;
-  border-left: 1px solid var(--color-border);
-}
-
-:host-context([dir="rtl"]) .collapse-btn i.pi-angle-double-left {
-  transform: scaleX(-1);
-}
-
-:host-context([dir="rtl"]) .collapse-btn i.pi-angle-double-right {
-  transform: scaleX(-1);
-}
-
-/* â”€â”€ Responsive â”€â”€ */
-@media (max-width: 768px) {
-  .sidebar-backdrop.is-visible {
-    display: block;
-    position: fixed;
-    inset: 0;
-    background: rgba(28, 25, 23, 0.3);
-    z-index: 19;
-    backdrop-filter: blur(2px);
-  }
-
-  .sidebar {
-    position: fixed;
-    height: 100vh;
-    left: 0;
-    top: 0;
-    transform: translateX(-100%);
-    z-index: 21;
-    width: 260px !important;
-    box-shadow: var(--shadow-lg);
-  }
-  .sidebar.sidebar-open {
-    transform: translateX(0);
-  }
-  .sidebar-close-btn {
-    display: block;
-  }
-  .collapse-btn {
-    display: none;
-  }
-  .topbar-menu-btn {
-    display: flex;
-  }
-  .topbar-title {
-    display: none;
-  }
-  .topbar-user-info {
-    display: none;
-  }
-
-  :host-context([dir="rtl"]) .sidebar {
-    left: auto;
-    right: 0;
-    transform: translateX(100%);
-  }
-  :host-context([dir="rtl"]) .sidebar.sidebar-open {
-    transform: translateX(0);
-  }
-}
-
-/* Hide collapse button on mobile */
-@media (max-width: 768px) {
-  .sidebar.collapsed {
-    width: 260px !important;
-  }
-}
 
 ```
 

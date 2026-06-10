@@ -147,18 +147,18 @@
   >
     <form (ngSubmit)="onSubmitLog()" class="form-grid">
       <div class="form-full">
-        <label class="form-label">{{ 'consumables.consumableType' | t }}</label>
+        <label class="form-label required">{{ 'consumables.consumableType' | t }}</label>
         <select [(ngModel)]="logForm.consumableType" name="consumableType" required class="form-input">
           <option *ngFor="let type of consumableTypes" [value]="type">{{ i18n.translateConsumableType(type) }}</option>
         </select>
       </div>
 
       <div>
-        <label class="form-label">{{ 'consumables.replacementDate' | t }}</label>
+        <label class="form-label required">{{ 'consumables.replacementDate' | t }}</label>
         <p-datepicker [(ngModel)]="logForm.replacementDate" name="replacementDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">{{ 'consumables.replacementKm' | t }}</label>
+        <label class="form-label required">{{ 'consumables.replacementKm' | t }}</label>
         <input type="number" [(ngModel)]="logForm.replacementKm" name="replacementKm" required class="form-input"/>
       </div>
 

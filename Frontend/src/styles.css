@@ -175,6 +175,11 @@ body {
   margin-bottom: 5px;
   letter-spacing: 0.01em;
 }
+.form-label.required::after {
+  content: " *";
+  color: var(--color-danger);
+  font-weight: bold;
+}
 
 select.form-input {
   cursor: pointer;

@@ -365,7 +365,7 @@ namespace Backend.Models
         public int Id { get; set; }
 
         [MaxLength(10)]
-        public string CurrencySymbol { get; set; } = "â‚¬";
+        public string CurrencySymbol { get; set; } = "DZD";
 
         [MaxLength(30)]
         public string DateFormat { get; set; } = "yyyy-MM-dd";
@@ -385,10 +385,11 @@ namespace Backend.Models
         public int ConsumableNotifyDaysBefore { get; set; } = 30;
 
         // Reference data stored as JSON strings
-        public string VehicleTypesJson { get; set; } = "[\"Car\", \"SUV\", \"Van\", \"Truck\", \"Motorcycle\"]";
-        public string FuelTypesJson { get; set; } = "[\"Gasoline\", \"Diesel\", \"Electric\", \"Hybrid\", \"LPG\"]";
-        public string MaintenanceTypesJson { get; set; } = "[\"Preventive\", \"Corrective\", \"AccidentRepair\", \"Inspection\"]";
-        public string ExtrasJson { get; set; } = "[{\"Name\":\"GPS\",\"Price\":5.0},{\"Name\":\"Child Seat\",\"Price\":3.0},{\"Name\":\"Additional Driver\",\"Price\":10.0}]";
+        public string VehicleTypesJson { get; set; } = "[\"Voiture\", \"SUV\", \"Fourgonnette\", \"Camion\", \"Moto\"]";
+        public string FuelTypesJson { get; set; } = "[\"Essence\", \"Diesel\", \"Ã‰lectrique\", \"Hybride\", \"GPL\"]";
+        public string MaintenanceTypesJson { get; set; } = "[\"PrÃ©ventif\", \"Correctif\", \"RÃ©paration accident\", \"Inspection\"]";
+        public string CoverageTypesJson { get; set; } = "[\"ResponsabilitÃ© Civile\", \"Tous Risques\", \"Flotte\"]";
+        public string ExtrasJson { get; set; } = "[{\"Name\":\"GPS\",\"Price\":5.0},{\"Name\":\"SiÃ¨ge bÃ©bÃ©\",\"Price\":3.0},{\"Name\":\"Conducteur supplÃ©mentaire\",\"Price\":10.0}]";
     }
 }
 
@@ -936,7 +937,7 @@ namespace Backend.Data
                         Model = "X3 Pro",
                         Year = 2023,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VF31LIVAN11111111",
                         EngineNumber = "ENG-LIVAN-01",
@@ -957,7 +958,7 @@ namespace Backend.Data
                         Model = "X3 Pro",
                         Year = 2023,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VF31LIVAN22222222",
                         EngineNumber = "ENG-LIVAN-02",
@@ -978,7 +979,7 @@ namespace Backend.Data
                         Model = "X3 Pro",
                         Year = 2023,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VF31LIVAN33333333",
                         EngineNumber = "ENG-LIVAN-03",
@@ -999,7 +1000,7 @@ namespace Backend.Data
                         Model = "X3 Pro",
                         Year = 2023,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VF31LIVAN44444444",
                         EngineNumber = "ENG-LIVAN-04",
@@ -1022,7 +1023,7 @@ namespace Backend.Data
                         Model = "Tharu",
                         Year = 2022,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VW1THARU11111111",
                         EngineNumber = "ENG-THARU-01",
@@ -1043,7 +1044,7 @@ namespace Backend.Data
                         Model = "Tharu",
                         Year = 2022,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VW1THARU22222222",
                         EngineNumber = "ENG-THARU-02",
@@ -1064,7 +1065,7 @@ namespace Backend.Data
                         Model = "Tharu",
                         Year = 2023,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VW1THARU33333333",
                         EngineNumber = "ENG-THARU-03",
@@ -1085,7 +1086,7 @@ namespace Backend.Data
                         Model = "Tharu",
                         Year = 2023,
                         Type = "SUV",
-                        FuelType = "Gasoline",
+                        FuelType = "Essence",
                         Transmission = "Automatic",
                         VIN = "VW1THARU44444444",
                         EngineNumber = "ENG-THARU-04",
@@ -1107,7 +1108,7 @@ namespace Backend.Data
                         Brand = "Fiat",
                         Model = "Doblo VitrÃ©",
                         Year = 2021,
-                        Type = "Van",
+                        Type = "Fourgonnette",
                         FuelType = "Diesel",
                         Transmission = "Automatic",
                         VIN = "WDB6543210987JKL4",
@@ -1328,7 +1329,7 @@ namespace Backend.Data
                         new()
                         {
                             VehicleId = vehicle4.Id,
-                            MaintenanceType = "Corrective",
+                            MaintenanceType = "Correctif",
                             DatePerformed = DateTime.UtcNow.AddDays(-1),
                             NextScheduledDate = null,
                             KmAtMaintenance = 145000,
@@ -1345,7 +1346,7 @@ namespace Backend.Data
                         new()
                         {
                             VehicleId = vehicle1.Id,
-                            MaintenanceType = "Preventive",
+                            MaintenanceType = "PrÃ©ventif",
                             DatePerformed = DateTime.UtcNow.AddDays(-15),
                             NextScheduledDate = DateTime.UtcNow.AddMonths(12),
                             KmAtMaintenance = 44500,
@@ -1383,7 +1384,7 @@ namespace Backend.Data
                             ConsumableType = "OilChange",
                             ReplacementDate = DateTime.UtcNow.AddDays(-15),
                             ReplacementKm = 44500,
-                            OilType = "Synthetic",
+                            OilType = "SynthÃ©tique",
                             Viscosity = "5W-30",
                             Brand = "Castrol",
                             Notes = "Vidange standard et changement filtre Ã  huile."
@@ -1436,7 +1437,7 @@ namespace Backend.Data
                             VehicleId = vehicle1.Id,
                             InsurerName = "AXA Assurances",
                             PolicyNumber = "POL-AXA-9018273",
-                            CoverageType = "Comprehensive",
+                            CoverageType = "Tous Risques",
                             StartDate = DateTime.UtcNow.AddMonths(-6),
                             ExpiryDate = DateTime.UtcNow.AddMonths(6),
                             PremiumAmount = 620.00m,
@@ -1449,7 +1450,7 @@ namespace Backend.Data
                             VehicleId = vehicle2.Id,
                             InsurerName = "Allianz France",
                             PolicyNumber = "POL-ALL-82192",
-                            CoverageType = "Comprehensive",
+                            CoverageType = "Tous Risques",
                             StartDate = DateTime.UtcNow.AddYears(-1).AddDays(5),
                             ExpiryDate = DateTime.UtcNow.AddDays(5), // EXPIRES IN 5 DAYS
                             PremiumAmount = 580.00m,
@@ -1462,7 +1463,7 @@ namespace Backend.Data
                             VehicleId = vehicle5.Id,
                             InsurerName = "GMF Assurances",
                             PolicyNumber = "POL-GMF-112233",
-                            CoverageType = "Third-Party",
+                            CoverageType = "ResponsabilitÃ© Civile",
                             StartDate = DateTime.UtcNow.AddYears(-1).AddDays(-10),
                             ExpiryDate = DateTime.UtcNow.AddDays(-10), // EXPIRED 10 DAYS AGO
                             PremiumAmount = 450.00m,
@@ -1541,9 +1542,9 @@ namespace Backend.Data
                     var fuelLogs = new List<FuelLog>
                     {
                         // Peugeot 208 logs
-                        new() { VehicleId = vehicle1.Id, Date = DateTime.UtcNow.AddDays(-28), KmValue = 44100, Liters = 40.00m, CostPerLiter = 1.85m, TotalCost = 74.00m, StationName = "Shell Paris", FuelType = "Gasoline", IsAnomaly = false },
-                        new() { VehicleId = vehicle1.Id, Date = DateTime.UtcNow.AddDays(-20), KmValue = 44700, Liters = 38.00m, CostPerLiter = 1.87m, TotalCost = 71.06m, StationName = "Total Paris", FuelType = "Gasoline", IsAnomaly = false },
-                        new() { VehicleId = vehicle1.Id, Date = DateTime.UtcNow.AddDays(-10), KmValue = 45000, Liters = 18.00m, CostPerLiter = 1.89m, TotalCost = 34.02m, StationName = "Esso Paris", FuelType = "Gasoline", IsAnomaly = false },
+                        new() { VehicleId = vehicle1.Id, Date = DateTime.UtcNow.AddDays(-28), KmValue = 44100, Liters = 40.00m, CostPerLiter = 1.85m, TotalCost = 74.00m, StationName = "Shell Paris", FuelType = "Essence", IsAnomaly = false },
+                        new() { VehicleId = vehicle1.Id, Date = DateTime.UtcNow.AddDays(-20), KmValue = 44700, Liters = 38.00m, CostPerLiter = 1.87m, TotalCost = 71.06m, StationName = "Total Paris", FuelType = "Essence", IsAnomaly = false },
+                        new() { VehicleId = vehicle1.Id, Date = DateTime.UtcNow.AddDays(-10), KmValue = 45000, Liters = 18.00m, CostPerLiter = 1.89m, TotalCost = 34.02m, StationName = "Esso Paris", FuelType = "Essence", IsAnomaly = false },
 
                         // Renault Clio 5 logs
                         new() { VehicleId = vehicle2.Id, Date = DateTime.UtcNow.AddDays(-15), KmValue = 82000, Liters = 45.00m, CostPerLiter = 1.75m, TotalCost = 78.75m, StationName = "Total Lyon", FuelType = "Diesel", IsAnomaly = false },

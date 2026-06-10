@@ -102,7 +102,7 @@
   >
     <form (ngSubmit)="onSubmitMaint()" class="form-grid">
       <div>
-        <label class="form-label">{{ 'common.vehicle' | t }}</label>
+        <label class="form-label required">{{ 'common.vehicle' | t }}</label>
         <select [(ngModel)]="maintenanceForm.vehicleId" name="vehicleId" required [disabled]="isEditMode" class="form-input">
           <option [ngValue]="null">{{ 'contracts.chooseVehicle' | t }}</option>
           <option *ngFor="let v of vehicles" [value]="v.id">{{ v.brand }} {{ v.model }} ({{ v.matricule }})</option>
@@ -110,14 +110,14 @@
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.interventionType' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.interventionType' | t }}</label>
         <select [(ngModel)]="maintenanceForm.maintenanceType" name="maintenanceType" required class="form-input">
           <option *ngFor="let t of maintenanceTypes" [value]="t">{{ i18n.translateMaintenanceType(t) }}</option>
         </select>
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.interventionDate' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.interventionDate' | t }}</label>
         <p-datepicker [(ngModel)]="maintenanceForm.datePerformed" name="datePerformed" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
 
@@ -127,12 +127,12 @@
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.counterKm' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.counterKm' | t }}</label>
         <input type="number" [(ngModel)]="maintenanceForm.kmAtMaintenance" name="kmAtMaintenance" required class="form-input"/>
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.interventionStatus' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.interventionStatus' | t }}</label>
         <select [(ngModel)]="maintenanceForm.status" name="status" required class="form-input">
           <option *ngFor="let s of statuses" [value]="s.value">{{ 'statuses.' + (s.value === 'InProgress' ? 'inProgress' : s.value.toLowerCase()) | t }}</option>
         </select>
@@ -151,7 +151,7 @@
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.workshopName' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.workshopName' | t }}</label>
         <input type="text" [(ngModel)]="maintenanceForm.workshopName" name="workshopName" required class="form-input" placeholder="Garage Central"/>
       </div>
 

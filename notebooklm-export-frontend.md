@@ -668,7 +668,7 @@ export const AR: Record<string, any> = {
     registerFuelFillup: 'ØªØ³Ø¬ÙŠÙ„ ØªØ¹Ø¨Ø¦Ø© ÙˆÙ‚ÙˆØ¯',
     kmIndex: 'ÙÙ‡Ø±Ø³ ÙƒÙ… (Ø§Ù„Ø¹Ø¯Ø§Ø¯)',
     volumeLiters: 'Ø§Ù„Ø­Ø¬Ù… (Ù„ØªØ±Ø§Øª)',
-    pricePerLiter: 'Ø³Ø¹Ø± Ø§Ù„Ù„ØªØ± (â‚¬/Ù„ØªØ±)',
+    pricePerLiter: 'Ø³Ø¹Ø± Ø§Ù„Ù„ØªØ± (DZD/Ù„ØªØ±)',
     stationName: 'Ø§Ø³Ù… Ù…Ø­Ø·Ø© Ø§Ù„ÙˆÙ‚ÙˆØ¯',
     fuelType: 'Ù†ÙˆØ¹ Ø§Ù„ÙˆÙ‚ÙˆØ¯',
     gasoline: 'Ø¨Ù†Ø²ÙŠÙ† (Ø®Ø§Ù„ÙŠ Ù…Ù† Ø§Ù„Ø±ØµØ§Øµ)',
@@ -784,7 +784,7 @@ export const AR: Record<string, any> = {
     extrasCatalog: 'ÙƒØªØ§Ù„ÙˆØ¬ Ø§Ù„Ø®ÙŠØ§Ø±Ø§Øª ÙˆØ§Ù„Ù…Ù„Ø­Ù‚Ø§Øª',
     extrasCatalogDesc: 'Ø®ÙŠØ§Ø±Ø§Øª Ø¥Ø¶Ø§ÙÙŠØ© Ù…ØªØ§Ø­Ø© Ø¹Ù†Ø¯ Ø¥Ù†Ø´Ø§Ø¡ Ø¹Ù‚ÙˆØ¯ Ø§Ù„Ø¥ÙŠØ¬Ø§Ø± (Ù…Ø«Ù„: GPSØŒ Ù…Ù‚Ø¹Ø¯ Ø£Ø·ÙØ§Ù„).',
     optionName: 'Ø§Ø³Ù… Ø§Ù„Ø®ÙŠØ§Ø±',
-    optionRate: 'Ø§Ù„ØªØ¹Ø±ÙØ© (â‚¬/ÙŠÙˆÙ…)',
+    optionRate: 'Ø§Ù„ØªØ¹Ø±ÙØ© (DZD/ÙŠÙˆÙ…)',
     saveRefData: 'Ø­ÙØ¸ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø±Ø¬Ø¹ÙŠØ©',
     itemsConfigured: 'Ø¹Ù†Ø§ØµØ± Ù…ÙƒÙˆÙ‘Ù†Ø©',
     noItems: 'Ù„Ù… ÙŠØªÙ… ØªÙƒÙˆÙŠÙ† Ø£ÙŠ Ø¹Ù†Ø§ØµØ± Ø¨Ø¹Ø¯.',
@@ -1012,7 +1012,7 @@ export const EN: Record<string, any> = {
     policyNo: 'Policy #',
     coverage: 'Coverage',
     validity: 'Validity',
-    premiumValue: 'Premium / Value',
+    premiumValue: 'Premium Amount / Value',
     statusValid: 'Valid',
     statusExpiringSoon: 'Soon',
     statusExpired: 'Expired',
@@ -1035,7 +1035,7 @@ export const EN: Record<string, any> = {
     coverageThirdParty: 'Third Party',
     coverageComprehensive: 'Comprehensive',
     coverageFleet: 'Fleet',
-    premium: 'Premium',
+    premium: 'Premium Amount',
     effectiveDate: 'Effective Date',
     documentPdf: 'Document (PDF)',
     newInspection: 'New Technical Inspection',
@@ -1352,7 +1352,7 @@ export const EN: Record<string, any> = {
     registerFuelFillup: 'Record Fuel Fill-up',
     kmIndex: 'Km Index (Odometer)',
     volumeLiters: 'Volume (Liters)',
-    pricePerLiter: 'Price per Liter (â‚¬/L)',
+    pricePerLiter: 'Price per Liter (DZD/L)',
     stationName: 'Station Name',
     fuelType: 'Fuel Type',
     gasoline: 'Gasoline (Unleaded)',
@@ -1468,7 +1468,10 @@ export const EN: Record<string, any> = {
     extrasCatalog: 'Extras & Accessories Catalog',
     extrasCatalogDesc: 'Optional add-ons available when creating rental contracts (e.g. GPS, Child Seat).',
     optionName: 'Option name',
-    optionRate: 'Rate (â‚¬/day)',
+    optionRate: 'Rate (DZD/day)',
+    coverageTypes: 'Insurance Coverage Types',
+    coverageTypesDesc: 'Manage coverage types selectable for insurance policies (e.g. Comprehensive, Third Party).',
+    addCoverage: 'Add a coverage...',
     saveRefData: 'Save Reference Data',
     itemsConfigured: 'items configured',
     noItems: 'No items configured yet.',
@@ -1694,10 +1697,10 @@ export const FR: Record<string, any> = {
     noLog: 'Aucun log',
     insuranceHistory: 'Historique des assurances',
     insurer: 'Assureur',
-    policyNo: 'NÂ° Police',
+    policyNo: 'NÂ° Contrat d\'assurance',
     coverage: 'Couverture',
     validity: 'ValiditÃ©',
-    premiumValue: 'Prime / Valeur',
+    premiumValue: 'Cotisation / Valeur',
     statusValid: 'Valide',
     statusExpiringSoon: 'BientÃ´t',
     statusExpired: 'ExpirÃ©',
@@ -1721,7 +1724,7 @@ export const FR: Record<string, any> = {
     coverageThirdParty: 'ResponsabilitÃ© Civile',
     coverageComprehensive: 'Tous Risques',
     coverageFleet: 'Flotte',
-    premium: 'Prime',
+    premium: 'Montant de la cotisation',
     effectiveDate: "Date d'effet",
     documentPdf: 'Document (PDF)',
     // Inspection add dialog
@@ -2046,7 +2049,7 @@ export const FR: Record<string, any> = {
     registerFuelFillup: 'Enregistrer un Plein de Carburant',
     kmIndex: 'Index Km (OdomÃ¨tre)',
     volumeLiters: 'Volume (Litres)',
-    pricePerLiter: 'Prix par Litre (â‚¬/L)',
+    pricePerLiter: 'Prix par Litre (DZD/L)',
     stationName: 'Nom de la Station Service',
     fuelType: 'Type de Carburant',
     gasoline: 'Essence (Sans Plomb)',
@@ -2162,7 +2165,10 @@ export const FR: Record<string, any> = {
     extrasCatalog: "Catalogue d'Options & Accessoires",
     extrasCatalogDesc: 'Options supplÃ©mentaires disponibles lors de la crÃ©ation de contrats de location (ex: GPS, SiÃ¨ge enfant).',
     optionName: "Nom de l'option",
-    optionRate: 'Tarif (â‚¬/j)',
+    optionRate: 'Tarif (DZD/j)',
+    coverageTypes: "Types de Couverture d'Assurance",
+    coverageTypesDesc: "GÃ©rez les types de couverture sÃ©lectionnables pour vos contrats d'assurance (ex: Tous Risques, ResponsabilitÃ© Civile).",
+    addCoverage: 'Ajouter une couverture...',
     saveRefData: 'Enregistrer les DonnÃ©es RÃ©f',
     itemsConfigured: 'Ã©lÃ©ments configurÃ©s',
     noItems: 'Aucun Ã©lÃ©ment configurÃ©.',
@@ -3383,11 +3389,12 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ChartModule } from 'primeng/chart';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { AppCurrencyPipe } from '../../pipes/app-currency.pipe';
 
 @Component({
   selector: 'app-fuel',
   standalone: true,
-  imports: [CommonModule, FormsModule, TableModule, DialogModule, DatePickerModule, ChartModule, TranslatePipe],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, DatePickerModule, ChartModule, TranslatePipe, AppCurrencyPipe],
   templateUrl: './fuel.component.html',
   styleUrls: ['./fuel.component.css']
 })
@@ -3941,11 +3948,12 @@ import { ChartModule } from 'primeng/chart';
 import { DatePickerModule } from 'primeng/datepicker';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { AppCurrencyPipe } from '../../pipes/app-currency.pipe';
 
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [CommonModule, FormsModule, TableModule, ChartModule, DatePickerModule, TranslatePipe],
+  imports: [CommonModule, FormsModule, TableModule, ChartModule, DatePickerModule, TranslatePipe, AppCurrencyPipe],
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })
@@ -4148,12 +4156,14 @@ export class SettingsComponent implements OnInit {
   vehicleTypes: string[] = [];
   fuelTypes: string[] = [];
   maintenanceTypes: string[] = [];
+  coverageTypes: string[] = [];
   extras: any[] = [];
 
   // Local additions variables
   newVehicleType = '';
   newFuelType = '';
   newMaintenanceType = '';
+  newCoverageType = '';
   newExtra = { name: '', price: 0 };
 
   // Profile management
@@ -4206,6 +4216,7 @@ export class SettingsComponent implements OnInit {
       this.vehicleTypes = JSON.parse(this.settings.vehicleTypesJson || '[]');
       this.fuelTypes = JSON.parse(this.settings.fuelTypesJson || '[]');
       this.maintenanceTypes = JSON.parse(this.settings.maintenanceTypesJson || '[]');
+      this.coverageTypes = JSON.parse(this.settings.coverageTypesJson || '[]');
       this.extras = JSON.parse(this.settings.extrasJson || '[]');
     } catch (e) {
       console.error('Failed to parse settings reference lists', e);
@@ -4217,6 +4228,7 @@ export class SettingsComponent implements OnInit {
     this.settings.vehicleTypesJson = JSON.stringify(this.vehicleTypes);
     this.settings.fuelTypesJson = JSON.stringify(this.fuelTypes);
     this.settings.maintenanceTypesJson = JSON.stringify(this.maintenanceTypes);
+    this.settings.coverageTypesJson = JSON.stringify(this.coverageTypes);
     this.settings.extrasJson = JSON.stringify(this.extras);
 
     this.api.updateSettings(this.settings).subscribe({
@@ -4294,6 +4306,17 @@ export class SettingsComponent implements OnInit {
   }
   removeMaintenanceType(index: number): void {
     this.maintenanceTypes.splice(index, 1);
+  }
+
+  addCoverageType(): void {
+    const val = this.newCoverageType.trim();
+    if (val && !this.coverageTypes.includes(val)) {
+      this.coverageTypes.push(val);
+      this.newCoverageType = '';
+    }
+  }
+  removeCoverageType(index: number): void {
+    this.coverageTypes.splice(index, 1);
   }
 
   addExtra(): void {
@@ -5876,37 +5899,37 @@ export class I18nService {
   >
     <form (ngSubmit)="onSubmitClient()" class="form-grid">
       <div class="form-full">
-        <label class="form-label">{{ 'clients.fullName' | t }}</label>
+        <label class="form-label required">{{ 'clients.fullName' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.fullName" name="fullName" required class="form-input" placeholder="Jean Dupont"/>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.nationalId' | t }}</label>
+        <label class="form-label required">{{ 'clients.nationalId' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.nationalId" name="nationalId" required class="form-input" placeholder="NÂ° identitÃ© unique"/>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.dateOfBirth' | t }}</label>
+        <label class="form-label required">{{ 'clients.dateOfBirth' | t }}</label>
         <p-datepicker [(ngModel)]="clientForm.dateOfBirth" name="dateOfBirth" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.licenseNumber' | t }}</label>
+        <label class="form-label required">{{ 'clients.licenseNumber' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.licenseNumber" name="licenseNumber" required class="form-input" placeholder="Permis NÂ°"/>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.licenseCategory' | t }}</label>
+        <label class="form-label required">{{ 'clients.licenseCategory' | t }}</label>
         <select [(ngModel)]="clientForm.licenseCategory" name="licenseCategory" required class="form-input">
           <option *ngFor="let cat of licenseCategories" [value]="cat">{{ 'clients.category' | t }} {{ cat }}</option>
         </select>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.licenseIssueDate' | t }}</label>
+        <label class="form-label required">{{ 'clients.licenseIssueDate' | t }}</label>
         <p-datepicker [(ngModel)]="clientForm.licenseIssueDate" name="licenseIssueDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.licenseExpiryDate' | t }}</label>
+        <label class="form-label required">{{ 'clients.licenseExpiryDate' | t }}</label>
         <p-datepicker [(ngModel)]="clientForm.licenseExpiryDate" name="licenseExpiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">{{ 'clients.phone' | t }}</label>
+        <label class="form-label required">{{ 'clients.phone' | t }}</label>
         <input type="text" [(ngModel)]="clientForm.phone" name="phone" required class="form-input" placeholder="+33 6 12 34 56 78"/>
       </div>
       <div>
@@ -6171,18 +6194,18 @@ export class I18nService {
   >
     <form (ngSubmit)="onSubmitLog()" class="form-grid">
       <div class="form-full">
-        <label class="form-label">{{ 'consumables.consumableType' | t }}</label>
+        <label class="form-label required">{{ 'consumables.consumableType' | t }}</label>
         <select [(ngModel)]="logForm.consumableType" name="consumableType" required class="form-input">
           <option *ngFor="let type of consumableTypes" [value]="type">{{ i18n.translateConsumableType(type) }}</option>
         </select>
       </div>
 
       <div>
-        <label class="form-label">{{ 'consumables.replacementDate' | t }}</label>
+        <label class="form-label required">{{ 'consumables.replacementDate' | t }}</label>
         <p-datepicker [(ngModel)]="logForm.replacementDate" name="replacementDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div>
-        <label class="form-label">{{ 'consumables.replacementKm' | t }}</label>
+        <label class="form-label required">{{ 'consumables.replacementKm' | t }}</label>
         <input type="number" [(ngModel)]="logForm.replacementKm" name="replacementKm" required class="form-input"/>
       </div>
 
@@ -6497,7 +6520,7 @@ export class I18nService {
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <!-- Client Selector -->
           <div>
-            <label class="form-label">{{ 'contracts.selectClient' | t }}</label>
+            <label class="form-label required">{{ 'contracts.selectClient' | t }}</label>
             <select *ngIf="!isEditMode" [(ngModel)]="contractForm.clientId" name="clientId" (change)="onClientSelect()" required class="form-input">
               <option [ngValue]="null">{{ 'contracts.chooseClient' | t }}</option>
               <option *ngFor="let c of activeClients" [ngValue]="c.id">{{ c.fullName }} ({{ c.nationalId }})</option>
@@ -6507,7 +6530,7 @@ export class I18nService {
 
           <!-- Vehicle Selector -->
           <div>
-            <label class="form-label">{{ 'contracts.selectVehicle' | t }}</label>
+            <label class="form-label required">{{ 'contracts.selectVehicle' | t }}</label>
             <select *ngIf="!isEditMode" [(ngModel)]="contractForm.vehicleId" name="vehicleId" (change)="onVehicleSelect()" required class="form-input">
               <option [ngValue]="null">{{ 'contracts.chooseVehicle' | t }}</option>
               <option *ngFor="let v of availableVehicles" [ngValue]="v.id">{{ v.brand }} {{ v.model }} - Plaque: {{ v.matricule }}</option>
@@ -6518,24 +6541,24 @@ export class I18nService {
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div>
-            <label class="form-label">{{ 'contracts.startDateTime' | t }}</label>
+            <label class="form-label required">{{ 'contracts.startDateTime' | t }}</label>
             <p-datepicker [(ngModel)]="contractForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
           </div>
           <div>
-            <label class="form-label">{{ 'contracts.expectedReturn' | t }}</label>
+            <label class="form-label required">{{ 'contracts.expectedReturn' | t }}</label>
             <p-datepicker [(ngModel)]="contractForm.expectedReturnDate" name="expectedReturnDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div>
-            <label class="form-label">{{ 'contracts.contractType' | t }}</label>
+            <label class="form-label required">{{ 'contracts.contractType' | t }}</label>
             <select [(ngModel)]="contractForm.contractType" name="contractType" required class="form-input">
               <option *ngFor="let ct of contractTypes" [value]="ct">{{ ct }}</option>
             </select>
           </div>
           <div>
-            <label class="form-label">{{ 'contracts.dailyRate' | t }}</label>
+            <label class="form-label required">{{ 'contracts.dailyRate' | t }}</label>
             <input type="number" [(ngModel)]="contractForm.dailyRate" name="dailyRate" (change)="calculateTotals()" required class="form-input"/>
           </div>
         </div>
@@ -6657,11 +6680,11 @@ export class I18nService {
       </div>
 
       <div>
-        <label class="form-label">{{ 'contracts.returnIndex' | t }}</label>
+        <label class="form-label required">{{ 'contracts.returnIndex' | t }}</label>
         <input type="number" [(ngModel)]="returnForm.kmReturn" name="kmReturn" required class="form-input"/>
       </div>
       <div>
-        <label class="form-label">{{ 'contracts.actualReturnDate' | t }}</label>
+        <label class="form-label required">{{ 'contracts.actualReturnDate' | t }}</label>
         <p-datepicker [(ngModel)]="returnForm.returnDate" name="returnDate" dateFormat="yy-mm-dd" [showTime]="true" styleClass="w-full"></p-datepicker>
       </div>
 
@@ -7167,8 +7190,8 @@ export class I18nService {
                   <td>{{ entry.log.date | date:'dd/MM/yyyy' }}</td>
                   <td style="font-weight: 600;">{{ entry.log.kmValue | number }} km</td>
                   <td>{{ entry.log.liters }} L</td>
-                  <td>{{ entry.log.costPerLiter | number:'1.2-2' }} â‚¬</td>
-                  <td style="font-weight: 600;">{{ entry.log.totalCost | number:'1.2-2' }} â‚¬</td>
+                  <td>{{ entry.log.costPerLiter | appCurrency }}/L</td>
+                  <td style="font-weight: 600;">{{ entry.log.totalCost | appCurrency }}</td>
                   <td>
                     <div style="display: flex; align-items: center; gap: 4px;">
                       <span *ngIf="entry.kmDrivenSinceLastFill > 0" style="font-weight: 700; color: var(--color-accent);">
@@ -7315,7 +7338,7 @@ export class I18nService {
     <!-- Calculated Info Hint -->
     <div class="calc-hint-box">
       <span>{{ 'fuel.estimatedTotal' | t }}</span>
-      <strong style="font-size: 13px;">{{ (fuelForm.liters * fuelForm.costPerLiter) | number:'1.2-2' }} â‚¬</strong>
+      <strong style="font-size: 13px;">{{ (fuelForm.liters * fuelForm.costPerLiter) | appCurrency }}</strong>
     </div>
   </div>
 
@@ -7472,7 +7495,7 @@ export class I18nService {
       <!-- Form -->
       <form (ngSubmit)="onSubmit()" class="login-form">
         <div class="form-group">
-          <label class="form-label">{{ 'login.username' | t }}</label>
+          <label class="form-label required">{{ 'login.username' | t }}</label>
           <div class="input-wrapper">
             <i class="pi pi-user input-icon"></i>
             <input 
@@ -7487,7 +7510,7 @@ export class I18nService {
         </div>
 
         <div class="form-group">
-          <label class="form-label">{{ 'login.password' | t }}</label>
+          <label class="form-label required">{{ 'login.password' | t }}</label>
           <div class="input-wrapper">
             <i class="pi pi-lock input-icon"></i>
             <input 
@@ -7627,7 +7650,7 @@ export class I18nService {
   >
     <form (ngSubmit)="onSubmitMaint()" class="form-grid">
       <div>
-        <label class="form-label">{{ 'common.vehicle' | t }}</label>
+        <label class="form-label required">{{ 'common.vehicle' | t }}</label>
         <select [(ngModel)]="maintenanceForm.vehicleId" name="vehicleId" required [disabled]="isEditMode" class="form-input">
           <option [ngValue]="null">{{ 'contracts.chooseVehicle' | t }}</option>
           <option *ngFor="let v of vehicles" [value]="v.id">{{ v.brand }} {{ v.model }} ({{ v.matricule }})</option>
@@ -7635,14 +7658,14 @@ export class I18nService {
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.interventionType' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.interventionType' | t }}</label>
         <select [(ngModel)]="maintenanceForm.maintenanceType" name="maintenanceType" required class="form-input">
           <option *ngFor="let t of maintenanceTypes" [value]="t">{{ i18n.translateMaintenanceType(t) }}</option>
         </select>
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.interventionDate' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.interventionDate' | t }}</label>
         <p-datepicker [(ngModel)]="maintenanceForm.datePerformed" name="datePerformed" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
 
@@ -7652,12 +7675,12 @@ export class I18nService {
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.counterKm' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.counterKm' | t }}</label>
         <input type="number" [(ngModel)]="maintenanceForm.kmAtMaintenance" name="kmAtMaintenance" required class="form-input"/>
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.interventionStatus' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.interventionStatus' | t }}</label>
         <select [(ngModel)]="maintenanceForm.status" name="status" required class="form-input">
           <option *ngFor="let s of statuses" [value]="s.value">{{ 'statuses.' + (s.value === 'InProgress' ? 'inProgress' : s.value.toLowerCase()) | t }}</option>
         </select>
@@ -7676,7 +7699,7 @@ export class I18nService {
       </div>
 
       <div>
-        <label class="form-label">{{ 'maintenance.workshopName' | t }}</label>
+        <label class="form-label required">{{ 'maintenance.workshopName' | t }}</label>
         <input type="text" [(ngModel)]="maintenanceForm.workshopName" name="workshopName" required class="form-input" placeholder="Garage Central"/>
       </div>
 
@@ -7775,10 +7798,10 @@ export class I18nService {
     <div class="card kpi-card">
       <div class="kpi-left">
         <span class="kpi-label">{{ 'reports.grossRevenue' | t }}</span>
-        <h2 class="kpi-number">{{ revenue.totalRevenue | number:'1.2-2' }} â‚¬</h2>
+        <h2 class="kpi-number">{{ revenue.totalRevenue | appCurrency }}</h2>
         <div class="kpi-sub-row">
-          <span style="color: var(--color-success); font-weight: 600;"><i class="pi pi-check" style="font-size: 9px;"></i> {{ 'reports.paidLabel' | t }}: {{ revenue.paidRevenue | number:'1.0-0' }} â‚¬</span>
-          <span style="color: var(--color-danger); font-weight: 600;"><i class="pi pi-exclamation-circle" style="font-size: 9px;"></i> {{ 'reports.dueLabel' | t }}: {{ revenue.unpaidRevenue | number:'1.0-0' }} â‚¬</span>
+          <span style="color: var(--color-success); font-weight: 600;"><i class="pi pi-check" style="font-size: 9px;"></i> {{ 'reports.paidLabel' | t }}: {{ revenue.paidRevenue | appCurrency }}</span>
+          <span style="color: var(--color-danger); font-weight: 600;"><i class="pi pi-exclamation-circle" style="font-size: 9px;"></i> {{ 'reports.dueLabel' | t }}: {{ revenue.unpaidRevenue | appCurrency }}</span>
         </div>
       </div>
       <div class="kpi-icon-box indigo">
@@ -7871,13 +7894,13 @@ export class I18nService {
             <td style="font-weight: 600; color: var(--color-text);">{{ item.brand }} {{ item.model }}</td>
             <td style="font-family: monospace; font-size: 12px; color: var(--color-text-secondary);">{{ item.matricule }}</td>
             <td style="text-align: center; font-weight: 700; color: var(--color-text-secondary);">{{ item.utilizationRate }}%</td>
-            <td style="color: var(--color-success); font-weight: 600;">{{ item.revenue | number:'1.2-2' }} â‚¬</td>
-            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.maintenanceCost | number:'1.2-2' }} â‚¬</td>
-            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.fuelCost | number:'1.2-2' }} â‚¬</td>
-            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.insuranceCost | number:'1.2-2' }} â‚¬</td>
-            <td style="color: var(--color-warning); font-weight: 600;">{{ item.totalCost | number:'1.2-2' }} â‚¬</td>
+            <td style="color: var(--color-success); font-weight: 600;">{{ item.revenue | appCurrency }}</td>
+            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.maintenanceCost | appCurrency }}</td>
+            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.fuelCost | appCurrency }}</td>
+            <td style="color: var(--color-text-secondary); font-size: 12px;">{{ item.insuranceCost | appCurrency }}</td>
+            <td style="color: var(--color-warning); font-weight: 600;">{{ item.totalCost | appCurrency }}</td>
             <td style="font-weight: 800; font-size: 14px;" [class.text-success]="item.profitability >= 0" [class.text-danger]="item.profitability < 0">
-              {{ item.profitability | number:'1.2-2' }} â‚¬
+              {{ item.profitability | appCurrency }}
             </td>
           </tr>
         </ng-template>
@@ -7914,7 +7937,7 @@ export class I18nService {
             <tr>
               <td style="font-weight: 600; color: var(--color-text);">{{ client.name }}</td>
               <td style="text-align: center; font-weight: 700; color: var(--color-text-secondary);">{{ client.rentalsCount }}</td>
-              <td style="text-align: right; font-weight: 800; color: var(--color-accent);">{{ client.totalRevenue | number:'1.2-2' }} â‚¬</td>
+              <td style="text-align: right; font-weight: 800; color: var(--color-accent);">{{ client.totalRevenue | appCurrency }}</td>
             </tr>
           </ng-template>
           <ng-template pTemplate="emptymessage">
@@ -7950,7 +7973,7 @@ export class I18nService {
               <td style="font-family: monospace; font-weight: 600; color: var(--color-text);">{{ c.contractNumber }}</td>
               <td style="font-size: 12px; color: var(--color-text-secondary);">{{ c.client?.fullName }}</td>
               <td style="font-size: 12px; color: var(--color-text-secondary);">{{ c.vehicle?.brand }} {{ c.vehicle?.model }}</td>
-              <td style="text-align: right; font-weight: 700; color: var(--color-danger);">{{ c.finalAmountDue | number:'1.2-2' }} â‚¬</td>
+              <td style="text-align: right; font-weight: 700; color: var(--color-danger);">{{ c.finalAmountDue | appCurrency }}</td>
               <td style="text-align: center;">
                 <span class="badge"
                       [class.badge-danger]="c.paymentStatus === 'Unpaid'"
@@ -8505,7 +8528,7 @@ export class I18nService {
                 <td class="text-secondary">{{ item.policy.policyNumber }}</td>
                 <td>{{ 'vehicles.coverage' + item.policy.coverageType.replace('-', '') | t }}</td>
                 <td class="text-secondary">{{ item.policy.startDate | date:'dd/MM/yy' }} â†’ {{ item.policy.expiryDate | date:'dd/MM/yy' }}</td>
-                <td>{{ item.policy.premiumAmount }} â‚¬ / {{ item.policy.insuredValue }} â‚¬</td>
+                <td>{{ item.policy.premiumAmount | appCurrency }} / {{ item.policy.insuredValue | appCurrency }}</td>
                 <td>
                   <span class="badge"
                     [class.badge-success]="item.status === 'Valid'"
@@ -8546,7 +8569,7 @@ export class I18nService {
                     [class.text-danger]="item.inspection.result === 'Fail'"
                   >{{ 'vehicles.result' + item.inspection.result | t }}</span>
                 </td>
-                <td>{{ item.inspection.cost }} â‚¬</td>
+                <td>{{ item.inspection.cost | appCurrency }}</td>
                 <td>
                   <span class="badge"
                     [class.badge-success]="item.status === 'Valid'"
@@ -8583,8 +8606,8 @@ export class I18nService {
               <tr *ngFor="let log of fuelLogsList">
                 <td class="font-semibold">{{ log.log.date | date:'dd/MM/yyyy' }}</td>
                 <td class="text-secondary">{{ log.log.kmValue }} km</td>
-                <td>{{ log.log.liters }} L ({{ log.log.costPerLiter }} â‚¬/L)</td>
-                <td class="font-semibold">{{ log.log.totalCost }} â‚¬</td>
+                <td>{{ log.log.liters }} L ({{ log.log.costPerLiter }} {{ i18n.currentLang() === 'ar' ? 'Ø¯.Ø¬' : 'DZD' }}/L)</td>
+                <td class="font-semibold">{{ log.log.totalCost | appCurrency }}</td>
                 <td class="text-accent">
                   <span *ngIf="log.consumptionL100 > 0">{{ log.consumptionL100 }} L/100km</span>
                   <span *ngIf="log.consumptionL100 === 0" class="text-muted" style="font-style:italic">â€”</span>
@@ -8645,29 +8668,29 @@ export class I18nService {
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.brand' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.brand' | t }}</label>
             <input type="text" [(ngModel)]="vehicleForm.brand" name="brand" required class="form-input" placeholder="Renault"/>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.model' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.model' | t }}</label>
             <input type="text" [(ngModel)]="vehicleForm.model" name="model" required class="form-input" placeholder="Clio 5"/>
           </div>
         </div>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.matricule' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.matricule' | t }}</label>
             <input type="text" [(ngModel)]="vehicleForm.matricule" name="matricule" required class="form-input" placeholder="12345-120-16"/>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.vin' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.vin' | t }}</label>
             <input type="text" [(ngModel)]="vehicleForm.vin" name="vin" required class="form-input" placeholder="VF123456..."/>
           </div>
         </div>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.year' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.year' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.year" name="year" required class="form-input"/>
           </div>
           <div class="form-group">
@@ -8678,26 +8701,26 @@ export class I18nService {
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'common.type' | t }}</label>
+            <label class="form-label required">{{ 'common.type' | t }}</label>
             <select [(ngModel)]="vehicleForm.type" name="type" required class="form-input">
               <option *ngFor="let t of vehicleTypes" [value]="t">{{ t }}</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.seats' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.seats' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.seatsCount" name="seatsCount" required class="form-input"/>
           </div>
         </div>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.fuelType' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.fuelType' | t }}</label>
             <select [(ngModel)]="vehicleForm.fuelType" name="fuelType" required class="form-input">
               <option *ngFor="let f of fuelTypes" [value]="f">{{ f }}</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.transmission' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.transmission' | t }}</label>
             <select [(ngModel)]="vehicleForm.transmission" name="transmission" required class="form-input">
               <option *ngFor="let t of transmissions" [value]="t">{{ t }}</option>
             </select>
@@ -8711,11 +8734,11 @@ export class I18nService {
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.dailyRate' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.dailyRate' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.dailyRate" name="dailyRate" required class="form-input"/>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.purchasePrice' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.purchasePrice' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.purchasePrice" name="purchasePrice" required class="form-input"/>
           </div>
         </div>
@@ -8726,7 +8749,7 @@ export class I18nService {
             <input type="text" [(ngModel)]="vehicleForm.engineNumber" name="engineNumber" class="form-input"/>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.initialKm' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.initialKm' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.initialKm" name="initialKm" [disabled]="isEditMode" required class="form-input"/>
           </div>
         </div>
@@ -8778,16 +8801,16 @@ export class I18nService {
   <p-dialog [(visible)]="showAddPolicyDialog" [style]="{width: '40vw'}" [modal]="true" [header]="'vehicles.newInsurancePolicy' | t" styleClass="p-fluid" [draggable]="false" [resizable]="false">
     <form (ngSubmit)="submitPolicy()" class="form-stack">
       <div class="form-group">
-        <label class="form-label">{{ 'vehicles.insurer' | t }}</label>
+        <label class="form-label required">{{ 'vehicles.insurer' | t }}</label>
         <input type="text" [(ngModel)]="policyForm.insurerName" name="insurerName" required class="form-input"/>
       </div>
       <div class="form-group">
-        <label class="form-label">{{ 'vehicles.policyNo' | t }}</label>
+        <label class="form-label required">{{ 'vehicles.policyNo' | t }}</label>
         <input type="text" [(ngModel)]="policyForm.policyNumber" name="policyNumber" required class="form-input"/>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.coverage' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.coverage' | t }}</label>
           <select [(ngModel)]="policyForm.coverageType" name="coverageType" required class="form-input">
             <option value="Third-Party">{{ 'vehicles.coverageThirdParty' | t }}</option>
             <option value="Comprehensive">{{ 'vehicles.coverageComprehensive' | t }}</option>
@@ -8795,17 +8818,17 @@ export class I18nService {
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.premium' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.premium' | t }}</label>
           <input type="number" [(ngModel)]="policyForm.premiumAmount" name="premiumAmount" required class="form-input"/>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.effectiveDate' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.effectiveDate' | t }}</label>
           <p-datepicker [(ngModel)]="policyForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.expiration' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.expiration' | t }}</label>
           <p-datepicker [(ngModel)]="policyForm.expiryDate" name="expiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
       </div>
@@ -8826,17 +8849,17 @@ export class I18nService {
     <form (ngSubmit)="submitInspection()" class="form-stack">
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.inspectionDate' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.inspectionDate' | t }}</label>
           <p-datepicker [(ngModel)]="inspectionForm.inspectionDate" name="inspectionDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.expiration' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.expiration' | t }}</label>
           <p-datepicker [(ngModel)]="inspectionForm.expiryDate" name="expiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.result' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.result' | t }}</label>
           <select [(ngModel)]="inspectionForm.result" name="result" required class="form-input">
             <option value="Pass">{{ 'vehicles.resultFavorable' | t }}</option>
             <option value="Conditional">{{ 'vehicles.resultCounterVisit' | t }}</option>
@@ -8844,12 +8867,12 @@ export class I18nService {
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'common.cost' | t }} (â‚¬)</label>
+          <label class="form-label required">{{ 'common.cost' | t }} (DZD)</label>
           <input type="number" [(ngModel)]="inspectionForm.cost" name="cost" required class="form-input"/>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">{{ 'vehicles.center' | t }}</label>
+        <label class="form-label required">{{ 'vehicles.center' | t }}</label>
         <input type="text" [(ngModel)]="inspectionForm.centerName" name="centerName" required class="form-input"/>
       </div>
       <div class="form-group">
@@ -8877,21 +8900,21 @@ export class I18nService {
     <form (ngSubmit)="submitFuel()" class="form-stack">
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'common.date' | t }}</label>
+          <label class="form-label required">{{ 'common.date' | t }}</label>
           <p-datepicker [(ngModel)]="fuelForm.date" name="date" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.counterKm' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.counterKm' | t }}</label>
           <input type="number" [(ngModel)]="fuelForm.kmValue" name="kmValue" required class="form-input"/>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.volumeL' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.volumeL' | t }}</label>
           <input type="number" [(ngModel)]="fuelForm.liters" name="liters" required class="form-input"/>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.pricePerL' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.pricePerL' | t }}</label>
           <input type="number" step="0.001" [(ngModel)]="fuelForm.costPerLiter" name="costPerLiter" required class="form-input"/>
         </div>
       </div>
@@ -8910,11 +8933,11 @@ export class I18nService {
   <p-dialog [(visible)]="showAddKmDialog" [style]="{width: '36vw'}" [modal]="true" [header]="'vehicles.kmReading' | t" styleClass="p-fluid" [draggable]="false" [resizable]="false">
     <form (ngSubmit)="submitKm()" class="form-stack">
       <div class="form-group">
-        <label class="form-label">{{ 'common.date' | t }}</label>
+        <label class="form-label required">{{ 'common.date' | t }}</label>
         <p-datepicker [(ngModel)]="kmForm.date" name="date" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div class="form-group">
-        <label class="form-label">{{ 'vehicles.counterKm' | t }}</label>
+        <label class="form-label required">{{ 'vehicles.counterKm' | t }}</label>
         <input type="number" [(ngModel)]="kmForm.kmValue" name="kmValue" required class="form-input"/>
       </div>
       <div class="form-group">
@@ -9110,6 +9133,11 @@ body {
   color: var(--color-text-secondary);
   margin-bottom: 5px;
   letter-spacing: 0.01em;
+}
+.form-label.required::after {
+  content: " *";
+  color: var(--color-danger);
+  font-weight: bold;
 }
 
 select.form-input {
@@ -9612,6 +9640,10 @@ textarea.form-input {
 ```css
 
 ```
+
+
+
+# Parc Auto - Frontend (Angular) - Part 3
 
 ---
 ### C:\Users\Djawed\Desktop\Parc Auto\Frontend\src\app\layout\app-layout\app-layout.component.css
@@ -10199,10 +10231,6 @@ textarea.form-input {
 }
 
 ```
-
-
-
-# Parc Auto - Frontend (Angular) - Part 3
 
 ---
 ### C:\Users\Djawed\Desktop\Parc Auto\Frontend\src\app\pages\alerts\alerts.component.css

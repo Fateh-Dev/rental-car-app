@@ -7,7 +7,7 @@ namespace Backend.Models
         public int Id { get; set; }
 
         [MaxLength(10)]
-        public string CurrencySymbol { get; set; } = "€";
+        public string CurrencySymbol { get; set; } = "DZD";
 
         [MaxLength(30)]
         public string DateFormat { get; set; } = "yyyy-MM-dd";
@@ -27,9 +27,10 @@ namespace Backend.Models
         public int ConsumableNotifyDaysBefore { get; set; } = 30;
 
         // Reference data stored as JSON strings
-        public string VehicleTypesJson { get; set; } = "[\"Car\", \"SUV\", \"Van\", \"Truck\", \"Motorcycle\"]";
-        public string FuelTypesJson { get; set; } = "[\"Gasoline\", \"Diesel\", \"Electric\", \"Hybrid\", \"LPG\"]";
-        public string MaintenanceTypesJson { get; set; } = "[\"Preventive\", \"Corrective\", \"AccidentRepair\", \"Inspection\"]";
-        public string ExtrasJson { get; set; } = "[{\"Name\":\"GPS\",\"Price\":5.0},{\"Name\":\"Child Seat\",\"Price\":3.0},{\"Name\":\"Additional Driver\",\"Price\":10.0}]";
+        public string VehicleTypesJson { get; set; } = "[\"Voiture\", \"SUV\", \"Fourgonnette\", \"Camion\", \"Moto\"]";
+        public string FuelTypesJson { get; set; } = "[\"Essence\", \"Diesel\", \"Électrique\", \"Hybride\", \"GPL\"]";
+        public string MaintenanceTypesJson { get; set; } = "[\"Préventif\", \"Correctif\", \"Réparation accident\", \"Inspection\"]";
+        public string CoverageTypesJson { get; set; } = "[\"Responsabilité Civile\", \"Tous Risques\", \"Flotte\"]";
+        public string ExtrasJson { get; set; } = "[{\"Name\":\"GPS\",\"Price\":5.0},{\"Name\":\"Siège bébé\",\"Price\":3.0},{\"Name\":\"Conducteur supplémentaire\",\"Price\":10.0}]";
     }
 }

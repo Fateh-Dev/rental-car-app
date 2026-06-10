@@ -32,7 +32,7 @@
       <!-- Form -->
       <form (ngSubmit)="onSubmit()" class="login-form">
         <div class="form-group">
-          <label class="form-label">{{ 'login.username' | t }}</label>
+          <label class="form-label required">{{ 'login.username' | t }}</label>
           <div class="input-wrapper">
             <i class="pi pi-user input-icon"></i>
             <input 
@@ -47,7 +47,7 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">{{ 'login.password' | t }}</label>
+          <label class="form-label required">{{ 'login.password' | t }}</label>
           <div class="input-wrapper">
             <i class="pi pi-lock input-icon"></i>
             <input 

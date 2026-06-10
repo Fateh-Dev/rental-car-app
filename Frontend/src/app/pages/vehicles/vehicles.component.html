@@ -208,9 +208,14 @@
               <tr *ngFor="let item of insurancePolicies">
                 <td class="font-semibold">{{ item.policy.insurerName }}</td>
                 <td class="text-secondary">{{ item.policy.policyNumber }}</td>
-                <td>{{ 'vehicles.coverage' + item.policy.coverageType.replace('-', '') | t }}</td>
+                <td>
+                  <ng-container *ngIf="item.policy.coverageType === 'Third-Party' || item.policy.coverageType === 'Comprehensive' || item.policy.coverageType === 'Fleet'; else customCoverage">
+                    {{ 'vehicles.coverage' + item.policy.coverageType.replace('-', '') | t }}
+                  </ng-container>
+                  <ng-template #customCoverage>{{ item.policy.coverageType }}</ng-template>
+                </td>
                 <td class="text-secondary">{{ item.policy.startDate | date:'dd/MM/yy' }} → {{ item.policy.expiryDate | date:'dd/MM/yy' }}</td>
-                <td>{{ item.policy.premiumAmount }} € / {{ item.policy.insuredValue }} €</td>
+                <td>{{ item.policy.premiumAmount | appCurrency }} / {{ item.policy.insuredValue | appCurrency }}</td>
                 <td>
                   <span class="badge"
                     [class.badge-success]="item.status === 'Valid'"
@@ -251,7 +256,7 @@
                     [class.text-danger]="item.inspection.result === 'Fail'"
                   >{{ 'vehicles.result' + item.inspection.result | t }}</span>
                 </td>
-                <td>{{ item.inspection.cost }} €</td>
+                <td>{{ item.inspection.cost | appCurrency }}</td>
                 <td>
                   <span class="badge"
                     [class.badge-success]="item.status === 'Valid'"
@@ -288,8 +293,8 @@
               <tr *ngFor="let log of fuelLogsList">
                 <td class="font-semibold">{{ log.log.date | date:'dd/MM/yyyy' }}</td>
                 <td class="text-secondary">{{ log.log.kmValue }} km</td>
-                <td>{{ log.log.liters }} L ({{ log.log.costPerLiter }} €/L)</td>
-                <td class="font-semibold">{{ log.log.totalCost }} €</td>
+                <td>{{ log.log.liters }} L ({{ log.log.costPerLiter }} {{ i18n.currentLang() === 'ar' ? 'د.ج' : 'DZD' }}/L)</td>
+                <td class="font-semibold">{{ log.log.totalCost | appCurrency }}</td>
                 <td class="text-accent">
                   <span *ngIf="log.consumptionL100 > 0">{{ log.consumptionL100 }} L/100km</span>
                   <span *ngIf="log.consumptionL100 === 0" class="text-muted" style="font-style:italic">—</span>
@@ -350,29 +355,29 @@
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.brand' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.brand' | t }}</label>
             <input type="text" [(ngModel)]="vehicleForm.brand" name="brand" required class="form-input" placeholder="Renault"/>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.model' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.model' | t }}</label>
             <input type="text" [(ngModel)]="vehicleForm.model" name="model" required class="form-input" placeholder="Clio 5"/>
           </div>
         </div>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.matricule' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.matricule' | t }}</label>
             <input type="text" [(ngModel)]="vehicleForm.matricule" name="matricule" required class="form-input" placeholder="12345-120-16"/>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.vin' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.vin' | t }}</label>
             <input type="text" [(ngModel)]="vehicleForm.vin" name="vin" required class="form-input" placeholder="VF123456..."/>
           </div>
         </div>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.year' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.year' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.year" name="year" required class="form-input"/>
           </div>
           <div class="form-group">
@@ -383,26 +388,26 @@
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'common.type' | t }}</label>
+            <label class="form-label required">{{ 'common.type' | t }}</label>
             <select [(ngModel)]="vehicleForm.type" name="type" required class="form-input">
               <option *ngFor="let t of vehicleTypes" [value]="t">{{ t }}</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.seats' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.seats' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.seatsCount" name="seatsCount" required class="form-input"/>
           </div>
         </div>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.fuelType' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.fuelType' | t }}</label>
             <select [(ngModel)]="vehicleForm.fuelType" name="fuelType" required class="form-input">
               <option *ngFor="let f of fuelTypes" [value]="f">{{ f }}</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.transmission' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.transmission' | t }}</label>
             <select [(ngModel)]="vehicleForm.transmission" name="transmission" required class="form-input">
               <option *ngFor="let t of transmissions" [value]="t">{{ t }}</option>
             </select>
@@ -416,11 +421,11 @@
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.dailyRate' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.dailyRate' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.dailyRate" name="dailyRate" required class="form-input"/>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.purchasePrice' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.purchasePrice' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.purchasePrice" name="purchasePrice" required class="form-input"/>
           </div>
         </div>
@@ -431,7 +436,7 @@
             <input type="text" [(ngModel)]="vehicleForm.engineNumber" name="engineNumber" class="form-input"/>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'vehicles.initialKm' | t }}</label>
+            <label class="form-label required">{{ 'vehicles.initialKm' | t }}</label>
             <input type="number" [(ngModel)]="vehicleForm.initialKm" name="initialKm" [disabled]="isEditMode" required class="form-input"/>
           </div>
         </div>
@@ -483,34 +488,37 @@
   <p-dialog [(visible)]="showAddPolicyDialog" [style]="{width: '40vw'}" [modal]="true" [header]="'vehicles.newInsurancePolicy' | t" styleClass="p-fluid" [draggable]="false" [resizable]="false">
     <form (ngSubmit)="submitPolicy()" class="form-stack">
       <div class="form-group">
-        <label class="form-label">{{ 'vehicles.insurer' | t }}</label>
+        <label class="form-label required">{{ 'vehicles.insurer' | t }}</label>
         <input type="text" [(ngModel)]="policyForm.insurerName" name="insurerName" required class="form-input"/>
       </div>
       <div class="form-group">
-        <label class="form-label">{{ 'vehicles.policyNo' | t }}</label>
+        <label class="form-label required">{{ 'vehicles.policyNo' | t }}</label>
         <input type="text" [(ngModel)]="policyForm.policyNumber" name="policyNumber" required class="form-input"/>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.coverage' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.coverage' | t }}</label>
           <select [(ngModel)]="policyForm.coverageType" name="coverageType" required class="form-input">
-            <option value="Third-Party">{{ 'vehicles.coverageThirdParty' | t }}</option>
-            <option value="Comprehensive">{{ 'vehicles.coverageComprehensive' | t }}</option>
-            <option value="Fleet">{{ 'vehicles.coverageFleet' | t }}</option>
+            <option *ngFor="let cov of coverageTypes" [value]="cov">
+              <ng-container *ngIf="cov === 'Third-Party' || cov === 'Comprehensive' || cov === 'Fleet'; else customName">
+                {{ (cov === 'Third-Party' ? 'vehicles.coverageThirdParty' : cov === 'Comprehensive' ? 'vehicles.coverageComprehensive' : 'vehicles.coverageFleet') | t }}
+              </ng-container>
+              <ng-template #customName>{{ cov }}</ng-template>
+            </option>
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.premium' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.premium' | t }}</label>
           <input type="number" [(ngModel)]="policyForm.premiumAmount" name="premiumAmount" required class="form-input"/>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.effectiveDate' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.effectiveDate' | t }}</label>
           <p-datepicker [(ngModel)]="policyForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.expiration' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.expiration' | t }}</label>
           <p-datepicker [(ngModel)]="policyForm.expiryDate" name="expiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
       </div>
@@ -531,17 +539,17 @@
     <form (ngSubmit)="submitInspection()" class="form-stack">
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.inspectionDate' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.inspectionDate' | t }}</label>
           <p-datepicker [(ngModel)]="inspectionForm.inspectionDate" name="inspectionDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.expiration' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.expiration' | t }}</label>
           <p-datepicker [(ngModel)]="inspectionForm.expiryDate" name="expiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.result' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.result' | t }}</label>
           <select [(ngModel)]="inspectionForm.result" name="result" required class="form-input">
             <option value="Pass">{{ 'vehicles.resultFavorable' | t }}</option>
             <option value="Conditional">{{ 'vehicles.resultCounterVisit' | t }}</option>
@@ -549,12 +557,12 @@
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'common.cost' | t }} (€)</label>
+          <label class="form-label required">{{ 'common.cost' | t }} (DZD)</label>
           <input type="number" [(ngModel)]="inspectionForm.cost" name="cost" required class="form-input"/>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">{{ 'vehicles.center' | t }}</label>
+        <label class="form-label required">{{ 'vehicles.center' | t }}</label>
         <input type="text" [(ngModel)]="inspectionForm.centerName" name="centerName" required class="form-input"/>
       </div>
       <div class="form-group">
@@ -582,21 +590,21 @@
     <form (ngSubmit)="submitFuel()" class="form-stack">
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'common.date' | t }}</label>
+          <label class="form-label required">{{ 'common.date' | t }}</label>
           <p-datepicker [(ngModel)]="fuelForm.date" name="date" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.counterKm' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.counterKm' | t }}</label>
           <input type="number" [(ngModel)]="fuelForm.kmValue" name="kmValue" required class="form-input"/>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.volumeL' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.volumeL' | t }}</label>
           <input type="number" [(ngModel)]="fuelForm.liters" name="liters" required class="form-input"/>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ 'vehicles.pricePerL' | t }}</label>
+          <label class="form-label required">{{ 'vehicles.pricePerL' | t }}</label>
           <input type="number" step="0.001" [(ngModel)]="fuelForm.costPerLiter" name="costPerLiter" required class="form-input"/>
         </div>
       </div>
@@ -615,11 +623,11 @@
   <p-dialog [(visible)]="showAddKmDialog" [style]="{width: '36vw'}" [modal]="true" [header]="'vehicles.kmReading' | t" styleClass="p-fluid" [draggable]="false" [resizable]="false">
     <form (ngSubmit)="submitKm()" class="form-stack">
       <div class="form-group">
-        <label class="form-label">{{ 'common.date' | t }}</label>
+        <label class="form-label required">{{ 'common.date' | t }}</label>
         <p-datepicker [(ngModel)]="kmForm.date" name="date" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
       </div>
       <div class="form-group">
-        <label class="form-label">{{ 'vehicles.counterKm' | t }}</label>
+        <label class="form-label required">{{ 'vehicles.counterKm' | t }}</label>
         <input type="number" [(ngModel)]="kmForm.kmValue" name="kmValue" required class="form-input"/>
       </div>
       <div class="form-group">

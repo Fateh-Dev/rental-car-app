@@ -159,7 +159,7 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <!-- Client Selector -->
           <div>
-            <label class="form-label">{{ 'contracts.selectClient' | t }}</label>
+            <label class="form-label required">{{ 'contracts.selectClient' | t }}</label>
             <select *ngIf="!isEditMode" [(ngModel)]="contractForm.clientId" name="clientId" (change)="onClientSelect()" required class="form-input">
               <option [ngValue]="null">{{ 'contracts.chooseClient' | t }}</option>
               <option *ngFor="let c of activeClients" [ngValue]="c.id">{{ c.fullName }} ({{ c.nationalId }})</option>
@@ -169,7 +169,7 @@
 
           <!-- Vehicle Selector -->
           <div>
-            <label class="form-label">{{ 'contracts.selectVehicle' | t }}</label>
+            <label class="form-label required">{{ 'contracts.selectVehicle' | t }}</label>
             <select *ngIf="!isEditMode" [(ngModel)]="contractForm.vehicleId" name="vehicleId" (change)="onVehicleSelect()" required class="form-input">
               <option [ngValue]="null">{{ 'contracts.chooseVehicle' | t }}</option>
               <option *ngFor="let v of availableVehicles" [ngValue]="v.id">{{ v.brand }} {{ v.model }} - Plaque: {{ v.matricule }}</option>
@@ -180,24 +180,24 @@
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div>
-            <label class="form-label">{{ 'contracts.startDateTime' | t }}</label>
+            <label class="form-label required">{{ 'contracts.startDateTime' | t }}</label>
             <p-datepicker [(ngModel)]="contractForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
           </div>
           <div>
-            <label class="form-label">{{ 'contracts.expectedReturn' | t }}</label>
+            <label class="form-label required">{{ 'contracts.expectedReturn' | t }}</label>
             <p-datepicker [(ngModel)]="contractForm.expectedReturnDate" name="expectedReturnDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div>
-            <label class="form-label">{{ 'contracts.contractType' | t }}</label>
+            <label class="form-label required">{{ 'contracts.contractType' | t }}</label>
             <select [(ngModel)]="contractForm.contractType" name="contractType" required class="form-input">
               <option *ngFor="let ct of contractTypes" [value]="ct">{{ ct }}</option>
             </select>
           </div>
           <div>
-            <label class="form-label">{{ 'contracts.dailyRate' | t }}</label>
+            <label class="form-label required">{{ 'contracts.dailyRate' | t }}</label>
             <input type="number" [(ngModel)]="contractForm.dailyRate" name="dailyRate" (change)="calculateTotals()" required class="form-input"/>
           </div>
         </div>
@@ -319,11 +319,11 @@
       </div>
 
       <div>
-        <label class="form-label">{{ 'contracts.returnIndex' | t }}</label>
+        <label class="form-label required">{{ 'contracts.returnIndex' | t }}</label>
         <input type="number" [(ngModel)]="returnForm.kmReturn" name="kmReturn" required class="form-input"/>
       </div>
       <div>
-        <label class="form-label">{{ 'contracts.actualReturnDate' | t }}</label>
+        <label class="form-label required">{{ 'contracts.actualReturnDate' | t }}</label>
         <p-datepicker [(ngModel)]="returnForm.returnDate" name="returnDate" dateFormat="yy-mm-dd" [showTime]="true" styleClass="w-full"></p-datepicker>
       </div>
 
