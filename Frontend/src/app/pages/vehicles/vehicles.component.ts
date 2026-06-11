@@ -73,7 +73,7 @@ export class VehiclesComponent implements OnInit {
   showAddKmDialog = false;
   kmForm: any = this.getEmptyKmForm();
 
-  constructor(private api: ApiService, public i18n: I18nService) {}
+  constructor(public api: ApiService, public i18n: I18nService) {}
 
   ngOnInit(): void {
     this.loadSettings();

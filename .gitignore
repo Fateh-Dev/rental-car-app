@@ -4,6 +4,8 @@
 [Ll]og/
 [Ll]ogs/
 [Dd]ebug/
+Backend/wwwroot/*
+!Backend/wwwroot/uploads/
 [Rr]elease/
 x64/
 x86/

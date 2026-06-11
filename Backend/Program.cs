@@ -195,4 +195,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+app.MapFallbackToFile("index.html");
+
 app.Run();

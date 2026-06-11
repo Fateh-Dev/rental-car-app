@@ -48,7 +48,7 @@
     <div *ngFor="let vehicle of vehicles" class="card vehicle-card">
       <!-- Image -->
       <div class="vehicle-img">
-        <img *ngIf="vehicle.photoPath" [src]="'http://localhost:5222' + vehicle.photoPath" [alt]="vehicle.brand" />
+        <img *ngIf="vehicle.photoPath" [src]="api.apiHost + vehicle.photoPath" [alt]="vehicle.brand" />
         <div *ngIf="!vehicle.photoPath" class="vehicle-img-placeholder">
           <i class="pi pi-image"></i>
         </div>
@@ -455,7 +455,7 @@
             <input type="file" (change)="onPhotoUpload($event)" class="photo-input" accept="image/*"/>
             
             <div *ngIf="vehicleForm.photoPath && !uploadingPhoto" class="photo-preview-container">
-              <img [src]="'http://localhost:5222' + vehicleForm.photoPath" alt="Preview" class="photo-preview-img" />
+              <img [src]="api.apiHost + vehicleForm.photoPath" alt="Preview" class="photo-preview-img" />
               <div class="photo-preview-overlay">
                 <i class="pi pi-camera" style="font-size: 24px;"></i>
                 <span>{{ 'common.edit' | t }}</span>

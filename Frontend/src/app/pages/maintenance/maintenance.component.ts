@@ -37,7 +37,7 @@ export class MaintenanceComponent implements OnInit {
   showCalendarDialog = false;
   calendarEvents: any[] = [];
 
-  constructor(private api: ApiService, public i18n: I18nService) {}
+  constructor(public api: ApiService, public i18n: I18nService) {}
 
   ngOnInit(): void {
     this.loadMaintenances();
