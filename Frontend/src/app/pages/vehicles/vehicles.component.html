@@ -141,9 +141,6 @@
         <button (click)="switchDetailsTab('inspections')" [class.active]="detailsTab === 'inspections'" class="details-tab">
           <i class="pi pi-exclamation-triangle"></i> {{ 'vehicles.inspectionsTab' | t }}
         </button>
-        <button (click)="switchDetailsTab('fuel')" [class.active]="detailsTab === 'fuel'" class="details-tab">
-          <i class="pi pi-filter"></i> {{ 'vehicles.fuelTab' | t }}
-        </button>
         <button (click)="switchDetailsTab('km_history')" [class.active]="detailsTab === 'km_history'" class="details-tab">
           <i class="pi pi-map-marker"></i> {{ 'vehicles.kmHistoryTab' | t }}
         </button>
@@ -313,50 +310,6 @@
           </table>
         </div>
 
-        <!-- Fuel -->
-        <div *ngIf="detailsTab === 'fuel'">
-          <div class="section-header">
-            <h5 class="section-title">{{ 'vehicles.fuelTracking' | t }}</h5>
-            <div class="section-actions">
-              <button (click)="exportFuelCsv()" class="btn-secondary btn-sm"><i class="pi pi-download"></i> CSV</button>
-              <button (click)="openAddFuel()" class="btn-primary btn-sm"><i class="pi pi-plus"></i> {{ 'vehicles.fillup' | t }}</button>
-            </div>
-          </div>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>{{ 'common.date' | t }}</th>
-                <th>{{ 'vehicles.counter' | t }}</th>
-                <th>{{ 'vehicles.volume' | t }}</th>
-                <th>{{ 'common.cost' | t }}</th>
-                <th>{{ 'vehicles.consumption' | t }}</th>
-                <th>{{ 'vehicles.anomaly' | t }}</th>
-                <th style="width: 80px;" class="text-center">{{ 'common.actions' | t }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let log of fuelLogsList">
-                <td class="font-semibold">{{ log.log.date | date:'dd/MM/yyyy' }}</td>
-                <td class="text-secondary">{{ log.log.kmValue }} km</td>
-                <td>{{ log.log.liters }} L ({{ log.log.costPerLiter }} {{ i18n.currentLang() === 'ar' ? 'د.ج' : 'DZD' }}/L)</td>
-                <td class="font-semibold">{{ log.log.totalCost | appCurrency }}</td>
-                <td class="text-accent">
-                  <span *ngIf="log.consumptionL100 > 0">{{ log.consumptionL100 }} L/100km</span>
-                  <span *ngIf="log.consumptionL100 === 0" class="text-muted" style="font-style:italic">—</span>
-                </td>
-                <td>
-                  <span *ngIf="log.log.isAnomaly" class="badge badge-danger">{{ 'vehicles.overConsumption' | t }}</span>
-                  <span *ngIf="!log.log.isAnomaly" class="text-muted">—</span>
-                </td>
-                <td class="text-center">
-                  <button (click)="deleteFuel(log.log.id)" class="btn-icon danger" title="Delete fuel fill-up">
-                    <i class="pi pi-trash"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
 
         <!-- Km History -->
         <div *ngIf="detailsTab === 'km_history'">
@@ -640,39 +593,6 @@
     </form>
   </p-dialog>
 
-  <!-- ADD FUEL DIALOG -->
-  <p-dialog [(visible)]="showAddFuelDialog" [style]="{width: '36vw'}" [modal]="true" [header]="'vehicles.newFuelFillup' | t" styleClass="p-fluid" [draggable]="false" [resizable]="false">
-    <form (ngSubmit)="submitFuel()" class="form-stack">
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label required">{{ 'common.date' | t }}</label>
-          <p-datepicker [(ngModel)]="fuelForm.date" name="date" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
-        </div>
-        <div class="form-group">
-          <label class="form-label required">{{ 'vehicles.counterKm' | t }}</label>
-          <input type="number" [(ngModel)]="fuelForm.kmValue" name="kmValue" required class="form-input"/>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label required">{{ 'vehicles.volumeL' | t }}</label>
-          <input type="number" [(ngModel)]="fuelForm.liters" name="liters" required class="form-input"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label required">{{ 'vehicles.pricePerL' | t }}</label>
-          <input type="number" step="0.001" [(ngModel)]="fuelForm.costPerLiter" name="costPerLiter" required class="form-input"/>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">{{ 'vehicles.station' | t }}</label>
-        <input type="text" [(ngModel)]="fuelForm.stationName" name="stationName" class="form-input"/>
-      </div>
-      <div class="form-actions">
-        <button type="button" (click)="showAddFuelDialog = false" class="btn-secondary">{{ 'common.cancel' | t }}</button>
-        <button type="submit" class="btn-primary">{{ 'common.save' | t }}</button>
-      </div>
-    </form>
-  </p-dialog>
 
   <!-- ADD KM DIALOG -->
   <p-dialog [(visible)]="showAddKmDialog" [style]="{width: '36vw'}" [modal]="true" [header]="'vehicles.kmReading' | t" styleClass="p-fluid" [draggable]="false" [resizable]="false">

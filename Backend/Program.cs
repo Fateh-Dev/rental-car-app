@@ -97,7 +97,6 @@ builder.Services.AddAuthentication(options =>
             var path = context.HttpContext.Request.Path;
             if (!string.IsNullOrEmpty(accessToken) &&
                 (path.StartsWithSegments("/api/km/export-csv") ||
-                 path.StartsWithSegments("/api/fuel/export-csv") ||
                  path.StartsWithSegments("/api/report/export-profitability-csv")))
             {
                 context.Token = accessToken;

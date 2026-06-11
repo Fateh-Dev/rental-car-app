@@ -2,15 +2,12 @@
   <!-- Top Header Dashboard Controls -->
   <div class="page-header">
     <div>
-      <h2 class="page-header-title">{{ 'fuel.pageTitle' | t }}</h2>
+      <h2 class="page-header-title">{{ 'sidebar.kilometrage' | t }}</h2>
       <p class="page-header-desc">{{ 'fuel.pageDesc' | t }}</p>
     </div>
     <div class="header-actions">
       <button (click)="exportAllKmCsv()" class="btn-secondary" style="border-color: #475569; color: #fff; background: transparent;">
         <i class="pi pi-download"></i> {{ 'fuel.exportOdometers' | t }}
-      </button>
-      <button (click)="exportAllFuelCsv()" class="btn-primary">
-        <i class="pi pi-download"></i> {{ 'fuel.exportFuel' | t }}
       </button>
     </div>
   </div>
@@ -92,14 +89,14 @@
       </div>
     </div>
 
-    <!-- Right Column: Selected Vehicle Logs & Analytics -->
+    <!-- Right Column: Selected Vehicle Timeline -->
     <div class="split-right">
       
       <!-- Unselected State -->
       <div *ngIf="!selectedVehicle" class="card unselected-placeholder" style="border-style: dashed;">
-        <i class="pi pi-chart-line unselected-icon"></i>
+        <i class="pi pi-history unselected-icon"></i>
         <h3 style="font-weight: 700; font-size: 15px; color: var(--color-text); margin: 0;">{{ 'fuel.noVehicleSelected' | t }}</h3>
-        <p style="font-size: 13px; color: var(--color-text-muted); max-w: 320px; margin: 4px 0 0;">
+        <p style="font-size: 13px; color: var(--color-text-muted); max-width: 320px; margin: 4px 0 0;">
           {{ 'fuel.selectVehiclePrompt' | t }}
         </p>
       </div>
@@ -119,91 +116,12 @@
             </p>
           </div>
           <div class="meta-actions">
-            <button (click)="openAddFuel()" class="btn-primary">
-              <i class="pi pi-plus"></i> {{ 'fuel.registerFillup' | t }}
-            </button>
-            <button (click)="exportVehicleFuelCsv()" class="btn-secondary">
-              <i class="pi pi-download"></i> {{ 'fuel.csvFuel' | t }}
+            <button (click)="openAddKm(selectedVehicle, $event)" class="btn-primary">
+              <i class="pi pi-plus"></i> {{ 'fuel.reading' | t }}
             </button>
             <button (click)="exportVehicleKmCsv()" class="btn-secondary">
               <i class="pi pi-download"></i> {{ 'fuel.csvKm' | t }}
             </button>
-          </div>
-        </div>
-
-        <!-- Fuel Consumption Trend Chart -->
-        <div class="card" style="padding: 16px;">
-          <h3 class="card-title-inner" style="margin-bottom: 16px;">
-            <i class="pi pi-chart-line text-accent"></i> {{ 'fuel.consumptionTrend' | t }}
-          </h3>
-          <div *ngIf="chartData" style="height: 240px; position: relative;">
-            <p-chart type="line" [data]="chartData" [options]="chartOptions" height="240px"></p-chart>
-          </div>
-          <div *ngIf="!chartData" style="height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--color-text-muted); text-align: center;">
-            <i class="pi pi-info-circle" style="font-size: 20px; margin-bottom: 4px;"></i>
-            <span style="font-size: 13px; font-weight: 600;">{{ 'fuel.insufficientData' | t }}</span>
-            <span style="font-size: 11px; margin-top: 2px;">{{ 'fuel.needTwoFillups' | t }}</span>
-          </div>
-        </div>
-
-        <!-- Fuel Fill-up Log Table -->
-        <div class="card" style="overflow: hidden;">
-          <div class="card-header-inner">
-            <h3 class="card-title-inner">
-              <i class="pi pi-filter text-accent"></i> {{ 'fuel.fuelHistory' | t }}
-            </h3>
-          </div>
-          
-          <div style="padding: 8px;">
-            <p-table [value]="fuelLogs" [rows]="5" [paginator]="true" responsiveLayout="scroll" styleClass="p-datatable-sm">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>{{ 'common.date' | t }}</th>
-                  <th>{{ 'fuel.odometer' | t }}</th>
-                  <th>{{ 'fuel.liters' | t }}</th>
-                  <th>{{ 'fuel.pricePerL' | t }}</th>
-                  <th>{{ 'fuel.totalCost' | t }}</th>
-                  <th>{{ 'fuel.average' | t }}</th>
-                  <th>{{ 'vehicles.station' | t }}</th>
-                  <th style="width: 50px;"></th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-entry>
-                <tr>
-                  <td>{{ entry.log.date | date:'dd/MM/yyyy' }}</td>
-                  <td style="font-weight: 600;">{{ entry.log.kmValue | number }} km</td>
-                  <td>{{ entry.log.liters }} L</td>
-                  <td>{{ entry.log.costPerLiter | appCurrency }}/L</td>
-                  <td style="font-weight: 600;">{{ entry.log.totalCost | appCurrency }}</td>
-                  <td>
-                    <div style="display: flex; align-items: center; gap: 4px;">
-                      <span *ngIf="entry.kmDrivenSinceLastFill > 0" style="font-weight: 700; color: var(--color-accent);">
-                        {{ entry.consumptionL100 }} <span style="font-size: 9px; color: var(--color-text-secondary); font-weight: 500;">L/100</span>
-                      </span>
-                      <span *ngIf="entry.kmDrivenSinceLastFill <= 0" style="color: var(--color-text-muted);">--</span>
-                      <!-- Anomaly Flag Badge -->
-                      <span *ngIf="entry.log.isAnomaly" class="badge badge-danger" style="font-size: 9px;" [title]="'fuel.anomalyLabel' | t">
-                        {{ 'fuel.anomalyLabel' | t }}
-                      </span>
-                    </div>
-                  </td>
-                  <td>
-                    <div style="font-weight: 600; color: var(--color-text-secondary);">{{ entry.log.stationName }}</div>
-                    <div style="font-size: 10px; color: var(--color-text-muted);">{{ entry.log.fuelType }}</div>
-                  </td>
-                  <td style="text-align: center;">
-                    <button (click)="deleteFuelLog(entry.log.id)" [title]="'common.delete' | t" class="btn-icon danger" style="width: 24px; height: 24px;">
-                      <i class="pi pi-trash" style="font-size: 10px;"></i>
-                    </button>
-                  </td>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="emptymessage">
-                <tr>
-                  <td colspan="8" style="text-align: center; padding: 20px; color: var(--color-text-muted);">{{ 'fuel.noFuelLog' | t }}</td>
-                </tr>
-              </ng-template>
-            </p-table>
           </div>
         </div>
 
@@ -216,13 +134,14 @@
           </div>
           
           <div style="padding: 8px;">
-            <p-table [value]="kmHistory" [rows]="5" [paginator]="true" responsiveLayout="scroll" styleClass="p-datatable-sm">
+            <p-table [value]="kmHistory" [rows]="10" [paginator]="true" responsiveLayout="scroll" styleClass="p-datatable-sm">
               <ng-template pTemplate="header">
                 <tr>
                   <th>{{ 'fuel.dateTime' | t }}</th>
                   <th>{{ 'fuel.odometerValue' | t }}</th>
                   <th>{{ 'fuel.source' | t }}</th>
                   <th>{{ 'fuel.remarksEvent' | t }}</th>
+                  <th style="width: 50px;"></th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-entry>
@@ -232,18 +151,23 @@
                   <td>
                     <span class="badge"
                           [class.badge-accent]="entry.source === 'Manual'"
-                          [class.badge-warning]="entry.source === 'Fuel'"
                           [class.badge-success]="entry.source === 'Contract'"
                     >
-                      {{ entry.source === 'Manual' ? ('fuel.sourceManual' | t) : entry.source === 'Fuel' ? ('fuel.sourceFuel' | t) : ('fuel.sourceContract' | t) }}
+                      {{ entry.source === 'Manual' ? ('fuel.sourceManual' | t) : ('fuel.sourceContract' | t) }}
                     </span>
                   </td>
                   <td style="font-size: 12px; color: var(--color-text-secondary);">{{ entry.notes }}</td>
+                  <td style="text-align: center;">
+                    <!-- Allow delete km entry if it is manual -->
+                    <button *ngIf="entry.source === 'Manual'" (click)="deleteKmEntry(entry.id)" [title]="'common.delete' | t" class="btn-icon danger" style="width: 24px; height: 24px;">
+                      <i class="pi pi-trash" style="font-size: 10px;"></i>
+                    </button>
+                  </td>
                 </tr>
               </ng-template>
               <ng-template pTemplate="emptymessage">
                 <tr>
-                  <td colspan="4" style="text-align: center; padding: 20px; color: var(--color-text-muted);">{{ 'fuel.noKmHistory' | t }}</td>
+                  <td colspan="5" style="text-align: center; padding: 20px; color: var(--color-text-muted);">{{ 'fuel.noKmHistory' | t }}</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -278,55 +202,5 @@
   <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; border-top: 1px solid var(--color-border-light); padding-top: 12px;">
     <button (click)="showAddKmDialog = false" class="btn-secondary">{{ 'common.cancel' | t }}</button>
     <button (click)="submitKm()" class="btn-primary">{{ 'common.save' | t }}</button>
-  </div>
-</p-dialog>
-
-<!-- Dialog: Add Fuel Fill-up Log -->
-<p-dialog [header]="'fuel.registerFuelFillup' | t" [(visible)]="showAddFuelDialog" [modal]="true" [style]="{width: '450px'}" [draggable]="false" [resizable]="false">
-  <div class="form-grid" style="margin-top: 8px;">
-    <div>
-      <label class="form-label">{{ 'common.date' | t }}</label>
-      <p-datepicker [(ngModel)]="fuelForm.date" dateFormat="dd/mm/yy" [showTime]="true" appendTo="body" class="w-full"></p-datepicker>
-    </div>
-    <div>
-      <label class="form-label">{{ 'fuel.kmIndex' | t }}</label>
-      <input type="number" [(ngModel)]="fuelForm.kmValue" class="form-input" required />
-    </div>
-
-    <div>
-      <label class="form-label">{{ 'fuel.volumeLiters' | t }}</label>
-      <input type="number" step="0.01" [(ngModel)]="fuelForm.liters" class="form-input" required />
-    </div>
-    <div>
-      <label class="form-label">{{ 'fuel.pricePerLiter' | t }}</label>
-      <input type="number" step="0.001" [(ngModel)]="fuelForm.costPerLiter" class="form-input" required />
-    </div>
-
-    <div class="form-full">
-      <label class="form-label">{{ 'fuel.stationName' | t }}</label>
-      <input type="text" [(ngModel)]="fuelForm.stationName" placeholder="Ex: Shell, TotalEnergies, Q8..." class="form-input" required />
-    </div>
-
-    <div class="form-full">
-      <label class="form-label">{{ 'fuel.fuelType' | t }}</label>
-      <select [(ngModel)]="fuelForm.fuelType" class="form-input">
-        <option value="Gasoline">{{ 'fuel.gasoline' | t }}</option>
-        <option value="Diesel">{{ 'fuel.diesel' | t }}</option>
-        <option value="Electric">{{ 'fuel.electric' | t }}</option>
-        <option value="Hybrid">{{ 'fuel.hybrid' | t }}</option>
-        <option value="LPG">{{ 'fuel.lpg' | t }}</option>
-      </select>
-    </div>
-
-    <!-- Calculated Info Hint -->
-    <div class="calc-hint-box">
-      <span>{{ 'fuel.estimatedTotal' | t }}</span>
-      <strong style="font-size: 13px;">{{ (fuelForm.liters * fuelForm.costPerLiter) | appCurrency }}</strong>
-    </div>
-  </div>
-
-  <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; border-top: 1px solid var(--color-border-light); padding-top: 12px;">
-    <button (click)="showAddFuelDialog = false" class="btn-secondary">{{ 'common.cancel' | t }}</button>
-    <button (click)="submitFuel()" class="btn-primary">{{ 'common.save' | t }}</button>
   </div>
 </p-dialog>

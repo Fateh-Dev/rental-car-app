@@ -53,7 +53,6 @@ export class VehiclesComponent implements OnInit {
   consumableLogs: any[] = [];
   insurancePolicies: any[] = [];
   inspectionsList: any[] = [];
-  fuelLogsList: any[] = [];
   kmHistoryList: any[] = [];
 
   // Dialog states for Add/Edit CRUD
@@ -70,9 +69,6 @@ export class VehiclesComponent implements OnInit {
   showAddInspectionDialog = false;
   inspectionForm: any = this.getEmptyInspectionForm();
   uploadingInspection = false;
-
-  showAddFuelDialog = false;
-  fuelForm: any = this.getEmptyFuelForm();
 
   showAddKmDialog = false;
   kmForm: any = this.getEmptyKmForm();
@@ -189,16 +185,6 @@ export class VehiclesComponent implements OnInit {
     };
   }
 
-  getEmptyFuelForm(): any {
-    return {
-      date: new Date(),
-      kmValue: 0,
-      liters: 40,
-      costPerLiter: 1.5,
-      stationName: '',
-      fuelType: 'Gasoline'
-    };
-  }
 
   getEmptyKmForm(): any {
     return {
@@ -296,8 +282,7 @@ export class VehiclesComponent implements OnInit {
       this.api.getInsurancePolicies(this.selectedVehicle.id).subscribe(res => this.insurancePolicies = res.all);
     } else if (tab === 'inspections') {
       this.api.getTechnicalInspections(this.selectedVehicle.id).subscribe(res => this.inspectionsList = res.all);
-    } else if (tab === 'fuel') {
-      this.api.getFuelLogs(this.selectedVehicle.id).subscribe(res => this.fuelLogsList = res);
+
     } else if (tab === 'km_history') {
       this.api.getKmHistory(this.selectedVehicle.id).subscribe(res => this.kmHistoryList = res);
     }
@@ -368,28 +353,6 @@ export class VehiclesComponent implements OnInit {
     }
   }
 
-  openAddFuel(): void {
-    this.fuelForm = this.getEmptyFuelForm();
-    this.fuelForm.kmValue = this.selectedVehicle.currentKm;
-    this.showAddFuelDialog = true;
-  }
-
-  submitFuel(): void {
-    const payload = {
-      ...this.fuelForm,
-      vehicleId: this.selectedVehicle.id,
-      date: this.fuelForm.date.toISOString(),
-      fuelType: this.selectedVehicle.fuelType
-    };
-    this.api.addFuelLog(payload).subscribe({
-      next: () => {
-        this.showAddFuelDialog = false;
-        this.selectedVehicle.currentKm = Math.max(this.selectedVehicle.currentKm, payload.kmValue);
-        this.switchDetailsTab('fuel');
-      },
-      error: (err) => alert(err.error?.message || 'Failed to record fill-up')
-    });
-  }
 
   openAddKm(): void {
     this.kmForm = this.getEmptyKmForm();
@@ -417,9 +380,6 @@ export class VehiclesComponent implements OnInit {
     window.open(this.api.getKmExportCsvUrl(this.selectedVehicle.id));
   }
 
-  exportFuelCsv(): void {
-    window.open(this.api.getFuelExportCsvUrl(this.selectedVehicle.id));
-  }
 
   deletePolicy(id: number): void {
     if (confirm(this.i18n.t('common.deleteConfirm'))) {
@@ -437,14 +397,6 @@ export class VehiclesComponent implements OnInit {
     }
   }
 
-  deleteFuel(id: number): void {
-    if (confirm(this.i18n.t('common.deleteConfirm'))) {
-      this.api.deleteFuelLog(id).subscribe(() => {
-        this.switchDetailsTab('fuel');
-        this.refreshVehicleCurrentKm();
-      });
-    }
-  }
 
   deleteKm(id: number): void {
     if (confirm(this.i18n.t('common.deleteConfirm'))) {

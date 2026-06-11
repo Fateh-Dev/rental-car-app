@@ -205,20 +205,6 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/technicalinspection/upload-inspection`, formData);
   }
 
-  // ================= Fuel =================
-  getFuelLogs(vehicleId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/fuel/vehicle/${vehicleId}`);
-  }
-  addFuelLog(log: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/fuel`, log);
-  }
-  deleteFuelLog(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/fuel/${id}`);
-  }
-  getFuelExportCsvUrl(vehicleId?: number): string {
-    const token = localStorage.getItem('parc_auto_token');
-    return `${this.baseUrl}/fuel/export-csv?access_token=${token}${vehicleId ? `&vehicleId=${vehicleId}` : ''}`;
-  }
 
   // ================= Alerts =================
   getAlerts(): Observable<any> {

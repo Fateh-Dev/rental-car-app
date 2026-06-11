@@ -17,7 +17,6 @@ namespace Backend.Data
             context.ConsumableLogs.RemoveRange(context.ConsumableLogs);
             context.InsurancePolicies.RemoveRange(context.InsurancePolicies);
             context.TechnicalInspections.RemoveRange(context.TechnicalInspections);
-            context.FuelLogs.RemoveRange(context.FuelLogs);
             context.Vehicles.RemoveRange(context.Vehicles);
             context.Clients.RemoveRange(context.Clients);
             context.SaveChanges();
@@ -325,12 +324,6 @@ namespace Backend.Data
 
             // Seed Technical Inspections (Skipped: starting clean)
             if (!context.TechnicalInspections.Any())
-            {
-                // Starting with empty history
-            }
-
-            // Seed Fuel Logs (Skipped: all vehicles start never rented and at 0 km)
-            if (!context.FuelLogs.Any())
             {
                 // Starting with empty history
             }

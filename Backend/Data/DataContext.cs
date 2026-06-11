@@ -32,7 +32,6 @@ namespace Backend.Data
         public DbSet<ConsumableLog> ConsumableLogs => Set<ConsumableLog>();
         public DbSet<InsurancePolicy> InsurancePolicies => Set<InsurancePolicy>();
         public DbSet<TechnicalInspection> TechnicalInspections => Set<TechnicalInspection>();
-        public DbSet<FuelLog> FuelLogs => Set<FuelLog>();
         public DbSet<GlobalSettings> GlobalSettings => Set<GlobalSettings>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

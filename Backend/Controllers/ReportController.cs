@@ -101,17 +101,15 @@ namespace Backend.Controllers
             var vehicles = await _context.Vehicles.ToListAsync();
             var contracts = await _context.RentalContracts.ToListAsync();
             var maintenances = await _context.Maintenances.ToListAsync();
-            var fuelLogs = await _context.FuelLogs.ToListAsync();
             var insurances = await _context.InsurancePolicies.ToListAsync();
 
             var report = vehicles.Select(v =>
             {
                 var revenue = contracts.Where(c => c.VehicleId == v.Id).Sum(c => c.FinalAmountDue);
                 var maintCost = maintenances.Where(m => m.VehicleId == v.Id).Sum(m => m.TotalCost);
-                var fuelCost = fuelLogs.Where(f => f.VehicleId == v.Id).Sum(f => f.TotalCost);
                 var insCost = insurances.Where(i => i.VehicleId == v.Id).Sum(i => i.PremiumAmount);
 
-                var totalCost = maintCost + fuelCost + insCost;
+                var totalCost = maintCost + insCost;
                 var netProfit = revenue - totalCost;
 
                 // Utilization rate calculation
@@ -130,7 +128,6 @@ namespace Backend.Controllers
                     v.Matricule,
                     Revenue = revenue,
                     MaintenanceCost = maintCost,
-                    FuelCost = fuelCost,
                     InsuranceCost = insCost,
                     TotalCost = totalCost,
                     Profitability = netProfit,
@@ -186,19 +183,17 @@ namespace Backend.Controllers
             var vehicles = await _context.Vehicles.ToListAsync();
             var contracts = await _context.RentalContracts.ToListAsync();
             var maintenances = await _context.Maintenances.ToListAsync();
-            var fuelLogs = await _context.FuelLogs.ToListAsync();
             var insurances = await _context.InsurancePolicies.ToListAsync();
 
             var builder = new StringBuilder();
-            builder.AppendLine("Matricule,Vehicle,Utilization Rate %,Revenue,Maintenance Cost,Fuel Cost,Insurance Cost,Total Cost,Net Profit");
+            builder.AppendLine("Matricule,Vehicle,Utilization Rate %,Revenue,Maintenance Cost,Insurance Cost,Total Cost,Net Profit");
 
             foreach (var v in vehicles)
             {
                 var revenue = contracts.Where(c => c.VehicleId == v.Id).Sum(c => c.FinalAmountDue);
                 var maintCost = maintenances.Where(m => m.VehicleId == v.Id).Sum(m => m.TotalCost);
-                var fuelCost = fuelLogs.Where(f => f.VehicleId == v.Id).Sum(f => f.TotalCost);
                 var insCost = insurances.Where(i => i.VehicleId == v.Id).Sum(i => i.PremiumAmount);
-                var totalCost = maintCost + fuelCost + insCost;
+                var totalCost = maintCost + insCost;
                 var netProfit = revenue - totalCost;
 
                 var vContracts = contracts.Where(c => c.VehicleId == v.Id && c.ContractStatus != ContractStatus.Cancelled).ToList();
@@ -208,7 +203,7 @@ namespace Backend.Controllers
                 decimal utilization = ((decimal)rentalDays / daysSincePurchase) * 100;
                 if (utilization > 100) utilization = 100;
 
-                builder.AppendLine($"\"{v.Matricule}\",\"{v.Brand} {v.Model}\",{utilization:F2},{revenue:F2},{maintCost:F2},{fuelCost:F2},{insCost:F2},{totalCost:F2},{netProfit:F2}");
+                builder.AppendLine($"\"{v.Matricule}\",\"{v.Brand} {v.Model}\",{utilization:F2},{revenue:F2},{maintCost:F2},{insCost:F2},{totalCost:F2},{netProfit:F2}");
             }
 
             var csvBytes = Encoding.UTF8.GetBytes(builder.ToString());
