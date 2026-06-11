@@ -88,6 +88,23 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = builder.Configuration["Jwt:Audience"] ?? "ParcAutoClient",
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) &&
+                (path.StartsWithSegments("/api/km/export-csv") ||
+                 path.StartsWithSegments("/api/fuel/export-csv") ||
+                 path.StartsWithSegments("/api/report/export-profitability-csv")))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
 builder.Services.AddAuthorization();
