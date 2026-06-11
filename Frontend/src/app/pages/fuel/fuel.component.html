@@ -93,7 +93,7 @@
     <div class="split-right">
       
       <!-- Unselected State -->
-      <div *ngIf="!selectedVehicle" class="card unselected-placeholder" style="border-style: dashed;">
+      <div *ngIf="!selectedVehicle" class="unselected-placeholder" style="border-style: dashed;">
         <i class="pi pi-history unselected-icon"></i>
         <h3 style="font-weight: 700; font-size: 15px; color: var(--color-text); margin: 0;">{{ 'fuel.noVehicleSelected' | t }}</h3>
         <p style="font-size: 13px; color: var(--color-text-muted); max-width: 320px; margin: 4px 0 0;">
@@ -125,52 +125,52 @@
           </div>
         </div>
 
-        <!-- Kilometer Odometer Timeline -->
-        <div class="card" style="overflow: hidden;">
-          <div class="card-header-inner">
-            <h3 class="card-title-inner">
-              <i class="pi pi-history text-accent"></i> {{ 'fuel.kmTimeline' | t }}
-            </h3>
-          </div>
+        <!-- Kilometer Odometer Timeline Card -->
+        <div class="timeline-card">
+          <h3 class="timeline-header">
+            <i class="pi pi-history text-accent"></i> {{ 'fuel.kmTimeline' | t }}
+          </h3>
           
-          <div style="padding: 8px;">
-            <p-table [value]="kmHistory" [rows]="10" [paginator]="true" responsiveLayout="scroll" styleClass="p-datatable-sm">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>{{ 'fuel.dateTime' | t }}</th>
-                  <th>{{ 'fuel.odometerValue' | t }}</th>
-                  <th>{{ 'fuel.source' | t }}</th>
-                  <th>{{ 'fuel.remarksEvent' | t }}</th>
-                  <th style="width: 50px;"></th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-entry>
-                <tr>
-                  <td style="font-size: 12px; color: var(--color-text-secondary);">{{ entry.date | date:'dd/MM/yyyy HH:mm' }}</td>
-                  <td style="font-weight: 700; color: var(--color-text);">{{ entry.kmValue | number }} km</td>
-                  <td>
+          <div *ngIf="kmHistory.length === 0" style="padding: 20px; text-align: center; color: var(--color-text-muted); font-style: italic;">
+            {{ 'fuel.noKmHistory' | t }}
+          </div>
+
+          <div *ngIf="kmHistory.length > 0" class="timeline-container">
+            <div class="timeline-line"></div>
+            
+            <div *ngFor="let entry of kmHistory" 
+                 class="timeline-item"
+                 [class.timeline-item-manual]="entry.source === 'Manual'"
+                 [class.timeline-item-contract]="entry.source === 'Contract'"
+            >
+              <div class="timeline-node"></div>
+              <span class="timeline-time">{{ entry.date | date:'dd/MM/yyyy HH:mm' }}</span>
+              
+              <div class="timeline-block">
+                <div class="timeline-details">
+                  <div class="timeline-badge-row">
+                    <span class="timeline-value">{{ entry.kmValue | number }} km</span>
                     <span class="badge"
                           [class.badge-accent]="entry.source === 'Manual'"
                           [class.badge-success]="entry.source === 'Contract'"
+                          style="font-size: 9px;"
                     >
                       {{ entry.source === 'Manual' ? ('fuel.sourceManual' | t) : ('fuel.sourceContract' | t) }}
                     </span>
-                  </td>
-                  <td style="font-size: 12px; color: var(--color-text-secondary);">{{ entry.notes }}</td>
-                  <td style="text-align: center;">
-                    <!-- Allow delete km entry if it is manual -->
-                    <button *ngIf="entry.source === 'Manual'" (click)="deleteKmEntry(entry.id)" [title]="'common.delete' | t" class="btn-icon danger" style="width: 24px; height: 24px;">
-                      <i class="pi pi-trash" style="font-size: 10px;"></i>
-                    </button>
-                  </td>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="emptymessage">
-                <tr>
-                  <td colspan="5" style="text-align: center; padding: 20px; color: var(--color-text-muted);">{{ 'fuel.noKmHistory' | t }}</td>
-                </tr>
-              </ng-template>
-            </p-table>
+                  </div>
+                  <span class="timeline-notes">{{ entry.notes }}</span>
+                </div>
+                
+                <button *ngIf="entry.source === 'Manual'" 
+                        (click)="deleteKmEntry(entry.id)" 
+                        [title]="'common.delete' | t" 
+                        class="btn-icon danger" 
+                        style="width: 28px; height: 28px; border-radius: var(--radius-md);"
+                >
+                  <i class="pi pi-trash" style="font-size: 11px;"></i>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 

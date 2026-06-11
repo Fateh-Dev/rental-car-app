@@ -1,56 +1,59 @@
 <div class="page">
   <!-- Page Header -->
-  <div class="page-header">
+  <div class="welcome-header">
     <div>
-      <h2 class="page-title">{{ 'dashboard.pageTitle' | t }}</h2>
-      <p class="page-desc">{{ 'dashboard.pageDesc' | t }}</p>
+      <h2 class="welcome-title">{{ 'dashboard.pageTitle' | t }}</h2>
+      <p class="welcome-desc">{{ 'dashboard.pageDesc' | t }}</p>
     </div>
-    <span class="badge badge-neutral">{{ today | date:'dd/MM/yyyy' }}</span>
+    <div class="date-badge">
+      <i class="pi pi-calendar"></i>
+      <span>{{ today | date:'dd/MM/yyyy' }}</span>
+    </div>
   </div>
 
   <!-- KPIs -->
   <div class="kpi-grid">
-    <div class="card kpi-card">
+    <div class="kpi-card kpi-card-fleet">
       <div class="kpi-content">
         <span class="kpi-label">{{ 'dashboard.fleet' | t }}</span>
         <span class="kpi-value">{{ stats.total }}</span>
         <span class="kpi-sub">{{ 'dashboard.registeredVehicles' | t }}</span>
       </div>
-      <div class="kpi-icon kpi-icon-accent"><i class="pi pi-car"></i></div>
+      <div class="kpi-icon"><i class="pi pi-car"></i></div>
     </div>
 
-    <div class="card kpi-card">
+    <div class="kpi-card kpi-card-rentals">
       <div class="kpi-content">
         <span class="kpi-label">{{ 'dashboard.activeRentals' | t }}</span>
         <span class="kpi-value">{{ stats.rented }}</span>
-        <span class="kpi-sub text-success">{{ stats.available }} {{ 'dashboard.available' | t }}</span>
+        <span class="kpi-sub">{{ stats.available }} {{ 'dashboard.available' | t }}</span>
       </div>
-      <div class="kpi-icon kpi-icon-success"><i class="pi pi-key"></i></div>
+      <div class="kpi-icon"><i class="pi pi-key"></i></div>
     </div>
 
-    <div class="card kpi-card">
+    <div class="kpi-card kpi-card-revenue">
       <div class="kpi-content">
         <span class="kpi-label">{{ 'dashboard.revenue' | t }}</span>
         <span class="kpi-value">{{ revenue.totalRevenue | appCurrency }}</span>
         <span class="kpi-sub">{{ revenue.paidRevenue | appCurrency }} {{ 'dashboard.paid' | t }}</span>
       </div>
-      <div class="kpi-icon kpi-icon-info"><i class="pi pi-money-bill"></i></div>
+      <div class="kpi-icon"><i class="pi pi-money-bill"></i></div>
     </div>
 
-    <div class="card kpi-card">
+    <div class="kpi-card kpi-card-alerts">
       <div class="kpi-content">
         <span class="kpi-label">{{ 'dashboard.alerts' | t }}</span>
         <span class="kpi-value">{{ alerts.length }}</span>
-        <span class="kpi-sub text-danger">{{ criticalAlertsCount }} {{ 'dashboard.critical' | t }}</span>
+        <span class="kpi-sub">{{ criticalAlertsCount }} {{ 'dashboard.critical' | t }}</span>
       </div>
-      <div class="kpi-icon kpi-icon-danger"><i class="pi pi-exclamation-triangle"></i></div>
+      <div class="kpi-icon"><i class="pi pi-exclamation-triangle"></i></div>
     </div>
   </div>
 
   <!-- Charts & Alerts Row -->
   <div class="dashboard-grid">
     <!-- Fleet Chart -->
-    <div class="card dashboard-card">
+    <div class="dashboard-card">
       <div class="card-header">
         <div>
           <h4 class="card-title">{{ 'dashboard.fleetAvailability' | t }}</h4>
@@ -63,7 +66,7 @@
     </div>
 
     <!-- Alerts Feed -->
-    <div class="card dashboard-card dashboard-card-wide">
+    <div class="dashboard-card">
       <div class="card-header">
         <div>
           <h4 class="card-title">{{ 'dashboard.priorityAlerts' | t }}</h4>
@@ -100,7 +103,7 @@
   </div>
 
   <!-- Unpaid Contracts -->
-  <div class="card">
+  <div class="dashboard-card" style="padding-bottom: 8px;">
     <div class="card-header">
       <div>
         <h4 class="card-title">{{ 'dashboard.unpaid' | t }}</h4>
