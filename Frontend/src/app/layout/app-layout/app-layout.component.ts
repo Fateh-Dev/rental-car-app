@@ -36,6 +36,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     { labelKey: 'sidebar.insuranceControl', icon: 'pi pi-shield', route: '/insurance-inspections' },
     { labelKey: 'sidebar.alerts', icon: 'pi pi-bell', route: '/alerts' },
     { labelKey: 'sidebar.reportsAnalytics', icon: 'pi pi-print', route: '/reports' },
+    { labelKey: 'sidebar.users', icon: 'pi pi-user', route: '/users' },
     { labelKey: 'sidebar.settings', icon: 'pi pi-sliders-h', route: '/settings' }
   ];
 

@@ -18,5 +18,7 @@ namespace Backend.Models
 
         [MaxLength(100)]
         public string FullName { get; set; } = string.Empty;
+
+        public bool IsLocked { get; set; } = false;
     }
 }

@@ -37,6 +37,11 @@ namespace Backend.Controllers
                 return Unauthorized(new { message = "Invalid username or password" });
             }
 
+            if (user.IsLocked)
+            {
+                return Unauthorized(new { message = "Account is locked" });
+            }
+
             if (!HashHelper.VerifyPasswordHash(dto.Password, user.PasswordHash, user.Salt))
             {
                 return Unauthorized(new { message = "Invalid username or password" });
