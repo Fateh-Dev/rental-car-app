@@ -1,0 +1,159 @@
+<div class="page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">{{ 'users.pageTitle' | t }}</h2>
+      <p class="page-desc">{{ 'users.pageDesc' | t }}</p>
+    </div>
+    <button (click)="openAddDialog()" class="btn-primary">
+      <i class="pi pi-plus"></i>
+      <span>{{ 'users.addUser' | t }}</span>
+    </button>
+  </div>
+
+  <!-- Notification Banner -->
+  <div *ngIf="successMessage" class="notification-banner success">
+    <i class="pi pi-check-circle"></i>
+    <span>{{ successMessage }}</span>
+  </div>
+  <div *ngIf="errorMessage" class="notification-banner error">
+    <i class="pi pi-exclamation-circle"></i>
+    <span>{{ errorMessage }}</span>
+  </div>
+
+  <!-- Search Card -->
+  <div class="card filter-bar">
+    <div class="filter-search">
+      <i class="pi pi-search filter-search-icon"></i>
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        (ngModelChange)="onSearchChange()"
+        [placeholder]="'users.searchPlaceholder' | t"
+        class="form-input"
+      />
+    </div>
+  </div>
+
+  <!-- User list table -->
+  <div class="card table-card">
+    <div class="table-scroll" *ngIf="users.length > 0">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th>{{ 'users.fullName' | t }}</th>
+            <th>{{ 'users.username' | t }}</th>
+            <th>{{ 'users.status' | t }}</th>
+            <th class="col-center">{{ 'users.actions' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>
+              <div class="user-cell">
+                <div class="user-avatar-initials">{{ getInitials(user.fullName) }}</div>
+                <div class="cell-stack">
+                  <span class="cell-stack-title">{{ user.fullName }}</span>
+                  <span class="cell-stack-sub" *ngIf="user.id === currentUserId">({{ 'common.admin' | t }} - {{ 'common.yes' | t | lowercase }})</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="cell-mono cell-muted">{{ user.username }}</span></td>
+            <td>
+              <span 
+                [class.badge-success]="!user.isLocked"
+                [class.badge-danger]="user.isLocked"
+                class="badge"
+              >
+                {{ (!user.isLocked ? 'users.active' : 'users.locked') | t }}
+              </span>
+            </td>
+            <td>
+              <div class="cell-actions">
+                <!-- Lock / Unlock Toggle -->
+                <button 
+                  (click)="toggleLock(user)" 
+                  [disabled]="user.id === currentUserId"
+                  [title]="(user.isLocked ? 'users.unlockUser' : 'users.lockUser') | t" 
+                  [class.locked-btn]="user.isLocked"
+                  class="btn-icon"
+                >
+                  <i class="pi" [class.pi-lock-open]="user.isLocked" [class.pi-lock]="!user.isLocked"></i>
+                </button>
+
+                <!-- Edit User Details -->
+                <button (click)="openEditDialog(user)" [title]="'common.edit' | t" class="btn-icon">
+                  <i class="pi pi-pencil"></i>
+                </button>
+
+                <!-- Delete User -->
+                <button 
+                  (click)="deleteUser(user.id)" 
+                  [disabled]="user.id === currentUserId"
+                  [title]="'common.delete' | t" 
+                  class="btn-icon danger"
+                >
+                  <i class="pi pi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="users.length === 0" class="table-empty">
+      <i class="pi pi-user"></i>
+      <span class="table-empty-title">{{ 'common.noData' | t }}</span>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="users.length > 0" class="table-footer">
+      <span class="table-footer-info"><strong>{{ totalCount }}</strong> {{ 'users.totalUsers' | t }}</span>
+      <div *ngIf="totalCount > pageSize" class="pagination">
+        <button [disabled]="page === 1" (click)="onPageChange(page - 1)" class="page-btn"><i class="pi pi-chevron-left"></i></button>
+        <button *ngFor="let p of pages" (click)="onPageChange(p)" [class.active]="p === page" class="page-btn">{{ p }}</button>
+        <button [disabled]="page * pageSize >= totalCount" (click)="onPageChange(page + 1)" class="page-btn"><i class="pi pi-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT USER DIALOG -->
+  <p-dialog 
+    [(visible)]="showCrudDialog" 
+    [style]="{width: '450px'}" 
+    [modal]="true" 
+    [header]="isEditMode ? ('users.editUser' | t) : ('users.newUser' | t)"
+    [draggable]="false"
+    [resizable]="false"
+  >
+    <form (ngSubmit)="onSubmitUser()" class="form-grid">
+      <div class="form-full">
+        <label class="form-label required">{{ 'users.fullName' | t }}</label>
+        <input type="text" [(ngModel)]="userForm.fullName" name="fullName" required class="form-input" placeholder="e.g. John Doe"/>
+      </div>
+      
+      <div class="form-full">
+        <label class="form-label required">{{ 'users.username' | t }}</label>
+        <input type="text" [(ngModel)]="userForm.username" name="username" required class="form-input" placeholder="e.g. johndoe" [disabled]="isEditMode"/>
+      </div>
+
+      <div class="form-full">
+        <label class="form-label" [class.required]="!isEditMode">{{ 'users.password' | t }}</label>
+        <input type="password" [(ngModel)]="userForm.password" name="password" class="form-input" placeholder="••••••••"/>
+        <small class="form-help-text" *ngIf="isEditMode">{{ 'settings.securityDesc' | t }}</small>
+      </div>
+
+      <div class="form-full">
+        <label class="form-label" [class.required]="!isEditMode">{{ 'users.confirmPassword' | t }}</label>
+        <input type="password" [(ngModel)]="userForm.confirmPassword" name="confirmPassword" class="form-input" placeholder="••••••••"/>
+      </div>
+
+      <div class="form-full form-actions">
+        <button type="button" (click)="showCrudDialog = false" class="btn-secondary">{{ 'common.cancel' | t }}</button>
+        <button type="submit" class="btn-primary">{{ 'common.save' | t }}</button>
+      </div>
+    </form>
+  </p-dialog>
+</div>

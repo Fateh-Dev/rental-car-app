@@ -243,4 +243,29 @@ export class ApiService {
   updateSettings(settings: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/settings`, settings);
   }
+
+  // ================= Users =================
+  getUsers(search?: string, page = 1, pageSize = 10): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+    if (search) params = params.set('search', search);
+
+    return this.http.get(`${this.baseUrl}/user`, { params });
+  }
+  getUserById(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/user/${id}`);
+  }
+  createUser(user: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/user`, user);
+  }
+  updateUser(id: number, user: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/user/${id}`, user);
+  }
+  toggleUserLock(id: number): Observable<any> {
+    return this.http.put(`${this.baseUrl}/user/${id}/lock`, {});
+  }
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/user/${id}`);
+  }
 }
