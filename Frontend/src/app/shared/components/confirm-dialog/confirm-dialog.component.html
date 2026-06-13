@@ -1,0 +1,21 @@
+<div class="confirm-overlay" *ngIf="show" (click)="cancel()">
+  <div class="confirm-dialog" (click)="$event.stopPropagation()">
+    <div class="confirm-header" [ngClass]="options.type || 'warning'">
+      <div class="icon-container">
+        <i [class]="options.icon || 'pi pi-exclamation-triangle'"></i>
+      </div>
+      <h3>{{ options.title }}</h3>
+    </div>
+    <div class="confirm-body">
+      <p>{{ options.message }}</p>
+    </div>
+    <div class="confirm-footer">
+      <button class="btn-cancel" (click)="cancel()">
+        {{ options.cancelText || ('common.cancel' | t) }}
+      </button>
+      <button class="btn-confirm" [ngClass]="options.type || 'warning'" (click)="confirm()">
+        {{ options.confirmText || ('common.confirm' | t) }}
+      </button>
+    </div>
+  </div>
+</div>

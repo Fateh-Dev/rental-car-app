@@ -9,6 +9,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { AppCurrencyPipe } from '../../pipes/app-currency.pipe';
+import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 
 @Component({
   selector: 'app-vehicles',
@@ -73,7 +74,7 @@ export class VehiclesComponent implements OnInit {
   showAddKmDialog = false;
   kmForm: any = this.getEmptyKmForm();
 
-  constructor(public api: ApiService, public i18n: I18nService) {}
+  constructor(private api: ApiService, public i18n: I18nService, private confirmService: ConfirmDialogService) {}
 
   ngOnInit(): void {
     this.loadSettings();
@@ -210,14 +211,21 @@ export class VehiclesComponent implements OnInit {
   }
 
   deleteVehicle(id: number): void {
-    if (confirm(this.i18n.t('vehicles.deleteConfirm'))) {
-      this.api.deleteVehicle(id).subscribe({
-        next: () => {
-          this.loadVehicles();
-        },
-        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorDelete'))
-      });
-    }
+    this.confirmService.confirm({
+      title: this.i18n.t('common.delete'),
+      message: this.i18n.t('vehicles.deleteConfirm'),
+      type: 'danger',
+      icon: 'pi pi-trash'
+    }).then(confirmed => {
+      if (confirmed) {
+        this.api.deleteVehicle(id).subscribe({
+          next: () => {
+            this.loadVehicles();
+          },
+          error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorDelete'))
+        });
+      }
+    });
   }
 
   onSubmitVehicle(): void {
@@ -382,37 +390,65 @@ export class VehiclesComponent implements OnInit {
 
 
   deletePolicy(id: number): void {
-    if (confirm(this.i18n.t('common.deleteConfirm'))) {
-      this.api.deleteInsurancePolicy(id).subscribe(() => {
-        this.switchDetailsTab('insurance');
-      });
-    }
+    this.confirmService.confirm({
+      title: this.i18n.t('common.delete'),
+      message: this.i18n.t('common.deleteConfirm'),
+      type: 'danger',
+      icon: 'pi pi-trash'
+    }).then(confirmed => {
+      if (confirmed) {
+        this.api.deleteInsurancePolicy(id).subscribe(() => {
+          this.switchDetailsTab('insurance');
+        });
+      }
+    });
   }
 
   deleteInspection(id: number): void {
-    if (confirm(this.i18n.t('common.deleteConfirm'))) {
-      this.api.deleteTechnicalInspection(id).subscribe(() => {
-        this.switchDetailsTab('inspections');
-      });
-    }
+    this.confirmService.confirm({
+      title: this.i18n.t('common.delete'),
+      message: this.i18n.t('common.deleteConfirm'),
+      type: 'danger',
+      icon: 'pi pi-trash'
+    }).then(confirmed => {
+      if (confirmed) {
+        this.api.deleteTechnicalInspection(id).subscribe(() => {
+          this.switchDetailsTab('inspections');
+        });
+      }
+    });
   }
 
 
   deleteKm(id: number): void {
-    if (confirm(this.i18n.t('common.deleteConfirm'))) {
-      this.api.deleteKmEntry(id).subscribe(() => {
-        this.switchDetailsTab('km_history');
-        this.refreshVehicleCurrentKm();
-      });
-    }
+    this.confirmService.confirm({
+      title: this.i18n.t('common.delete'),
+      message: this.i18n.t('common.deleteConfirm'),
+      type: 'danger',
+      icon: 'pi pi-trash'
+    }).then(confirmed => {
+      if (confirmed) {
+        this.api.deleteKmEntry(id).subscribe(() => {
+          this.switchDetailsTab('km_history');
+          this.refreshVehicleCurrentKm();
+        });
+      }
+    });
   }
 
   deleteConsumable(id: number): void {
-    if (confirm(this.i18n.t('common.deleteConfirm'))) {
-      this.api.deleteConsumableLog(id).subscribe(() => {
-        this.switchDetailsTab('consumables');
-      });
-    }
+    this.confirmService.confirm({
+      title: this.i18n.t('common.delete'),
+      message: this.i18n.t('common.deleteConfirm'),
+      type: 'danger',
+      icon: 'pi pi-trash'
+    }).then(confirmed => {
+      if (confirmed) {
+        this.api.deleteConsumableLog(id).subscribe(() => {
+          this.switchDetailsTab('consumables');
+        });
+      }
+    });
   }
 
   refreshVehicleCurrentKm(): void {

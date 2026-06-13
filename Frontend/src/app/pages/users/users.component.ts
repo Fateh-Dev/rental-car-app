@@ -5,6 +5,7 @@ import { ApiService } from '../../services/api.service';
 import { DialogModule } from 'primeng/dialog';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 
 @Component({
   selector: 'app-users',
@@ -34,7 +35,7 @@ export class UsersComponent implements OnInit {
   successMessage = '';
   errorMessage = '';
 
-  constructor(private api: ApiService, public i18n: I18nService) {}
+  constructor(private api: ApiService, public i18n: I18nService, private confirmService: ConfirmDialogService) {}
 
   ngOnInit(): void {
     const userJson = localStorage.getItem('parc_auto_user');
@@ -119,19 +120,26 @@ export class UsersComponent implements OnInit {
       return;
     }
 
-    if (confirm(user.isLocked ? this.i18n.t('users.unlockConfirm') : this.i18n.t('users.lockConfirm'))) {
-      this.api.toggleUserLock(user.id).subscribe({
-        next: (res) => {
-          user.isLocked = res.isLocked;
-          this.showSuccess(res.isLocked ? this.i18n.t('users.lockUserSuccess') : this.i18n.t('users.unlockUserSuccess'));
-          this.loadUsers();
-        },
-        error: (err) => {
-          console.error(err);
-          this.showError(err.error?.message || this.i18n.t('users.errorTogglingLock'));
-        }
-      });
-    }
+    this.confirmService.confirm({
+      title: user.isLocked ? this.i18n.t('users.unlockUser') : this.i18n.t('users.lockUser'),
+      message: user.isLocked ? this.i18n.t('users.unlockConfirm') : this.i18n.t('users.lockConfirm'),
+      type: user.isLocked ? 'info' : 'warning',
+      icon: user.isLocked ? 'pi pi-unlock' : 'pi pi-lock'
+    }).then(confirmed => {
+      if (confirmed) {
+        this.api.toggleUserLock(user.id).subscribe({
+          next: (res) => {
+            user.isLocked = res.isLocked;
+            this.showSuccess(res.isLocked ? this.i18n.t('users.lockUserSuccess') : this.i18n.t('users.unlockUserSuccess'));
+            this.loadUsers();
+          },
+          error: (err) => {
+            console.error(err);
+            this.showError(err.error?.message || this.i18n.t('users.errorTogglingLock'));
+          }
+        });
+      }
+    });
   }
 
   deleteUser(id: number): void {
@@ -140,18 +148,25 @@ export class UsersComponent implements OnInit {
       return;
     }
 
-    if (confirm(this.i18n.t('users.deleteConfirm'))) {
-      this.api.deleteUser(id).subscribe({
-        next: () => {
-          this.showSuccess(this.i18n.t('users.deleteUserSuccess'));
-          this.loadUsers();
-        },
-        error: (err) => {
-          console.error(err);
-          this.showError(err.error?.message || this.i18n.t('users.errorDeletingUser'));
-        }
-      });
-    }
+    this.confirmService.confirm({
+      title: this.i18n.t('common.delete'),
+      message: this.i18n.t('users.deleteConfirm'),
+      type: 'danger',
+      icon: 'pi pi-trash'
+    }).then(confirmed => {
+      if (confirmed) {
+        this.api.deleteUser(id).subscribe({
+          next: () => {
+            this.showSuccess(this.i18n.t('users.deleteUserSuccess'));
+            this.loadUsers();
+          },
+          error: (err) => {
+            console.error(err);
+            this.showError(err.error?.message || this.i18n.t('users.errorDeletingUser'));
+          }
+        });
+      }
+    });
   }
 
   onSubmitUser(): void {

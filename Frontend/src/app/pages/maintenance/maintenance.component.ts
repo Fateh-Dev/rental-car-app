@@ -7,6 +7,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { AppCurrencyPipe } from '../../pipes/app-currency.pipe';
+import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 
 @Component({
   selector: 'app-maintenance',
@@ -37,7 +38,7 @@ export class MaintenanceComponent implements OnInit {
   showCalendarDialog = false;
   calendarEvents: any[] = [];
 
-  constructor(public api: ApiService, public i18n: I18nService) {}
+  constructor(public api: ApiService, public i18n: I18nService, private confirmService: ConfirmDialogService) {}
 
   ngOnInit(): void {
     this.loadMaintenances();
@@ -95,11 +96,19 @@ export class MaintenanceComponent implements OnInit {
   }
 
   deleteMaint(id: number): void {
-    if (confirm(this.i18n.t('common.deleteConfirm'))) {
-      this.api.deleteMaintenance(id).subscribe(() => {
-        this.loadMaintenances();
-      });
-    }
+    this.confirmService.confirm({
+      title: this.i18n.t('common.delete'),
+      message: this.i18n.t('common.deleteConfirm'),
+      type: 'danger',
+      icon: 'pi pi-trash'
+    }).then(confirmed => {
+      if (confirmed) {
+        this.api.deleteMaintenance(id).subscribe({
+          next: () => this.loadMaintenances(),
+          error: (err) => alert(err.error?.message || this.i18n.t('common.errorOccurred'))
+        });
+      }
+    });
   }
 
   onSubmitMaint(): void {

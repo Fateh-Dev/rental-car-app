@@ -7,6 +7,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { AppCurrencyPipe } from '../../pipes/app-currency.pipe';
+import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 
 @Component({
   selector: 'app-clients',
@@ -37,7 +38,7 @@ export class ClientsComponent implements OnInit {
   selectedClient: any = null;
   rentalHistory: any[] = [];
 
-  constructor(private api: ApiService, public i18n: I18nService) {}
+  constructor(private api: ApiService, public i18n: I18nService, private confirmService: ConfirmDialogService) {}
 
   ngOnInit(): void {
     this.loadClients();
@@ -117,14 +118,21 @@ export class ClientsComponent implements OnInit {
   }
 
   deleteClient(id: number): void {
-    if (confirm(this.i18n.t('common.deleteConfirm'))) {
-      this.api.deleteClient(id).subscribe({
-        next: () => {
-          this.loadClients();
-        },
-        error: (err) => alert(err.error?.message || this.i18n.t('common.errorOccurred'))
-      });
-    }
+    this.confirmService.confirm({
+      title: this.i18n.t('common.delete'),
+      message: this.i18n.t('common.deleteConfirm'),
+      type: 'danger',
+      icon: 'pi pi-trash'
+    }).then(confirmed => {
+      if (confirmed) {
+        this.api.deleteClient(id).subscribe({
+          next: () => {
+            this.loadClients();
+          },
+          error: (err) => alert(err.error?.message || this.i18n.t('common.errorOccurred'))
+        });
+      }
+    });
   }
 
   onSubmitClient(): void {

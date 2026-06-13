@@ -5,11 +5,12 @@ import { ApiService } from '../../services/api.service';
 import { I18nService, Lang } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { filter, Subscription } from 'rxjs';
+import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-app-layout',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterOutlet, TranslatePipe],
+  imports: [CommonModule, RouterLink, RouterOutlet, TranslatePipe, ConfirmDialogComponent],
   templateUrl: './app-layout.component.html',
   styleUrls: ['./app-layout.component.css']
 })

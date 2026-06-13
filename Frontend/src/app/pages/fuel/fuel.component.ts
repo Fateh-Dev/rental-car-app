@@ -7,6 +7,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DatePickerModule } from 'primeng/datepicker';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 
 @Component({
   selector: 'app-fuel',
@@ -28,7 +29,7 @@ export class FuelComponent implements OnInit {
   showAddKmDialog = false;
   kmForm = this.getEmptyKmForm();
 
-  constructor(private api: ApiService, public i18n: I18nService) {}
+  constructor(private api: ApiService, public i18n: I18nService, private confirmService: ConfirmDialogService) {}
 
   ngOnInit(): void {
     this.loadVehicles();
@@ -114,18 +115,25 @@ export class FuelComponent implements OnInit {
   }
 
   deleteKmEntry(id: number): void {
-    if (confirm(this.i18n.t('common.deleteConfirm'))) {
-      this.api.deleteKmEntry(id).subscribe({
-        next: () => {
-          this.loadVehicles();
-          this.loadInactivityReport();
-          if (this.selectedVehicle) {
-            this.loadVehicleKmHistory(this.selectedVehicle.id);
-          }
-        },
-        error: (err) => alert(err.error?.message || this.i18n.t('common.errorOccurred'))
-      });
-    }
+    this.confirmService.confirm({
+      title: this.i18n.t('common.delete'),
+      message: this.i18n.t('common.deleteConfirm'),
+      type: 'danger',
+      icon: 'pi pi-trash'
+    }).then(confirmed => {
+      if (confirmed) {
+        this.api.deleteKmEntry(id).subscribe({
+          next: () => {
+            this.loadVehicles();
+            this.loadInactivityReport();
+            if (this.selectedVehicle) {
+              this.loadVehicleKmHistory(this.selectedVehicle.id);
+            }
+          },
+          error: (err) => alert(err.error?.message || this.i18n.t('common.errorOccurred'))
+        });
+      }
+    });
   }
 
   exportAllKmCsv(): void {
