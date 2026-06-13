@@ -35,7 +35,7 @@ namespace Backend.Models
 
         [MaxLength(100)]
         [EmailAddress]
-        public string Email { get; set; } = string.Empty;
+        public string? Email { get; set; }
 
         [MaxLength(250)]
         public string Address { get; set; } = string.Empty;

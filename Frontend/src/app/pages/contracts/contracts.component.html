@@ -181,11 +181,11 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div>
             <label class="form-label required">{{ 'contracts.startDateTime' | t }}</label>
-            <p-datepicker [(ngModel)]="contractForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
+            <p-datepicker [(ngModel)]="contractForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full" required></p-datepicker>
           </div>
           <div>
             <label class="form-label required">{{ 'contracts.expectedReturn' | t }}</label>
-            <p-datepicker [(ngModel)]="contractForm.expectedReturnDate" name="expectedReturnDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full"></p-datepicker>
+            <p-datepicker [(ngModel)]="contractForm.expectedReturnDate" name="expectedReturnDate" dateFormat="yy-mm-dd" [showTime]="true" (onSelect)="calculateTotals()" styleClass="w-full" required></p-datepicker>
           </div>
         </div>
 
@@ -244,6 +244,10 @@
           <div class="summary-item">
             <span class="summary-label">{{ 'contracts.extraFees' | t }}</span>
             <input type="number" [(ngModel)]="contractForm.extrasCharges" name="extrasCharges" (change)="calculateTotals()" class="form-input" style="padding: 4px 6px; font-size: 12px;"/>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">{{ 'contracts.additionalCharges' | t }}</span>
+            <input type="number" [(ngModel)]="contractForm.additionalCharges" name="additionalCharges" (change)="calculateTotals()" class="form-input" style="padding: 4px 6px; font-size: 12px;"/>
           </div>
           <div class="summary-item">
             <span class="summary-label">{{ 'contracts.discount' | t }}</span>
@@ -324,7 +328,7 @@
       </div>
       <div>
         <label class="form-label required">{{ 'contracts.actualReturnDate' | t }}</label>
-        <p-datepicker [(ngModel)]="returnForm.returnDate" name="returnDate" dateFormat="yy-mm-dd" [showTime]="true" styleClass="w-full"></p-datepicker>
+        <p-datepicker [(ngModel)]="returnForm.returnDate" name="returnDate" dateFormat="yy-mm-dd" [showTime]="true" styleClass="w-full" required></p-datepicker>
       </div>
 
       <div>

@@ -77,9 +77,9 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Username) || string.IsNullOrWhiteSpace(dto.Password))
+            if (string.IsNullOrWhiteSpace(dto.Username) || string.IsNullOrWhiteSpace(dto.Password) || string.IsNullOrWhiteSpace(dto.FullName))
             {
-                return BadRequest(new { message = "Username and password are required." });
+                return BadRequest(new { message = "Username, full name and password are required." });
             }
 
             var normalizedUsername = dto.Username.Trim().ToLower();
@@ -120,6 +120,11 @@ namespace Backend.Controllers
             if (string.IsNullOrWhiteSpace(dto.Username))
             {
                 return BadRequest(new { message = "Username is required." });
+            }
+
+            if (string.IsNullOrWhiteSpace(dto.FullName))
+            {
+                return BadRequest(new { message = "Full name is required." });
             }
 
             var normalizedUsername = dto.Username.Trim().ToLower();

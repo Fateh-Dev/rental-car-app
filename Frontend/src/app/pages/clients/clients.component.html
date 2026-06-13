@@ -104,7 +104,7 @@
       </div>
       <div>
         <label class="form-label required">{{ 'clients.dateOfBirth' | t }}</label>
-        <p-datepicker [(ngModel)]="clientForm.dateOfBirth" name="dateOfBirth" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+        <p-datepicker [(ngModel)]="clientForm.dateOfBirth" name="dateOfBirth" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full" required></p-datepicker>
       </div>
       <div>
         <label class="form-label required">{{ 'clients.licenseNumber' | t }}</label>
@@ -118,11 +118,11 @@
       </div>
       <div>
         <label class="form-label required">{{ 'clients.licenseIssueDate' | t }}</label>
-        <p-datepicker [(ngModel)]="clientForm.licenseIssueDate" name="licenseIssueDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+        <p-datepicker [(ngModel)]="clientForm.licenseIssueDate" name="licenseIssueDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full" required></p-datepicker>
       </div>
       <div>
         <label class="form-label required">{{ 'clients.licenseExpiryDate' | t }}</label>
-        <p-datepicker [(ngModel)]="clientForm.licenseExpiryDate" name="licenseExpiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+        <p-datepicker [(ngModel)]="clientForm.licenseExpiryDate" name="licenseExpiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full" required></p-datepicker>
       </div>
       <div>
         <label class="form-label required">{{ 'clients.phone' | t }}</label>

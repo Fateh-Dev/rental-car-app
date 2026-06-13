@@ -449,6 +449,19 @@
           </div>
         </div>
 
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label required">{{ 'vehicles.purchaseDate' | t }}</label>
+            <p-datepicker [(ngModel)]="vehicleForm.purchaseDate" name="purchaseDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full" required></p-datepicker>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'common.status' | t }}</label>
+            <select [(ngModel)]="vehicleForm.status" name="status" class="form-input">
+              <option *ngFor="let s of statuses" [value]="s.value">{{ s.label }}</option>
+            </select>
+          </div>
+        </div>
+
         <div class="form-group photo-upload-group">
           <label class="form-label">{{ 'common.photo' | t }}</label>
           <label class="photo-dropzone" [class.has-image]="!!vehicleForm.photoPath">
@@ -523,12 +536,16 @@
       <div class="form-row">
         <div class="form-group">
           <label class="form-label required">{{ 'vehicles.effectiveDate' | t }}</label>
-          <p-datepicker [(ngModel)]="policyForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+          <p-datepicker [(ngModel)]="policyForm.startDate" name="startDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full" required></p-datepicker>
         </div>
         <div class="form-group">
           <label class="form-label required">{{ 'vehicles.expiration' | t }}</label>
-          <p-datepicker [(ngModel)]="policyForm.expiryDate" name="expiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+          <p-datepicker [(ngModel)]="policyForm.expiryDate" name="expiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full" required></p-datepicker>
         </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">{{ 'vehicles.insuredValue' | t }}</label>
+        <input type="number" [(ngModel)]="policyForm.insuredValue" name="insuredValue" class="form-input"/>
       </div>
       <div class="form-group">
         <label class="form-label">{{ 'vehicles.documentPdf' | t }}</label>
@@ -548,11 +565,11 @@
       <div class="form-row">
         <div class="form-group">
           <label class="form-label required">{{ 'vehicles.inspectionDate' | t }}</label>
-          <p-datepicker [(ngModel)]="inspectionForm.inspectionDate" name="inspectionDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+          <p-datepicker [(ngModel)]="inspectionForm.inspectionDate" name="inspectionDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full" required></p-datepicker>
         </div>
         <div class="form-group">
           <label class="form-label required">{{ 'vehicles.expiration' | t }}</label>
-          <p-datepicker [(ngModel)]="inspectionForm.expiryDate" name="expiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full"></p-datepicker>
+          <p-datepicker [(ngModel)]="inspectionForm.expiryDate" name="expiryDate" dateFormat="yy-mm-dd" [showIcon]="true" styleClass="w-full" required></p-datepicker>
         </div>
       </div>
       <div class="form-row">

@@ -34,7 +34,7 @@ namespace Backend.Controllers
                 var lowerSearch = search.ToLower();
                 query = query.Where(c => c.FullName.ToLower().Contains(lowerSearch) ||
                                          c.Phone.ToLower().Contains(lowerSearch) ||
-                                         c.Email.ToLower().Contains(lowerSearch) ||
+                                         (c.Email != null && c.Email.ToLower().Contains(lowerSearch)) ||
                                          c.NationalId.ToLower().Contains(lowerSearch) ||
                                          c.LicenseNumber.ToLower().Contains(lowerSearch));
             }

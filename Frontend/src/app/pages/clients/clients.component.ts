@@ -130,6 +130,7 @@ export class ClientsComponent implements OnInit {
   onSubmitClient(): void {
     const payload = {
       ...this.clientForm,
+      email: this.clientForm.email?.trim() || null,
       dateOfBirth: this.clientForm.dateOfBirth.toISOString(),
       licenseIssueDate: this.clientForm.licenseIssueDate.toISOString(),
       licenseExpiryDate: this.clientForm.licenseExpiryDate.toISOString()

@@ -205,7 +205,7 @@ export class ContractsComponent implements OnInit {
       this.contractForm.totalAmount = this.contractForm.rentalDays * this.contractForm.dailyRate;
       this.contractForm.finalAmountDue = 
         this.contractForm.totalAmount + 
-        Number(this.contractForm.additionalCharges) + 
+        Number(this.contractForm.additionalCharges) +
         Number(this.contractForm.extrasCharges) - 
         Number(this.contractForm.discountAmount);
         
