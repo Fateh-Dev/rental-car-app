@@ -19,6 +19,11 @@ export class ConfirmDialogComponent implements OnInit, OnDestroy {
 
   constructor(private confirmService: ConfirmDialogService) {}
 
+  get messageLines(): string[] {
+    if (!this.options?.message) return [];
+    return this.options.message.split('\n').filter(l => l.trim().length > 0);
+  }
+
   ngOnInit(): void {
     this.sub = this.confirmService.request$.subscribe(request => {
       this.options = request.options;

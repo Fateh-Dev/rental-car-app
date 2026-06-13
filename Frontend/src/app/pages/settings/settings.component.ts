@@ -104,7 +104,7 @@ export class SettingsComponent implements OnInit {
         this.parseReferenceData();
         this.showFeedback(this.getFeedbackMsg('saveSuccess'), 'success');
       },
-      error: (err) => this.showFeedback(err.error?.message || this.getFeedbackMsg('saveError'), 'error')
+      error: (err) => this.showFeedback(this.api.getErrorMessage(err, this.getFeedbackMsg('saveError')), 'error')
     });
   }
 
@@ -114,7 +114,7 @@ export class SettingsComponent implements OnInit {
         this.profile = res.user;
         this.showFeedback(this.getFeedbackMsg('profileSuccess'), 'success');
       },
-      error: (err) => this.showFeedback(err.error?.message || this.getFeedbackMsg('profileError'), 'error')
+      error: (err) => this.showFeedback(this.api.getErrorMessage(err, this.getFeedbackMsg('profileError')), 'error')
     });
   }
 
@@ -134,7 +134,7 @@ export class SettingsComponent implements OnInit {
         this.showFeedback(this.getFeedbackMsg('passwordSuccess'), 'success');
         this.passwordForm = { currentPassword: '', newPassword: '', confirmPassword: '' };
       },
-      error: (err) => this.showFeedback(err.error?.message || this.getFeedbackMsg('passwordError'), 'error')
+      error: (err) => this.showFeedback(this.api.getErrorMessage(err, this.getFeedbackMsg('passwordError')), 'error')
     });
   }
 

@@ -64,7 +64,7 @@
         <!-- Language Switcher -->
         <div class="lang-wrapper">
           <button (click)="toggleLangDropdown()" class="btn-icon lang-btn" [title]="'topbar.language' | t">
-            <span class="lang-flag">{{ i18n.currentLang() === 'fr' ? '🇫🇷' : i18n.currentLang() === 'en' ? '🇬🇧' : '🇸🇦' }}</span>
+            <i class="pi pi-globe lang-icon"></i>
             <span class="lang-code">{{ i18n.currentLang() | uppercase }}</span>
           </button>
 

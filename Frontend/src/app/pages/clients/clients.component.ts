@@ -129,7 +129,7 @@ export class ClientsComponent implements OnInit {
           next: () => {
             this.loadClients();
           },
-          error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('common.errorOccurred'), type: 'danger', icon: 'pi pi-times-circle' })
+          error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, this.i18n.t('common.errorOccurred')), type: 'danger', icon: 'pi pi-times-circle' })
         });
       }
     });
@@ -150,7 +150,7 @@ export class ClientsComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadClients();
         },
-        error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorUpdate'), type: 'danger', icon: 'pi pi-times-circle' })
+        error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, this.i18n.t('vehicles.errorUpdate')), type: 'danger', icon: 'pi pi-times-circle' })
       });
     } else {
       this.api.createClient(payload).subscribe({
@@ -158,7 +158,7 @@ export class ClientsComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadClients();
         },
-        error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorCreate'), type: 'danger', icon: 'pi pi-times-circle' })
+        error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, this.i18n.t('vehicles.errorCreate')), type: 'danger', icon: 'pi pi-times-circle' })
       });
     }
   }

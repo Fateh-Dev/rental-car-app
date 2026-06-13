@@ -427,9 +427,10 @@
   transition: background 0.15s;
 }
 
-.lang-flag {
+.lang-icon {
   font-size: 16px;
   line-height: 1;
+  color: var(--color-text-secondary);
 }
 
 .lang-code {

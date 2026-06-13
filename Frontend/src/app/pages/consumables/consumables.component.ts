@@ -138,7 +138,7 @@ export class ConsumablesComponent implements OnInit {
           this.currentVehicleOdometer = payload.replacementKm;
         }
       },
-      error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorCreate'), type: 'danger', icon: 'pi pi-times-circle' })
+      error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, this.i18n.t('vehicles.errorCreate')), type: 'danger', icon: 'pi pi-times-circle' })
     });
   }
 

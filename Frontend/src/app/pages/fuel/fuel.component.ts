@@ -110,7 +110,7 @@ export class FuelComponent implements OnInit {
           this.loadVehicleKmHistory(payload.vehicleId);
         }
       },
-      error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('common.errorOccurred'), type: 'danger', icon: 'pi pi-times-circle' })
+      error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, this.i18n.t('common.errorOccurred')), type: 'danger', icon: 'pi pi-times-circle' })
     });
   }
 
@@ -130,7 +130,7 @@ export class FuelComponent implements OnInit {
               this.loadVehicleKmHistory(this.selectedVehicle.id);
             }
           },
-          error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('common.errorOccurred'), type: 'danger', icon: 'pi pi-times-circle' })
+          error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, this.i18n.t('common.errorOccurred')), type: 'danger', icon: 'pi pi-times-circle' })
         });
       }
     });

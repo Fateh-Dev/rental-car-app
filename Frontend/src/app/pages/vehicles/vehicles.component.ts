@@ -222,7 +222,7 @@ export class VehiclesComponent implements OnInit {
           next: () => {
             this.loadVehicles();
           },
-          error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorDelete'), type: 'danger', icon: 'pi pi-times-circle' })
+          error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, this.i18n.t('vehicles.errorDelete')), type: 'danger', icon: 'pi pi-times-circle' })
         });
       }
     });
@@ -240,7 +240,7 @@ export class VehiclesComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadVehicles();
         },
-        error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorUpdate'), type: 'danger', icon: 'pi pi-times-circle' })
+        error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, this.i18n.t('vehicles.errorUpdate')), type: 'danger', icon: 'pi pi-times-circle' })
       });
     } else {
       this.api.createVehicle(payload).subscribe({
@@ -248,7 +248,7 @@ export class VehiclesComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadVehicles();
         },
-        error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorCreate'), type: 'danger', icon: 'pi pi-times-circle' })
+        error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, this.i18n.t('vehicles.errorCreate')), type: 'danger', icon: 'pi pi-times-circle' })
       });
     }
   }
@@ -380,7 +380,7 @@ export class VehiclesComponent implements OnInit {
         this.selectedVehicle.currentKm = payload.kmValue;
         this.switchDetailsTab('km_history');
       },
-      error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || 'Failed to record odometer reading', type: 'danger', icon: 'pi pi-times-circle' })
+      error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, 'Failed to record odometer reading'), type: 'danger', icon: 'pi pi-times-circle' })
     });
   }
 

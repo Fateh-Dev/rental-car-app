@@ -6,8 +6,11 @@
       </div>
       <h3>{{ options.title }}</h3>
     </div>
-    <div class="confirm-body">
-      <p>{{ options.message }}</p>
+    <div class="confirm-body" [ngClass]="{'has-list': messageLines.length > 1}">
+      <p *ngIf="messageLines.length === 1">{{ options.message }}</p>
+      <ul class="error-list" *ngIf="messageLines.length > 1">
+        <li *ngFor="let line of messageLines">{{ line }}</li>
+      </ul>
     </div>
     <div class="confirm-footer">
       <button class="btn-cancel" *ngIf="!options.isAlert" (click)="cancel()">

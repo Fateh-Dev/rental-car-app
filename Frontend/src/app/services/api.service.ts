@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { I18nService } from './i18n.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,31 @@ import { Observable } from 'rxjs';
 export class ApiService {
   public readonly apiHost = window.location.port === '4200' ? 'http://localhost:5222' : '';
   public readonly baseUrl = `${this.apiHost}/api`;
+  private i18n = inject(I18nService);
 
   constructor(private http: HttpClient) {}
+
+  // ================= Helpers =================
+  getErrorMessage(err: any, defaultMessage: string): string {
+    if (err?.error?.message) {
+      return this.i18n.translateValidationError(err.error.message);
+    }
+    if (err?.error?.errors && typeof err.error.errors === 'object') {
+      const messages = [];
+      for (const key in err.error.errors) {
+        if (Array.isArray(err.error.errors[key])) {
+          messages.push(...err.error.errors[key].map((m: string) => this.i18n.translateValidationError(m)));
+        }
+      }
+      if (messages.length > 0) {
+        return messages.join('\n');
+      }
+    }
+    if (err?.error?.title) {
+      return this.i18n.translateValidationError(err.error.title);
+    }
+    return this.i18n.translateValidationError(err?.message || defaultMessage);
+  }
 
   // ================= Auth =================
   login(dto: any): Observable<any> {

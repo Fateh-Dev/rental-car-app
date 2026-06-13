@@ -170,6 +170,48 @@ export class I18nService {
     return msg;
   }
 
+  translateValidationError(msg: string): string {
+    const lang = this._lang();
+    if (lang === 'en') return msg;
+
+    try {
+      // 1. "The {0} field is required."
+      const requiredMatch = msg.match(/^The (.+) field is required\.$/);
+      if (requiredMatch) {
+        const field = requiredMatch[1];
+        if (lang === 'fr') return `Le champ ${field} est obligatoire.`;
+        if (lang === 'ar') return `حقل ${field} مطلوب.`;
+      }
+      
+      // 2. "The field {0} must be a string or array type with a maximum length of '{1}'."
+      const maxLengthMatch = msg.match(/^The field (.+) must be a string or array type with a maximum length of '(\d+)'\.$/);
+      if (maxLengthMatch) {
+        const field = maxLengthMatch[1];
+        const length = maxLengthMatch[2];
+        if (lang === 'fr') return `Le champ ${field} ne doit pas dépasser ${length} caractères.`;
+        if (lang === 'ar') return `يجب ألا يتجاوز حقل ${field} ${length} حرفاً.`;
+      }
+
+      // 3. "The {0} field is not a valid e-mail address."
+      const emailMatch = msg.match(/^The (.+) field is not a valid e-mail address\.$/);
+      if (emailMatch) {
+        const field = emailMatch[1];
+        if (lang === 'fr') return `Le champ ${field} n'est pas une adresse e-mail valide.`;
+        if (lang === 'ar') return `حقل ${field} ليس عنوان بريد إلكتروني صالح.`;
+      }
+
+      // Add common backend error messages translation
+      if (msg === 'One or more validation errors occurred.') {
+        if (lang === 'fr') return 'Une ou plusieurs erreurs de validation se sont produites.';
+        if (lang === 'ar') return 'حدث خطأ واحد أو أكثر في التحقق من الصحة.';
+      }
+    } catch (e) {
+      console.warn('Failed to parse validation error translation: ', msg, e);
+    }
+    
+    return msg;
+  }
+
   translateMaintenanceType(type: string): string {
     const lang = this._lang();
     const key = type.toLowerCase();

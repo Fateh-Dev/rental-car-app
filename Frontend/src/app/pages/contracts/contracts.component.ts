@@ -235,7 +235,7 @@ export class ContractsComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadContracts();
         },
-        error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorUpdate'), type: 'danger', icon: 'pi pi-times-circle' })
+        error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, this.i18n.t('vehicles.errorUpdate')), type: 'danger', icon: 'pi pi-times-circle' })
       });
     } else {
       this.api.createContract(payload).subscribe({
@@ -243,7 +243,7 @@ export class ContractsComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadContracts();
         },
-        error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorCreate'), type: 'danger', icon: 'pi pi-times-circle' })
+        error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, this.i18n.t('vehicles.errorCreate')), type: 'danger', icon: 'pi pi-times-circle' })
       });
     }
   }
@@ -267,7 +267,7 @@ export class ContractsComponent implements OnInit {
         this.showReturnDialog = false;
         this.loadContracts();
       },
-      error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('contracts.errorReturn'), type: 'danger', icon: 'pi pi-times-circle' })
+      error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, this.i18n.t('contracts.errorReturn')), type: 'danger', icon: 'pi pi-times-circle' })
     });
   }
 
@@ -284,7 +284,7 @@ export class ContractsComponent implements OnInit {
           next: () => {
             this.loadContracts();
           },
-          error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('common.errorOccurred'), type: 'danger', icon: 'pi pi-times-circle' })
+          error: (err) => this.confirmService.alert({ title: 'Error', message: this.api.getErrorMessage(err, this.i18n.t('common.errorOccurred')), type: 'danger', icon: 'pi pi-times-circle' })
         });
       }
     });
@@ -306,8 +306,8 @@ export class ContractsComponent implements OnInit {
     const opt: any = {
       margin:       0.5,
       filename:     `Contrat_${this.printContract.contractNumber}.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2 },
+      image:        { type: 'jpeg', quality: 1 },
+      html2canvas:  { scale: 4, useCORS: true, letterRendering: true },
       jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
 

@@ -135,7 +135,7 @@ export class UsersComponent implements OnInit {
           },
           error: (err) => {
             console.error(err);
-            this.showError(err.error?.message || this.i18n.t('users.errorTogglingLock'));
+            this.showError(this.api.getErrorMessage(err, this.i18n.t('users.errorTogglingLock')));
           }
         });
       }
@@ -162,7 +162,7 @@ export class UsersComponent implements OnInit {
           },
           error: (err) => {
             console.error(err);
-            this.showError(err.error?.message || this.i18n.t('users.errorDeletingUser'));
+            this.showError(this.api.getErrorMessage(err, this.i18n.t('users.errorDeletingUser')));
           }
         });
       }
@@ -213,7 +213,7 @@ export class UsersComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          this.showError(err.error?.message || this.i18n.t('users.errorUpdatingUser'));
+          this.showError(this.api.getErrorMessage(err, this.i18n.t('users.errorUpdatingUser')));
         }
       });
     } else {
@@ -225,7 +225,7 @@ export class UsersComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          this.showError(err.error?.message || this.i18n.t('users.errorCreatingUser'));
+          this.showError(this.api.getErrorMessage(err, this.i18n.t('users.errorCreatingUser')));
         }
       });
     }
