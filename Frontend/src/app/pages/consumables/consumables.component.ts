@@ -7,6 +7,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DatePickerModule } from 'primeng/datepicker';
 import { I18nService } from '../../services/i18n.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 
 @Component({
   selector: 'app-consumables',
@@ -43,7 +44,7 @@ export class ConsumablesComponent implements OnInit {
     'Battery'
   ];
 
-  constructor(private api: ApiService, public i18n: I18nService) {}
+  constructor(private api: ApiService, public i18n: I18nService, private confirmService: ConfirmDialogService) {}
 
   ngOnInit(): void {
     this.loadVehicles();
@@ -107,7 +108,7 @@ export class ConsumablesComponent implements OnInit {
 
   openLogDialog(type?: string): void {
     if (!this.selectedVehicleId) {
-      alert(this.i18n.t('consumables.selectVehiclePrompt'));
+      this.confirmService.alert({ title: 'Information', message: this.i18n.t('consumables.selectVehiclePrompt'), type: 'info', icon: 'pi pi-info-circle' });
       return;
     }
 
@@ -137,7 +138,7 @@ export class ConsumablesComponent implements OnInit {
           this.currentVehicleOdometer = payload.replacementKm;
         }
       },
-      error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorCreate'))
+      error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorCreate'), type: 'danger', icon: 'pi pi-times-circle' })
     });
   }
 
@@ -153,7 +154,7 @@ export class ConsumablesComponent implements OnInit {
 
   onSubmitConfig(): void {
     if (!this.selectedConfig.consumableType) {
-      alert('Veuillez spécifier le type de consommable.');
+      this.confirmService.alert({ title: 'Erreur', message: 'Veuillez spécifier le type de consommable.', type: 'danger', icon: 'pi pi-times-circle' });
       return;
     }
 

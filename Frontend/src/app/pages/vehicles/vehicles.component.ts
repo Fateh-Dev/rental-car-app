@@ -74,7 +74,7 @@ export class VehiclesComponent implements OnInit {
   showAddKmDialog = false;
   kmForm: any = this.getEmptyKmForm();
 
-  constructor(private api: ApiService, public i18n: I18nService, private confirmService: ConfirmDialogService) {}
+  constructor(public api: ApiService, public i18n: I18nService, private confirmService: ConfirmDialogService) {}
 
   ngOnInit(): void {
     this.loadSettings();
@@ -222,7 +222,7 @@ export class VehiclesComponent implements OnInit {
           next: () => {
             this.loadVehicles();
           },
-          error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorDelete'))
+          error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorDelete'), type: 'danger', icon: 'pi pi-times-circle' })
         });
       }
     });
@@ -240,7 +240,7 @@ export class VehiclesComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadVehicles();
         },
-        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorUpdate'))
+        error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorUpdate'), type: 'danger', icon: 'pi pi-times-circle' })
       });
     } else {
       this.api.createVehicle(payload).subscribe({
@@ -248,7 +248,7 @@ export class VehiclesComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadVehicles();
         },
-        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorCreate'))
+        error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorCreate'), type: 'danger', icon: 'pi pi-times-circle' })
       });
     }
   }
@@ -263,7 +263,7 @@ export class VehiclesComponent implements OnInit {
           this.uploadingPhoto = false;
         },
         error: (err) => {
-          alert('Failed to upload image');
+          this.confirmService.alert({ title: 'Error', message: 'Failed to upload image', type: 'danger', icon: 'pi pi-times-circle' });
           this.uploadingPhoto = false;
         }
       });
@@ -380,7 +380,7 @@ export class VehiclesComponent implements OnInit {
         this.selectedVehicle.currentKm = payload.kmValue;
         this.switchDetailsTab('km_history');
       },
-      error: (err) => alert(err.error?.message || 'Failed to record odometer reading')
+      error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || 'Failed to record odometer reading', type: 'danger', icon: 'pi pi-times-circle' })
     });
   }
 

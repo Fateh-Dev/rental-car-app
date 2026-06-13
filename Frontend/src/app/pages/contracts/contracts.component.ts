@@ -235,7 +235,7 @@ export class ContractsComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadContracts();
         },
-        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorUpdate'))
+        error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorUpdate'), type: 'danger', icon: 'pi pi-times-circle' })
       });
     } else {
       this.api.createContract(payload).subscribe({
@@ -243,7 +243,7 @@ export class ContractsComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadContracts();
         },
-        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorCreate'))
+        error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorCreate'), type: 'danger', icon: 'pi pi-times-circle' })
       });
     }
   }
@@ -267,7 +267,7 @@ export class ContractsComponent implements OnInit {
         this.showReturnDialog = false;
         this.loadContracts();
       },
-      error: (err) => alert(err.error?.message || this.i18n.t('contracts.errorReturn'))
+      error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('contracts.errorReturn'), type: 'danger', icon: 'pi pi-times-circle' })
     });
   }
 
@@ -284,7 +284,7 @@ export class ContractsComponent implements OnInit {
           next: () => {
             this.loadContracts();
           },
-          error: (err) => alert(err.error?.message || this.i18n.t('common.errorOccurred'))
+          error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('common.errorOccurred'), type: 'danger', icon: 'pi pi-times-circle' })
         });
       }
     });

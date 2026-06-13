@@ -10,11 +10,12 @@
       <p>{{ options.message }}</p>
     </div>
     <div class="confirm-footer">
-      <button class="btn-cancel" (click)="cancel()">
+      <button class="btn-cancel" *ngIf="!options.isAlert" (click)="cancel()">
         {{ options.cancelText || ('common.cancel' | t) }}
       </button>
       <button class="btn-confirm" [ngClass]="options.type || 'warning'" (click)="confirm()">
-        {{ options.confirmText || ('common.confirm' | t) }}
+        <ng-container *ngIf="options.isAlert">{{ options.confirmText || 'OK' }}</ng-container>
+        <ng-container *ngIf="!options.isAlert">{{ options.confirmText || ('common.confirm' | t) }}</ng-container>
       </button>
     </div>
   </div>

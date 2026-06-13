@@ -105,7 +105,7 @@ export class MaintenanceComponent implements OnInit {
       if (confirmed) {
         this.api.deleteMaintenance(id).subscribe({
           next: () => this.loadMaintenances(),
-          error: (err) => alert(err.error?.message || this.i18n.t('common.errorOccurred'))
+          error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('common.errorOccurred'), type: 'danger', icon: 'pi pi-times-circle' })
         });
       }
     });
@@ -124,7 +124,7 @@ export class MaintenanceComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadMaintenances();
         },
-        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorUpdate'))
+        error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorUpdate'), type: 'danger', icon: 'pi pi-times-circle' })
       });
     } else {
       this.api.createMaintenance(payload).subscribe({
@@ -132,7 +132,7 @@ export class MaintenanceComponent implements OnInit {
           this.showCrudDialog = false;
           this.loadMaintenances();
         },
-        error: (err) => alert(err.error?.message || this.i18n.t('vehicles.errorCreate'))
+        error: (err) => this.confirmService.alert({ title: 'Error', message: err.error?.message || this.i18n.t('vehicles.errorCreate'), type: 'danger', icon: 'pi pi-times-circle' })
       });
     }
   }

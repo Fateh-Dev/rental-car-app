@@ -8,6 +8,7 @@ export interface ConfirmOptions {
   confirmText?: string;
   cancelText?: string;
   icon?: string;
+  isAlert?: boolean;
 }
 
 interface ConfirmRequest {
@@ -23,6 +24,15 @@ export class ConfirmDialogService {
   confirm(options: ConfirmOptions): Promise<boolean> {
     return new Promise((resolve) => {
       this.requestSubject.next({ options, resolve });
+    });
+  }
+
+  alert(options: ConfirmOptions): Promise<void> {
+    return new Promise((resolve) => {
+      this.requestSubject.next({
+        options: { ...options, isAlert: true },
+        resolve: () => resolve()
+      });
     });
   }
 }
