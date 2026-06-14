@@ -673,3 +673,135 @@ textarea.form-input {
   .no-print { display: none !important; }
   .card { box-shadow: none !important; border: 1px solid #e5e5e5 !important; }
 }
+
+/* ── Dark Mode (Docker Docs Inspired Theme) ── */
+body.dark-mode {
+  --color-bg: #0d1117;
+  --color-surface: #161b22;
+  --color-border: #30363d;
+  --color-border-light: #21262d;
+  --color-text: #c9d1d9;
+  --color-text-secondary: #8b949e;
+  --color-text-muted: #484f58;
+  --color-accent: #58a6ff;
+  --color-accent-hover: #1f6feb;
+  --color-accent-light: rgba(88, 166, 255, 0.15);
+  --color-accent-muted: rgba(88, 166, 255, 0.08);
+  --color-danger: #f85149;
+  --color-danger-light: rgba(248, 81, 73, 0.15);
+  --color-warning: #d29922;
+  --color-warning-light: rgba(210, 153, 34, 0.15);
+  --color-success: #3fb950;
+  --color-success-light: rgba(63, 185, 80, 0.15);
+}
+
+body.dark-mode .form-input {
+  background: #21262d;
+  border-color: #30363d;
+  color: #c9d1d9;
+}
+
+body.dark-mode .form-input:focus {
+  background: #0d1117;
+  border-color: var(--color-accent);
+}
+
+body.dark-mode .modern-table tbody tr:hover,
+body.dark-mode .data-table tbody tr:hover {
+  background: #1f242c;
+}
+
+body.dark-mode .modern-table thead,
+body.dark-mode .data-table thead th {
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+}
+
+/* PrimeNG Overrides in Dark Mode */
+body.dark-mode .p-datatable .p-datatable-thead > tr > th {
+  background: #161b22 !important;
+  color: #8b949e !important;
+  border-bottom: 1px solid #30363d !important;
+}
+
+body.dark-mode .p-datatable .p-datatable-tbody > tr {
+  background: #161b22 !important;
+  color: #c9d1d9 !important;
+}
+
+body.dark-mode .p-datatable .p-datatable-tbody > tr:hover {
+  background: #1f242c !important;
+}
+
+body.dark-mode .p-datatable .p-datatable-tbody > tr > td {
+  border-bottom: 1px solid #21262d !important;
+  color: #c9d1d9 !important;
+}
+
+body.dark-mode .p-dialog-mask,
+body.dark-mode .p-component-overlay {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+body.dark-mode .p-dialog {
+  background: #161b22 !important;
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.05) !important;
+}
+
+body.dark-mode .p-dialog .p-dialog-header {
+  background: #161b22 !important;
+  border-bottom: 1px solid #30363d !important;
+  color: #c9d1d9 !important;
+}
+
+body.dark-mode .p-dialog .p-dialog-content {
+  background: #161b22 !important;
+  color: #c9d1d9 !important;
+}
+
+body.dark-mode .p-dialog .p-dialog-footer {
+  background: #161b22 !important;
+  border-top: 1px solid #30363d !important;
+}
+
+body.dark-mode .p-datepicker,
+body.dark-mode .p-datepicker-panel,
+body.dark-mode .p-datepicker-header,
+body.dark-mode .p-datepicker-calendar-container,
+body.dark-mode .p-datepicker-calendar,
+body.dark-mode .p-datepicker table,
+body.dark-mode .p-datepicker-group-container,
+body.dark-mode .p-datepicker-group,
+body.dark-mode .p-datepicker-calendar-container table {
+  background: #161b22 !important;
+  background-color: #161b22 !important;
+  border-color: #30363d !important;
+  color: #c9d1d9 !important;
+}
+
+body.dark-mode .p-datepicker-header {
+  border-bottom: 1px solid #30363d !important;
+}
+
+body.dark-mode .p-datepicker-title,
+body.dark-mode .p-datepicker-calendar th,
+body.dark-mode .p-datepicker-calendar td,
+body.dark-mode .p-datepicker-calendar td > span {
+  color: #c9d1d9 !important;
+}
+
+body.dark-mode .p-datepicker-calendar td > span:hover {
+  background: #21262d !important;
+}
+
+body.dark-mode .p-datepicker-panel {
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.05) !important;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+  background: #30363d;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: #484f58;
+}

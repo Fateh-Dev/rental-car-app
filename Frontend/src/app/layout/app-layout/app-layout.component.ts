@@ -22,6 +22,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   showAlertsDropdown = false;
   showLangDropdown = false;
   showHelp = false;
+  isDarkMode = false;
   sidebarOpen = typeof window !== 'undefined' ? window.innerWidth > 768 : true;
   sidebarCollapsed = false;
   private routerSub?: Subscription;
@@ -56,6 +57,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    if (typeof window !== 'undefined') {
+      this.isDarkMode = localStorage.getItem('parc_auto_theme') === 'dark';
+    }
     const userJson = localStorage.getItem('parc_auto_user');
     if (userJson) {
       const user = JSON.parse(userJson);
@@ -153,6 +157,19 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     this.showHelp = !this.showHelp;
     this.showAlertsDropdown = false;
     this.showLangDropdown = false;
+  }
+
+  toggleTheme(): void {
+    this.isDarkMode = !this.isDarkMode;
+    if (typeof window !== 'undefined') {
+      if (this.isDarkMode) {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('parc_auto_theme', 'dark');
+      } else {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('parc_auto_theme', 'light');
+      }
+    }
   }
 
   get currentHelpConfig() {

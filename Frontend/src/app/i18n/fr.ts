@@ -55,6 +55,8 @@ export const FR: Record<string, any> = {
     deleteConfirm: 'Êtes-vous sûr de vouloir supprimer ?',
     errorOccurred: 'Une erreur est survenue',
     savedSuccessfully: 'Enregistré avec succès',
+    lightMode: 'Mode Clair',
+    darkMode: 'Mode Sombre',
   },
 
   // ─── Sidebar / Navigation ───

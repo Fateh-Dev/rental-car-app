@@ -55,6 +55,8 @@ export const AR: Record<string, any> = {
     deleteConfirm: 'هل أنت متأكد من الحذف؟',
     errorOccurred: 'حدث خطأ',
     savedSuccessfully: 'تم الحفظ بنجاح',
+    lightMode: 'الوضع المضيء',
+    darkMode: 'الوضع المظلم',
   },
 
   // ─── Sidebar / Navigation ───

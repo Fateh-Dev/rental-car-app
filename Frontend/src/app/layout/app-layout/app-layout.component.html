@@ -61,6 +61,11 @@
       </div>
 
       <div class="topbar-right">
+        <!-- Dark Mode Toggle Button -->
+        <button (click)="toggleTheme()" class="btn-icon theme-toggle-btn" [title]="(isDarkMode ? 'common.lightMode' : 'common.darkMode') | t">
+          <i class="pi" [class.pi-sun]="isDarkMode" [class.pi-moon]="!isDarkMode"></i>
+        </button>
+
         <!-- Help Button -->
         <button (click)="toggleHelpDrawer()" class="btn-icon help-btn" [title]="'topbar.help' | t">
           <i class="pi pi-question-circle"></i>
