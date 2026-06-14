@@ -60,6 +60,32 @@ export class I18nService {
     return typeof value === 'string' ? value : key;
   }
 
+  /** Translate a key to an array of strings using dot-notation */
+  tArray(key: string): string[] {
+    const lang = this._lang();
+    const parts = key.split('.');
+    let value: any = TRANSLATIONS[lang];
+
+    for (const part of parts) {
+      if (value && typeof value === 'object' && part in value) {
+        value = value[part];
+      } else {
+        // Fallback to French, then return empty array
+        let fallback: any = TRANSLATIONS['fr'];
+        for (const p of parts) {
+          if (fallback && typeof fallback === 'object' && p in fallback) {
+            fallback = fallback[p];
+          } else {
+            return [];
+          }
+        }
+        return Array.isArray(fallback) ? fallback : [];
+      }
+    }
+
+    return Array.isArray(value) ? value : [];
+  }
+
   /** Dynamically translate alert messages returned from the backend in English */
   translateAlertMessage(msg: string): string {
     const lang = this._lang();

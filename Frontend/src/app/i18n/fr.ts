@@ -80,6 +80,7 @@ export const FR: Record<string, any> = {
     activeAlerts: 'Alertes actives',
     noActiveAlerts: 'Aucune alerte active.',
     language: 'Langue',
+    help: 'Guide de la Page',
   },
 
   // ─── Login ───
@@ -733,4 +734,112 @@ export const FR: Record<string, any> = {
     errorTogglingLock: 'Erreur de modification du statut.',
     totalUsers: 'utilisateur(s)',
   },
+
+  // ─── Help Center ───
+  help: {
+    title: 'Guide de la page & Fonctionnalités',
+    featuresTitle: 'Fonctionnalités Clés',
+    dashboard: {
+      desc: 'Fournit une vue d\'ensemble de la disponibilité de la flotte, des revenus, des contrats et des alertes actives.',
+      features: [
+        'KPIs de répartition de la flotte (Libre, Loué, En maintenance, Immobilisé)',
+        'Aperçu des revenus (Montants payés vs impayés)',
+        'Widget d\'alertes prioritaires (Contrôles techniques, assurances et maintenance arrivant à échéance)',
+        'Listes des contrats en attente de paiement'
+      ]
+    },
+    vehicles: {
+      desc: 'Permet l\'enregistrement, la recherche et la configuration des véhicules de votre flotte.',
+      features: [
+        'Ajouter/Modifier des véhicules (Marque, modèle, matricule, VIN, transmission, tarifs et photo)',
+        'Filtrer/Rechercher par disponibilité, type de carburant et statut de catégorie',
+        'Onglet de suivi des consommables (État des filtres, vidange, freins et pneus)',
+        'Onglets des registres administratifs (Assurances, contrôles techniques, pleins de carburant, historique kilométrique)'
+      ]
+    },
+    clients: {
+      desc: 'Gérer les fiches clients, les coordonnées de contact, l\'état des permis de conduire et l\'historique des locations.',
+      features: [
+        'Dossiers clients complets (ID National, date de naissance, expiration du permis)',
+        'Alertes visuelles de validation de validité du permis de conduire',
+        'Consulter l\'historique complet des contrats de location pour chaque client'
+      ]
+    },
+    contracts: {
+      desc: 'Créer et modifier les contrats de location, calculer les tarifs, les frais supplémentaires et traiter les retours.',
+      features: [
+        'Gérer les contrats (Vérifie la validité du permis client et la disponibilité du véhicule)',
+        'Calcul automatique des durées, remises personnalisées et tarifs journaliers',
+        'Enregistrer les index kilométriques au départ et au retour',
+        'Générer et télécharger les contrats et factures imprimables en PDF'
+      ]
+    },
+    fuel: {
+      desc: 'Suivre les relevés kilométriques, enregistrer les pleins de carburant et analyser les tendances de consommation.',
+      features: [
+        'Historique kilométrique complet du véhicule (Manuel, contrats, carburant)',
+        'Enregistrer les pleins de carburant (Litres, prix au litre, nom de la station)',
+        'Calcul automatisé de la consommation moyenne (L/100km)',
+        'Alertes d\'anomalies pour les consommations de carburant anormales'
+      ]
+    },
+    maintenance: {
+      desc: 'Enregistrer et planifier les interventions mécaniques préventives et correctives.',
+      features: [
+        'Suivi des interventions mécaniques, ateliers, coûts des pièces et de la main d\'œuvre',
+        'Télécharger les factures d\'entretien (PDF ou image)',
+        'Calendrier interactif des contrôles et réparations programmés',
+        'Mise à jour automatique du statut du véhicule en "En Maintenance" durant les travaux'
+      ]
+    },
+    consumables: {
+      desc: 'Surveiller l\'usure des pièces comme les freins, les pneus, les batteries, l\'huile et les filtres.',
+      features: [
+        'Alertes de remplacement avec code couleur (Conforme, Bientôt Dû, À Remplacer)',
+        'Enregistrer les remplacements avec kilométrage et date',
+        'Configurer les limites d\'intervalles par kilomètres et par mois pour chaque véhicule'
+      ]
+    },
+    insurance: {
+      desc: 'Gérer les contrats d\'assurance et les contrôles techniques réglementaires.',
+      features: [
+        'Suivi de plusieurs contrats d\'assurance, couvertures, cotisations et copies PDF',
+        'Enregistrer les résultats des contrôles techniques (Accepté, Contre-visite, Refusé) et dates d\'échéance',
+        'Seuils d\'alertes configurables pour les expirations d\'assurance et de contrôle technique'
+      ]
+    },
+    alerts: {
+      desc: 'Vue centralisée des avertissements, des tâches critiques et des échéances administratives.',
+      features: [
+        'Trier les alertes actives par gravité (Info, Attention, Critique)',
+        'Filtrer par catégorie (Assurance, Contrôles, Maintenance, Odomètre, Permis, Consommables)',
+        'Accéder directement à l\'action de résolution correspondante'
+      ]
+    },
+    reports: {
+      desc: 'Intelligence opérationnelle sur la rentabilité de la flotte, les taux d\'utilisation et le recouvrement.',
+      features: [
+        'Analyse du TCO (Coût Total de Possession) par rapport aux revenus par véhicule',
+        'Historique du taux d\'utilisation moyen de la flotte',
+        'Classement des meilleurs clients par volume de location et part de revenus',
+        'Exporter la fiche de rentabilité au format Excel CSV'
+      ]
+    },
+    users: {
+      desc: 'Gérer les comptes d\'accès des administrateurs du système, les profils et les paramètres d\'accès.',
+      features: [
+        'Créer de nouveaux profils et identifiants d\'administration',
+        'Bloquer/Débloquer les comptes d\'accès de sécurité',
+        'Sécurité contre le blocage ou la suppression accidentelle de son propre compte'
+      ]
+    },
+    settings: {
+      desc: 'Configurer les référentiels de base, les seuils globaux et les mots de passe d\'administration.',
+      features: [
+        'Ajuster les configurations d\'alertes globales (jours d\'inactivité, limites de contrôle)',
+        'Gérer les éléments du catalogue (types de carburant, catégories, interventions, options supplémentaires)',
+        'Mettre à jour le profil de l\'administrateur et modifier les mots de passe'
+      ]
+    }
+  }
 };

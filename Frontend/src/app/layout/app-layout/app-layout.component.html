@@ -61,6 +61,11 @@
       </div>
 
       <div class="topbar-right">
+        <!-- Help Button -->
+        <button (click)="toggleHelpDrawer()" class="btn-icon help-btn" [title]="'topbar.help' | t">
+          <i class="pi pi-question-circle"></i>
+        </button>
+
         <!-- Language Switcher -->
         <div class="lang-wrapper">
           <button (click)="toggleLangDropdown()" class="btn-icon lang-btn" [title]="'topbar.language' | t">
@@ -144,4 +149,62 @@
   </div>
   
   <app-confirm-dialog></app-confirm-dialog>
+
+  <!-- Page Help Guide Drawer -->
+  <div
+    class="help-backdrop"
+    [class.is-visible]="showHelp"
+    (click)="showHelp = false"
+    aria-hidden="true"
+  ></div>
+
+  <div class="help-drawer" [class.drawer-open]="showHelp" [class.rtl]="i18n.isRtl()">
+    <div class="help-drawer-header">
+      <div class="help-drawer-brand">
+        <span class="help-drawer-icon">
+          <i class="pi pi-question-circle"></i>
+        </span>
+        <span class="help-drawer-title">{{ 'help.title' | t }}</span>
+      </div>
+      <button (click)="showHelp = false" class="help-drawer-close-btn" aria-label="Close help">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+
+    <div class="help-drawer-body" *ngIf="currentHelpConfig">
+      <!-- Active Page Header Info -->
+      <div class="help-page-info card">
+        <div class="help-page-badge">
+          <i [class]="currentHelpConfig.icon"></i>
+          <span>{{ currentHelpConfig.titleKey | t }}</span>
+        </div>
+        <p class="help-page-description">{{ currentHelpConfig.descKey | t }}</p>
+      </div>
+
+      <!-- Features Checklist Section -->
+      <div class="help-features-section">
+        <h3 class="help-section-title">
+          <i class="pi pi-star-fill section-icon"></i>
+          {{ 'help.featuresTitle' | t }}
+        </h3>
+        <div class="help-features-list">
+          <div class="help-feature-item card" *ngFor="let feat of currentHelpFeatures; let i = index">
+            <div class="help-feature-bullet">
+              <span class="help-feature-number">{{ i + 1 }}</span>
+            </div>
+            <div class="help-feature-content">
+              <p class="help-feature-text">{{ feat }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-drawer-footer">
+      <button (click)="showHelp = false" class="help-gotit-btn">
+        <i class="pi pi-check"></i>
+        <span>{{ 'common.close' | t }}</span>
+      </button>
+    </div>
+  </div>
 </div>

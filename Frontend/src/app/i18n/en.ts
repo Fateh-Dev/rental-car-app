@@ -80,6 +80,7 @@ export const EN: Record<string, any> = {
     activeAlerts: 'Active Alerts',
     noActiveAlerts: 'No active alerts.',
     language: 'Language',
+    help: 'Page Guide',
   },
 
   // ─── Login ───
@@ -723,4 +724,112 @@ export const EN: Record<string, any> = {
     errorTogglingLock: 'Error toggling lock state.',
     totalUsers: 'user(s)',
   },
+
+  // ─── Help Center ───
+  help: {
+    title: 'Page Guide & Features',
+    featuresTitle: 'Key Functionalities',
+    dashboard: {
+      desc: 'Provides a high-level overview of fleet availability, revenues, contracts, and active alerts.',
+      features: [
+        'Fleet distribution KPIs (Available, Rented, Maintenance, Immobilized)',
+        'Revenue overview (Paid vs Unpaid amounts)',
+        'Priority alerts widget (Due inspections, insurance, and maintenance)',
+        'Contracts pending payment lists'
+      ]
+    },
+    vehicles: {
+      desc: 'Enables registration, search, and configuration of vehicles in your fleet.',
+      features: [
+        'Add/Edit vehicles with brand, model, license plate, VIN, transmission, rates, and photo',
+        'Filter/Search by availability, fuel type, and category status',
+        'Consumables tracking tab (Filter, Oil, Brakes, Tires status)',
+        'Administrative logs tabs (Insurance policies, technical inspections, fuel entries, odometer timeline)'
+      ]
+    },
+    clients: {
+      desc: 'Manage customer records, contact details, driver license status, and rental history.',
+      features: [
+        'Full customer records (National ID, Date of birth, License expiry)',
+        'Visual driver license validation alerts',
+        'Review complete contract history for every client'
+      ]
+    },
+    contracts: {
+      desc: 'Create and edit rental agreements, compute prices, extra charges, and process returns.',
+      features: [
+        'Manage agreements (Checks license validity and vehicle availability)',
+        'Auto-calculate durations, custom discounts, and daily rates',
+        'Record starting and returning odometer indexes',
+        'Generate and download printable PDF invoices/agreements'
+      ]
+    },
+    fuel: {
+      desc: 'Track odometer entries, record fuel fill-ups, and analyze consumption trends.',
+      features: [
+        'Timeline of vehicle kilométrage activity (manual, contracts, fuel)',
+        'Record fuel fill-ups (liters, cost per liter, station name)',
+        'Automated average consumption calculation (L/100km)',
+        'Anomaly alerts for abnormal fuel consumption'
+      ]
+    },
+    maintenance: {
+      desc: 'Record and calendar preventive and corrective mechanical maintenance.',
+      features: [
+        'Track mechanical interventions, garages, parts and labor costs',
+        'Upload maintenance invoice documents (PDF or image)',
+        'Interactive calendar of upcoming scheduled inspections and repairs',
+        'Automatic vehicle state change to "In Maintenance" during active tasks'
+      ]
+    },
+    consumables: {
+      desc: 'Monitor wear of parts like brakes, tires, batteries, oil and filters.',
+      features: [
+        'Visual color-coded replacement alerts (OK, Due Soon, Replace Now)',
+        'Log replacements with odometer readings and timestamps',
+        'Configure interval limits by kilometers and months per vehicle'
+      ]
+    },
+    insurance: {
+      desc: 'Manage insurance policies and mandatory technical inspections.',
+      features: [
+        'Track multiple insurance policies, coverage, premiums and PDF copies',
+        'Record technical inspection pass/fail status and expiration dates',
+        'Configurable alert thresholds for policy and inspection expirations'
+      ]
+    },
+    alerts: {
+      desc: 'Centralized view of warnings, critical tasks, and administrative expiries.',
+      features: [
+        'Sort active warnings by severity (Info, Warning, Critical)',
+        'Filter by category (Insurance, Inspections, Maintenance, Odometer, License, Consumables)',
+        'Navigate directly to resolving actions'
+      ]
+    },
+    reports: {
+      desc: 'Operational intelligence on fleet profitability, utilization rates, and pending collection.',
+      features: [
+        'TCO (Total Cost of Ownership) analysis against revenues per vehicle',
+        'Average fleet utilization rate timeline',
+        'Client leaderboard by rental volumes and revenue share',
+        'Export profitability sheet to Excel CSV format'
+      ]
+    },
+    users: {
+      desc: 'Manage administrator system accounts, profiles, and access settings.',
+      features: [
+        'Create new admin profiles and credentials',
+        'Lock/Unlock security access accounts',
+        'Guard against self-locking/self-deletion locks'
+      ]
+    },
+    settings: {
+      desc: 'Configure core dictionaries, global thresholds, and admin passwords.',
+      features: [
+        'Adjust global warnings configurations (inactivity days, inspection limits)',
+        'Manage catalog elements (fuel options, categories, maintenance tasks, extra charges)',
+        'Update administrator name and account passwords'
+      ]
+    }
+  }
 };
